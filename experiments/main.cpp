@@ -16,11 +16,10 @@ ostream &operator<<(ostream &os, vector<int> &v)
 
 int main() {
     BracketGenerator generator;
-    Scorer scorer;
 
     Bracket* reference = BracketReader::read("some_path");
     Bracket* input = generator.get();
-    int score = scorer.eval(reference, input);
+    int score = Scorer::eval(reference, input);
     cout << "Reference: " << reference->data;
     cout << "Generated: " << input->data;
     cout << "Score: " << score << endl;

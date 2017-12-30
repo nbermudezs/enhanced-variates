@@ -14,8 +14,8 @@ using namespace std;
 
 class Scorer {
 public:
-    int eval (vector<int>, vector<int>);
-    int eval (Bracket *, Bracket *);
+    static int eval (vector<int>, vector<int>);
+    static int eval (Bracket *, Bracket *);
 };
 
 
