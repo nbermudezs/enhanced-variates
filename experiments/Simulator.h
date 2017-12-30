@@ -8,8 +8,18 @@
 #define EXPERIMENTS_SIMULATOR_H
 
 
-class Simulator {
+#include "BracketReader.h"
+#include "BracketGenerator.h"
+#include "Scorer.h"
 
+
+class Simulator {
+public:
+    Simulator();
+    Simulator(int);
+    void run(string);
+private:
+    int runs;
 };
 
 
