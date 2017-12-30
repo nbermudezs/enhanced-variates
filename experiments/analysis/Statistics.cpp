@@ -7,5 +7,19 @@
 #include "Statistics.h"
 
 void Statistics::accountFor(int score, Bracket *bracket) {
-    scores[score] = (scores[score] || 0) + 1;
+    scores.push_back(score);
+}
+
+float Statistics::mean() {
+    float sum = 0.0;
+    int count = 0;
+    for (auto const score: scores) {
+        sum += score;
+        count += 1;
+    }
+    return sum / count;
+}
+
+int Statistics::max() {
+    return *max_element(begin(scores), end(scores));
 }

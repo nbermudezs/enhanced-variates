@@ -8,7 +8,7 @@
 #define EXPERIMENTS_STATISTICS_H
 
 
-#include <map>
+#include <vector>
 #include "../Bracket.h"
 using namespace std;
 
@@ -16,8 +16,10 @@ using namespace std;
 class Statistics {
 public:
     void accountFor(int score, Bracket* bracket);
+    float mean();
+    int max();
 private:
-    map<int, int> scores;
+    vector<int> scores;
 };
 
 
