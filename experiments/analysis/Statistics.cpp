@@ -11,15 +11,17 @@ void Statistics::accountFor(int score, Bracket *bracket) {
 }
 
 float Statistics::mean() {
-    float sum = 0.0;
-    int count = 0;
-    for (auto const score: scores) {
-        sum += score;
-        count += 1;
-    }
-    return sum / count;
+    return gsl_stats_int_mean(&scores[0], 1, scores.size());
 }
 
 int Statistics::max() {
     return *max_element(begin(scores), end(scores));
+}
+
+float Statistics::variance() {
+    return gsl_stats_int_variance(&scores[0], 1, scores.size());
+}
+
+float Statistics::std() {
+    return gsl_stats_int_sd(&scores[0], 1, scores.size());
 }

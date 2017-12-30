@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include "Simulator.h"
 
@@ -18,7 +19,12 @@ int main() {
     Simulator simulator;
     Statistics results = simulator.run("reference_bracket_path");
     chrono::steady_clock::time_point end= chrono::steady_clock::now();
+
+    float variance = results.variance();
+
     cout << "Mean: " << results.mean() << endl;
+    cout << "Variance: " << variance << endl;
+    cout << "Std: " << sqrt(variance) << endl;
     cout << "Max score: " << results.max() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms";
 

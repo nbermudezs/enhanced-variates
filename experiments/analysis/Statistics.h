@@ -9,6 +9,7 @@
 
 
 #include <vector>
+#include <gsl/gsl_statistics_int.h>
 #include "../Bracket.h"
 using namespace std;
 
@@ -17,6 +18,8 @@ class Statistics {
 public:
     void accountFor(int score, Bracket* bracket);
     float mean();
+    float variance();
+    float std();
     int max();
 private:
     vector<int> scores;

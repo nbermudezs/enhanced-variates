@@ -8,6 +8,7 @@
 
 
 Bracket* BracketReader::read(string filepath) {
+    // TODO: remove this hardcoded bracket
     bitset<VECTOR_SIZE> data("111101111111011111110111110111010001101010011000001111100101000");
     return new Bracket(data);
 }
