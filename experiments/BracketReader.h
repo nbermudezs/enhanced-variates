@@ -15,7 +15,7 @@ using namespace std;
 
 class BracketReader {
 public:
-    Bracket* read(string);
+    static Bracket* read(string);
 };
 
 
