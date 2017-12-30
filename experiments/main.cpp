@@ -1,14 +1,28 @@
 #include <iostream>
+#include "BracketGenerator.h"
+#include "BracketReader.h"
 #include "Scorer.h"
 
 using namespace std;
 
-int main() {
-    Scorer *scorer = new Scorer();
+ostream &operator<<(ostream &os, vector<int> &v)
+{
+    for(auto &i: v) {
+        os << i;
+    }
+    os << endl;
+    return os;
+}
 
-    vector<int> reference = {1,0,0,0};
-    vector<int> input = {0,0,0,0};
-    int score = scorer->eval(reference, input);
+int main() {
+    BracketGenerator generator;
+    Scorer scorer;
+
+    Bracket* reference = BracketReader::read("some_path");
+    Bracket* input = generator.get();
+    int score = scorer.eval(reference, input);
+    cout << "Reference: " << reference->data;
+    cout << "Generated: " << input->data;
     cout << "Score: " << score << endl;
     return 0;
 }
