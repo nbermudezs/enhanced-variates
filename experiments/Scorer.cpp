@@ -6,13 +6,13 @@
 
 #include "Scorer.h"
 
-int Scorer::eval(vector<int> ref, vector<int> input) {
+int Scorer::eval(bitset<VECTOR_SIZE> ref, bitset<VECTOR_SIZE> input) {
     vector<int>::size_type size = ref.size();
     int match_value = 10;
 
     int score = 0;
     for (unsigned i=0; i < size; i++) {
-        if (i == 32 || i == 48 || i == 56 || i == 60 || i == 62 || i == 63) {
+        if (i == 32 || i == 48 || i == 56 || i == 60 || i == 62) {
             match_value *= 2;
         }
         if (ref[i] == input[i]) {

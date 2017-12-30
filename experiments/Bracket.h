@@ -8,15 +8,16 @@
 #define EXPERIMENTS_BRACKET_H
 
 
-#include <vector>
+#include <bitset>
+#include "Constants.h"
 using namespace std;
 
 
 class Bracket {
 public:
-    vector<int> data;
+    bitset<VECTOR_SIZE> data;
     Bracket();
-    Bracket(vector<int>);
+    Bracket(bitset<VECTOR_SIZE>);
 };
 
 

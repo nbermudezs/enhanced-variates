@@ -23,7 +23,6 @@ private:
     ConditionalProbabilityTable* cpt;
     default_random_engine generator;
     uniform_real_distribution<float> distribution;
-    const int VECTOR_SIZE = 63;
 };
 
 

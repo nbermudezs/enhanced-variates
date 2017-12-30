@@ -15,10 +15,10 @@ BracketGenerator::BracketGenerator() {
 
 
 Bracket* BracketGenerator::get() {
-    vector<int> data = {};
+    bitset<VECTOR_SIZE> data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
         float p = cpt->P(matchId);
-        data.push_back(distribution(generator) < p ? 1 : 0);
+        data[matchId] = distribution(generator) < p ? 1 : 0;
     }
     return new Bracket(data);
 }

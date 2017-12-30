@@ -4,12 +4,9 @@
 // University of Illinois at Urbana-Champaign
 //
 
-#include "Bracket.h"
+#ifndef EXPERIMENTS_CONSTANTS_H
+#define EXPERIMENTS_CONSTANTS_H
 
-Bracket::Bracket() {
+const unsigned int VECTOR_SIZE = 63;
 
-}
-
-Bracket::Bracket(bitset<VECTOR_SIZE> data) {
-    this->data = data;
-}
+#endif //EXPERIMENTS_CONSTANTS_H

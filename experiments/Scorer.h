@@ -14,7 +14,7 @@ using namespace std;
 
 class Scorer {
 public:
-    static int eval (vector<int>, vector<int>);
+    static int eval (bitset<VECTOR_SIZE>, bitset<VECTOR_SIZE>);
     static int eval (Bracket *, Bracket *);
 };
 
