@@ -21,3 +21,7 @@ int Scorer::eval(vector<int> ref, vector<int> input) {
     }
     return score;
 }
+
+int Scorer::eval(Bracket* ref, Bracket* input) {
+    return Scorer::eval(ref->data, input->data);
+}

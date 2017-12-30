@@ -9,11 +9,13 @@
 
 #include <iostream>
 #include <vector>
+#include "Bracket.h"
 using namespace std;
 
 class Scorer {
 public:
     int eval (vector<int>, vector<int>);
+    int eval (Bracket *, Bracket *);
 };
 
 
