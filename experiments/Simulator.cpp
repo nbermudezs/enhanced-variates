@@ -14,14 +14,14 @@ Simulator::Simulator(int runs) {
     this->runs = runs;
 }
 
-void Simulator::run(string filepath) {
+Statistics Simulator::run(string filepath) {
     BracketGenerator generator;
     Bracket* reference = BracketReader::read(filepath);
     for (int i = 0; i < this->runs; i++) {
         Bracket* random = generator.get();
         int score = Scorer::eval(reference, random);
-        // TODO: do something with the score
+        this->stats.accountFor(score, random);
     }
 
-    // TODO: return a class containing the statistics for this run
+    return this->stats;
 }

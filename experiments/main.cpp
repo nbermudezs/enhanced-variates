@@ -27,7 +27,8 @@ int main() {
 
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
     Simulator simulator;
-    simulator.run("reference_bracket_path");
+    Statistics results = simulator.run("reference_bracket_path");
+    // TODO: do something with results
     chrono::steady_clock::time_point end= chrono::steady_clock::now();
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms";
 

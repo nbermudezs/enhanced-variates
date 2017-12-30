@@ -8,8 +8,16 @@
 #define EXPERIMENTS_STATISTICS_H
 
 
-class Statistics {
+#include <map>
+#include "../Bracket.h"
+using namespace std;
 
+
+class Statistics {
+public:
+    void accountFor(int score, Bracket* bracket);
+private:
+    map<int, int> scores;
 };
 
 

@@ -8,6 +8,7 @@
 #define EXPERIMENTS_SIMULATOR_H
 
 
+#include "analysis/Statistics.h"
 #include "BracketReader.h"
 #include "BracketGenerator.h"
 #include "Scorer.h"
@@ -17,9 +18,10 @@ class Simulator {
 public:
     Simulator();
     Simulator(int);
-    void run(string);
+    Statistics run(string);
 private:
     int runs;
+    Statistics stats;
 };
 
 

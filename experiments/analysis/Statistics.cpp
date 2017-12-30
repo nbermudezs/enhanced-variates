@@ -5,3 +5,7 @@
 //
 
 #include "Statistics.h"
+
+void Statistics::accountFor(int score, Bracket *bracket) {
+    scores[score] = (scores[score] || 0) + 1;
+}
