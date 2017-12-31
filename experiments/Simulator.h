@@ -8,6 +8,9 @@
 #define EXPERIMENTS_SIMULATOR_H
 
 
+// serialization
+#include <cereal/archives/json.hpp>
+
 #include "analysis/Statistics.h"
 #include "BracketReader.h"
 #include "BracketGenerator.h"
@@ -22,6 +25,12 @@ public:
 private:
     int runs;
     Statistics stats;
+
+    friend class cereal::access;
+    template <class Archive>
+    void serialize(Archive &ar) {
+        ar(CEREAL_NVP(runs));
+    }
 };
 
 

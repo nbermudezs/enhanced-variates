@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include "output/Serializer.h"
 #include "Simulator.h"
 
 using namespace std;
@@ -27,6 +28,8 @@ int main() {
     cout << "Std: " << sqrt(variance) << endl;
     cout << "Max score: " << results.max() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms";
+
+     Serializer::serialize(simulator, results);
 
     return 0;
 }

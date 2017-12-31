@@ -7,9 +7,13 @@
 #ifndef EXPERIMENTS_STATISTICS_H
 #define EXPERIMENTS_STATISTICS_H
 
+// type support for cereal and serialization
+#include <cereal/types/bitset.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/archives/json.hpp>
 
-#include <vector>
 #include <gsl/gsl_statistics_int.h>
+#include <vector>
 #include "../Bracket.h"
 using namespace std;
 
@@ -23,6 +27,15 @@ public:
     int max();
 private:
     vector<int> scores;
+
+    friend class cereal::access;
+    template <class Archive>
+    void serialize(Archive &ar) {
+        ar(CEREAL_NVP(scores));
+        ar(cereal::make_nvp("mean", mean()));
+        ar(cereal::make_nvp("variance", variance()));
+        ar(cereal::make_nvp("max", max()));
+    }
 };
 
 
