@@ -6,19 +6,47 @@
 
 #include "Serializer.h"
 
-void Serializer::serialize(Simulator simulator, Statistics statistics) {
+string Serializer::getName() {
     auto t = time(nullptr);
     auto tm = *localtime(&t);
     stringstream ss;
-    ss << put_time(&tm, "%d-%m-%Y %H-%M-%S");
-    string outputFile = ss.str();
+    ss << put_time(&tm, "%d%m%Y%H%M.json");
+    return ss.str();
+}
 
+string Serializer::serialize(Simulator simulator) {
+    string outputFile = SETUP_NAME + Serializer::getName();
+    Serializer::serialize(simulator, outputFile);
+    return outputFile;
+}
+
+string Serializer::serialize(Statistics statistics) {
+    string outputFile = RESULT_NAME + Serializer::getName();
+    Serializer::serialize(statistics, outputFile);
+    return outputFile;
+}
+
+string Serializer::serialize(Simulator simulator, Statistics statistics) {
+    string outputFile = RUN_NAME + Serializer::getName();
     Serializer::serialize(simulator, statistics, outputFile);
+    return outputFile;
 }
 
 void Serializer::serialize(Simulator simulator, Statistics statistics, string outputFile) {
     ofstream file(RESULTS_PATH + "/" + outputFile);
     cereal::JSONOutputArchive archive(file);
     archive(cereal::make_nvp("setup", simulator));
+    archive(cereal::make_nvp("statistics", statistics));
+}
+
+void Serializer::serialize(Simulator simulator, string outputFile) {
+    ofstream file(RESULTS_PATH + "/" + outputFile);
+    cereal::JSONOutputArchive archive(file);
+    archive(cereal::make_nvp("setup", simulator));
+}
+
+void Serializer::serialize(Statistics statistics, string outputFile) {
+    ofstream file(RESULTS_PATH + "/" + outputFile);
+    cereal::JSONOutputArchive archive(file);
     archive(cereal::make_nvp("statistics", statistics));
 }

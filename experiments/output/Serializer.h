@@ -19,8 +19,13 @@ using namespace std;
 
 class Serializer {
 public:
-    static void serialize(Simulator, Statistics);
+    static string getName();
+    static string serialize(Simulator);
+    static string serialize(Statistics);
+    static string serialize(Simulator, Statistics);
     static void serialize(Simulator, Statistics, string);
+    static void serialize(Simulator, string);
+    static void serialize(Statistics, string);
 };
 
 

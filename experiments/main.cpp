@@ -27,9 +27,12 @@ int main() {
     cout << "Variance: " << variance << endl;
     cout << "Std: " << sqrt(variance) << endl;
     cout << "Max score: " << results.max() << endl;
-    cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms";
+    cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
-     Serializer::serialize(simulator, results);
+    string outputFile = Serializer::serialize(results);
+    cout << "Results saved in " << outputFile << endl;
+    outputFile = Serializer::serialize(simulator);
+    cout << "Setup saved in " << outputFile << endl;
 
     return 0;
 }

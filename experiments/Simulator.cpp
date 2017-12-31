@@ -14,9 +14,9 @@ Simulator::Simulator(int runs) {
     this->runs = runs;
 }
 
-Statistics Simulator::run(string filepath) {
+Statistics Simulator::run(string filePath) {
     BracketGenerator generator;
-    Bracket* reference = BracketReader::read(filepath);
+    Bracket* reference = BracketReader::read(filePath);
     for (int i = 0; i < this->runs; i++) {
         Bracket* random = generator.get();
         int score = Scorer::eval(reference, random);
