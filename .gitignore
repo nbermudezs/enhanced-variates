@@ -82,3 +82,5 @@ fabric.properties
 *.exe
 *.out
 *.app
+
+ExternalLibraries/
