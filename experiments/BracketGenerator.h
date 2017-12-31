@@ -11,6 +11,7 @@
 #include <random>
 #include "Bracket.h"
 #include "ConditionalProbabilityTable.h"
+#include "GeneratorConfig.h"
 
 using namespace std;
 
@@ -19,12 +20,13 @@ class BracketGenerator {
 public:
     BracketGenerator();
     Bracket* get();
-    Bracket* get(int);
+    Bracket* get(GeneratorConfig);
     void setSeed(int);
 private:
     ConditionalProbabilityTable* cpt;
     default_random_engine generator;
     uniform_real_distribution<float> distribution;
+    int getMatchResult(int, GeneratorConfig);
 };
 
 

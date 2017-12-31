@@ -13,7 +13,6 @@ BracketGenerator::BracketGenerator() {
     generator = default_random_engine(seed);
 }
 
-
 Bracket* BracketGenerator::get() {
     bitset<VECTOR_SIZE> data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
@@ -23,11 +22,21 @@ Bracket* BracketGenerator::get() {
     return new Bracket(data);
 }
 
-Bracket *BracketGenerator::get(int seed) {
-    setSeed(seed);
-    return get();
+Bracket *BracketGenerator::get(GeneratorConfig config) {
+    setSeed(config.seed);
+    bitset<VECTOR_SIZE> data;
+    for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
+        data[matchId] = getMatchResult(matchId, config);
+    }
+    return new Bracket(data);
 }
 
 void BracketGenerator::setSeed(int seed) {
     generator = default_random_engine(seed);
+}
+
+int BracketGenerator::getMatchResult(int matchId, GeneratorConfig config) {
+    float p = cpt->P(matchId);
+    const int rn = config.antithetic ? (1 - distribution(generator)) : distribution(generator);
+    return rn < p ? 1 : 0;
 }
