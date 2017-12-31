@@ -22,3 +22,12 @@ Bracket* BracketGenerator::get() {
     }
     return new Bracket(data);
 }
+
+Bracket *BracketGenerator::get(int seed) {
+    setSeed(seed);
+    return get();
+}
+
+void BracketGenerator::setSeed(int seed) {
+    generator = default_random_engine(seed);
+}
