@@ -9,10 +9,14 @@
 
 // type support for cereal and serialization
 #include <cereal/types/bitset.hpp>
+#include <cereal/types/map.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/archives/json.hpp>
 
+#include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics_int.h>
+#include <map>
+#include <set>
 #include <vector>
 #include "../Bracket.h"
 using namespace std;
@@ -21,20 +25,30 @@ using namespace std;
 class Statistics {
 public:
     void accountFor(int score, Bracket* bracket);
-    float mean();
-    float variance();
-    float std();
+    void done();
+    double mean();
+    double variance();
+    double std();
     int max();
+    int min();
+    vector<int> topK(const size_t, bool);
+    vector<int> topQuantile(float, bool);
+    map<int, int> frequencyTable();
 private:
+    double _mean = -1;
+    double _variance = -1;
+    bool isDone = false;
     vector<int> scores;
 
     friend class cereal::access;
     template <class Archive>
     void serialize(Archive &ar) {
-        ar(CEREAL_NVP(scores));
+        // ar(CEREAL_NVP(scores));
         ar(cereal::make_nvp("mean", mean()));
         ar(cereal::make_nvp("variance", variance()));
         ar(cereal::make_nvp("max", max()));
+        ar(cereal::make_nvp("min", min()));
+        ar(cereal::make_nvp("frequencyTable", frequencyTable()));
     }
 };
 

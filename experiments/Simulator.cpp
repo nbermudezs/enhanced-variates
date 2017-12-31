@@ -23,5 +23,7 @@ Statistics Simulator::run(string filePath) {
         this->stats.accountFor(score, random);
     }
 
+    this->stats.done();
+
     return this->stats;
 }
