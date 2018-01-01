@@ -36,6 +36,7 @@ int main() {
     cout << "Std: " << sqrt(variance) << endl;
     cout << "Max score: " << results.max() << endl;
     cout << "Min score: " << results.min() << endl;
+    cout << "Mode: " << results.mode() << endl;
 
     cout << "Frequency table: " << endl;
     cout << "|" << setw(6) << "Score" << "|" << setw(6) << "Count" << "|" << endl;
@@ -43,10 +44,10 @@ int main() {
     cout << table;
 
     vector<int> top10 = results.topK(10, true);
-    cout << "Top 10: " << top10 << endl;
+    cout << "Top 10: >" << top10.back() << endl;
 
     top10 = results.topQuantile(0.1, true);
-    cout << "Top 10%: " << top10 << endl;
+    cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     string outputFile = Serializer::serialize(results);

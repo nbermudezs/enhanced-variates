@@ -39,6 +39,13 @@ int Statistics::min() {
     return *min_element(begin(scores), end(scores));
 }
 
+int Statistics::mode() {
+    map<int, int> table = frequencyTable();
+    return max_element(begin(table), end(table), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second < b.second;
+    })->first;
+}
+
 double Statistics::variance() {
     if (isDone) {
         if (_variance == -1) {
@@ -84,6 +91,16 @@ vector<int> Statistics::topQuantile(float quantile, bool unique) {
 }
 
 map<int, int> Statistics::frequencyTable() {
+    if (isDone) {
+        if (_table == nullptr) {
+            _table = new map<int, int>();
+            for (auto score: scores) {
+                (*_table)[score]++;
+            }
+        }
+        return *_table;
+    }
+
     map<int, int> table;
     for (auto score: scores) {
         table[score]++;

@@ -27,6 +27,7 @@ public:
     void accountFor(int score, Bracket* bracket);
     void done();
     double mean();
+    int mode();
     double variance();
     double std();
     int max();
@@ -36,7 +37,9 @@ public:
     map<int, int> frequencyTable();
 private:
     double _mean = -1;
+    map<int, int>* _table = nullptr;
     double _variance = -1;
+
     bool isDone = false;
     vector<int> scores;
 
