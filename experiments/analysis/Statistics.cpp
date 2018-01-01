@@ -68,11 +68,19 @@ vector<int> Statistics::topK(const size_t k, bool unique) {
 
 vector<int> Statistics::topQuantile(float quantile, bool unique) {
     if (unique) {
-
+        set<int> s(begin(scores), end(scores));
+        vector<int> uniqueScores;
+        uniqueScores.assign(begin(s), end(s));
+        const size_t k = static_cast<const size_t >(floor(uniqueScores.size() * quantile));
+        vector<int> top(k);
+        gsl_sort_int_largest(&top[0], k, &uniqueScores[0], 1, uniqueScores.size());
+        return top;
     } else {
-
+        const size_t k = static_cast<const size_t >(floor(scores.size() * quantile));
+        vector<int> top(k);
+        gsl_sort_int_largest(&top[0], k, &scores[0], 1, scores.size());
+        return top;
     }
-    return vector<int>();
 }
 
 map<int, int> Statistics::frequencyTable() {

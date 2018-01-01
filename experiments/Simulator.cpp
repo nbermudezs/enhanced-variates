@@ -7,14 +7,14 @@
 #include "Simulator.h"
 
 Simulator::Simulator() {
-    this->runs = 1e6;
+    this->runs = (int) 1e6;
 }
 
 Simulator::Simulator(int runs) {
     this->runs = runs;
 }
 
-Statistics Simulator::run(string filePath) {
+Statistics Simulator::run(string &filePath) {
     BracketGenerator generator;
     Bracket* reference = BracketReader::read(filePath);
     for (int i = 0; i < this->runs; i++) {

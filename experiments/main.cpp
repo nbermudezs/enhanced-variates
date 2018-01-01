@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iostream>
 #include "output/Serializer.h"
-#include "Simulator.h"
 
 using namespace std;
 
@@ -23,13 +22,14 @@ ostream &operator<<(ostream &os, map<int, int> &table) {
 }
 
 int main() {
+    string filePath = "reference_bracket_path";
     cout << "Running simulator..." << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-    Simulator simulator(1e7);
-    Statistics results = simulator.run("reference_bracket_path");
+    Simulator simulator((int) 1e7);
+    Statistics results = simulator.run(filePath);
     chrono::steady_clock::time_point end= chrono::steady_clock::now();
 
-    float variance = results.variance();
+    double variance = results.variance();
 
     cout << "Mean: " << results.mean() << endl;
     cout << "Variance: " << variance << endl;
@@ -44,6 +44,9 @@ int main() {
 
     vector<int> top10 = results.topK(10, true);
     cout << "Top 10: " << top10 << endl;
+
+    top10 = results.topQuantile(0.1, true);
+    cout << "Top 10%: " << top10 << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     string outputFile = Serializer::serialize(results);

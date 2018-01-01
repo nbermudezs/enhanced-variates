@@ -31,7 +31,7 @@ public:
     double std();
     int max();
     int min();
-    vector<int> topK(const size_t, bool);
+    vector<int> topK(size_t, bool);
     vector<int> topQuantile(float, bool);
     map<int, int> frequencyTable();
 private:

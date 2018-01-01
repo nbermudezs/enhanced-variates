@@ -20,8 +20,8 @@
 class Simulator {
 public:
     Simulator();
-    Simulator(int);
-    Statistics run(string);
+    explicit Simulator(int);
+    Statistics run(string&);
 private:
     int runs;
     Statistics stats;
