@@ -6,19 +6,12 @@
 
 #include "Simulator.h"
 
-Simulator::Simulator() {
-    this->runs = (int) 1e6;
-}
-
-Simulator::Simulator(int runs) {
-    this->runs = runs;
-}
-
 Statistics Simulator::run(string &filePath) {
     BracketGenerator generator;
     Bracket* reference = BracketReader::read(filePath);
     for (int i = 0; i < this->runs; i++) {
-        Bracket* random = generator.get();
+        GeneratorConfig config;
+        Bracket* random = generator.get(config);
         int score = Scorer::eval(reference, random);
         this->stats.accountFor(score, random);
     }
@@ -26,4 +19,13 @@ Statistics Simulator::run(string &filePath) {
     this->stats.done();
 
     return this->stats;
+}
+
+Simulator::Simulator(SimulatorSetup* setup, int runs) {
+    this->runs = runs;
+    this->setup = setup;
+}
+
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates) {
+    this->variates = variates;
 }

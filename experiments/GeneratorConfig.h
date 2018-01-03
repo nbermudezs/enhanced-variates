@@ -8,15 +8,19 @@
 #define EXPERIMENTS_GENERATORCONFIG_H
 
 
+#include <cstdlib>
 #include <chrono>
+#include <vector>
+#include "Constants.h"
+using namespace std;
 
 
 class GeneratorConfig {
 public:
     GeneratorConfig();
-    GeneratorConfig(int, bool);
-    int seed;
+    GeneratorConfig(vector<int>, bool);
     bool antithetic;
+    vector<int> seeds;
 };
 
 

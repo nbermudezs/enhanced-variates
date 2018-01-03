@@ -8,9 +8,6 @@
 
 BracketGenerator::BracketGenerator() {
     cpt = new ConditionalProbabilityTable();
-
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    generator = default_random_engine(seed);
 }
 
 Bracket* BracketGenerator::get() {
@@ -23,7 +20,6 @@ Bracket* BracketGenerator::get() {
 }
 
 Bracket *BracketGenerator::get(GeneratorConfig config) {
-    setSeed(config.seed);
     bitset<VECTOR_SIZE> data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
         data[matchId] = getMatchResult(matchId, config);
@@ -31,12 +27,11 @@ Bracket *BracketGenerator::get(GeneratorConfig config) {
     return new Bracket(data);
 }
 
-void BracketGenerator::setSeed(int seed) {
-    generator = default_random_engine(seed);
-}
-
 int BracketGenerator::getMatchResult(int matchId, GeneratorConfig config) {
+    int seed = config.seeds[matchId];
+    generator = default_random_engine(seed);
+
     float p = cpt->P(matchId);
-    const int rn = config.antithetic ? (1 - distribution(generator)) : distribution(generator);
+    const float rn = config.antithetic ? (1 - distribution(generator)) : distribution(generator);
     return rn < p ? 1 : 0;
 }

@@ -21,7 +21,6 @@ public:
     BracketGenerator();
     Bracket* get();
     Bracket* get(GeneratorConfig);
-    void setSeed(int);
 private:
     ConditionalProbabilityTable* cpt;
     default_random_engine generator;

@@ -22,10 +22,13 @@ ostream &operator<<(ostream &os, map<int, int> &table) {
 }
 
 int main() {
+    vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
+    SimulatorSetup* setup = new SimulatorSetup(variates);
+
     string filePath = "reference_bracket_path";
     cout << "Running simulator..." << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-    Simulator simulator((int) 1e7);
+    Simulator simulator(setup, (int) 1e6);
     Statistics results = simulator.run(filePath);
     chrono::steady_clock::time_point end= chrono::steady_clock::now();
 

@@ -7,11 +7,14 @@
 #include "GeneratorConfig.h"
 
 GeneratorConfig::GeneratorConfig() {
-    this->seed = std::chrono::system_clock::now().time_since_epoch().count();
+    this->seeds = vector<int>(VECTOR_SIZE);
+    for (int i = 0; i < VECTOR_SIZE; i++) {
+        this->seeds[i] = abs(rand() * 2 + 1);
+    }
     this->antithetic = false;
 }
 
-GeneratorConfig::GeneratorConfig(int seed, bool antithetic) {
-    this->seed = seed;
+GeneratorConfig::GeneratorConfig(vector<int> seeds, bool antithetic) {
     this->antithetic = antithetic;
+    this->seeds = seeds;
 }

@@ -17,19 +17,30 @@
 #include "Scorer.h"
 
 
+enum class VariateMethod { IID, COMMON, ANTITHETIC };
+
+
+class SimulatorSetup {
+public:
+    SimulatorSetup(vector<VariateMethod>);
+    vector<VariateMethod> variates;
+};
+
+
 class Simulator {
 public:
-    Simulator();
-    explicit Simulator(int);
+    Simulator(SimulatorSetup*, int);
     Statistics run(string&);
 private:
     int runs;
+    SimulatorSetup* setup;
     Statistics stats;
 
     friend class cereal::access;
     template <class Archive>
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(runs));
+        ar(cereal::make_nvp("variates", setup->variates));
     }
 };
 
