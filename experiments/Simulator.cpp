@@ -6,9 +6,8 @@
 
 #include "Simulator.h"
 
-Statistics Simulator::run(string &filePath) {
+Statistics Simulator::run() {
     BracketGenerator generator;
-    Bracket* reference = BracketReader::read(filePath);
     for (int i = 0; i < this->runs; i++) {
         GeneratorConfig config;
         Bracket* random = generator.get(false, config, this->setup->variates);
@@ -28,13 +27,15 @@ Statistics Simulator::run(string &filePath) {
     return this->stats;
 }
 
-Simulator::Simulator(SimulatorSetup* setup, int runs) {
+Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath) {
     this->setup = setup;
     if (this->setup->antithetic) {
         this->runs = runs / 2;
     } else {
         this->runs = runs;
     }
+    this->bracketFilePath = filePath;
+    this->reference = BracketReader::read(filePath);
 }
 
 SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates) {

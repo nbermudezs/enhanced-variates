@@ -27,10 +27,12 @@ public:
 
 class Simulator {
 public:
-    Simulator(SimulatorSetup*, int);
-    Statistics run(string&);
+    Simulator(SimulatorSetup*, int, string);
+    Statistics run();
+    Bracket* reference;
 private:
     int runs;
+    string bracketFilePath;
     SimulatorSetup* setup;
     Statistics stats;
 
@@ -38,6 +40,8 @@ private:
     template <class Archive>
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(runs));
+        ar(CEREAL_NVP(bracketFilePath));
+        ar(cereal::make_nvp("bracket", reference->data.to_string()));
         ar(cereal::make_nvp("variates", setup->variates));
     }
 };

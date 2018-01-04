@@ -21,15 +21,24 @@ ostream &operator<<(ostream &os, map<int, int> &table) {
     return os;
 }
 
+ostream &operator<<(ostream &os, Bracket* bracket) {
+    os << bracket->data;
+    return os;
+}
+
 int main() {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     SimulatorSetup* setup = new SimulatorSetup(variates);
+    int runs = (int) 1e6;
 
-    string filePath = "reference_bracket_path";
+    string bracketFilePath = "brackets/2017.txt";
     cout << "Running simulator..." << endl;
+    cout << "Replications: " << runs << endl;
+    cout << "Bracket path: " << bracketFilePath << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-    Simulator simulator(setup, (int) 1e6);
-    Statistics results = simulator.run(filePath);
+    Simulator simulator(setup, runs, bracketFilePath);
+    cout << "Bracket vector: " << simulator.reference << endl;
+    Statistics results = simulator.run();
     chrono::steady_clock::time_point end= chrono::steady_clock::now();
 
     double variance = results.variance();

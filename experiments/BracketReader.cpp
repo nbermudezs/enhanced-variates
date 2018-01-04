@@ -7,8 +7,11 @@
 #include "BracketReader.h"
 
 
-Bracket* BracketReader::read(string filepath) {
-    // TODO: remove this hardcoded bracket
-    bitset<VECTOR_SIZE> data("111101111111011111110111110111010001101010011000001111100101000");
+Bracket* BracketReader::read(string filePath) {
+    ifstream inFile(BASE_PATH + filePath);
+    string vectorData;
+    getline(inFile, vectorData);
+    bitset<VECTOR_SIZE> data(vectorData);
+    inFile.close();
     return new Bracket(data);
 }

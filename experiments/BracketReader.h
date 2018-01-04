@@ -8,6 +8,7 @@
 #define EXPERIMENTS_BRACKETREADER_H
 
 
+#include <fstream>
 #include <string>
 #include "Bracket.h"
 using namespace std;
