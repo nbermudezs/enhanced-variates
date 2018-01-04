@@ -9,3 +9,6 @@ add_executable(experiments main.cpp Scorer.cpp Scorer.h BracketReader.cpp Bracke
 
 find_package(GSL REQUIRED)    # See below (2)
 target_link_libraries(experiments GSL::gsl GSL::gslcblas)
+
+add_executable(experimentsTests Scorer.cpp Scorer.h BracketReader.cpp BracketReader.h Bracket.cpp Bracket.h BracketGenerator.cpp BracketGenerator.h ConditionalProbabilityTable.cpp ConditionalProbabilityTable.h Simulator.cpp Simulator.h analysis/Statistics.cpp analysis/Statistics.h Constants.h output/Serializer.cpp output/Serializer.h GeneratorConfig.cpp GeneratorConfig.h test/ScorerTest.cpp test/ScorerTest.h test/test.cpp)
+target_link_libraries(experimentsTests GSL::gsl GSL::gslcblas)
