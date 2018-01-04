@@ -20,12 +20,12 @@ class BracketGenerator {
 public:
     BracketGenerator();
     Bracket* get();
-    Bracket* get(GeneratorConfig);
+    Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
 private:
     ConditionalProbabilityTable* cpt;
     default_random_engine generator;
     uniform_real_distribution<float> distribution;
-    int getMatchResult(int, GeneratorConfig);
+    int getMatchResult(bool, int, GeneratorConfig, vector<VariateMethod>);
 };
 
 

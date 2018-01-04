@@ -19,19 +19,22 @@ Bracket* BracketGenerator::get() {
     return new Bracket(data);
 }
 
-Bracket *BracketGenerator::get(GeneratorConfig config) {
+Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, vector<VariateMethod> variates) {
     bitset<VECTOR_SIZE> data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
-        data[matchId] = getMatchResult(matchId, config);
+        data[matchId] = getMatchResult(antitheticEnabled, matchId, config, variates);
     }
     return new Bracket(data);
 }
 
-int BracketGenerator::getMatchResult(int matchId, GeneratorConfig config) {
+int BracketGenerator::getMatchResult(bool antitheticEnabled, int matchId, GeneratorConfig config, vector<VariateMethod> variates) {
     int seed = config.seeds[matchId];
+    VariateMethod type = variates[matchId];
     generator = default_random_engine(seed);
 
     float p = cpt->P(matchId);
-    const float rn = config.antithetic ? (1 - distribution(generator)) : distribution(generator);
+    const float rn = type == VariateMethod::ANTITHETIC && antitheticEnabled ?
+                     (1 - distribution(generator)) :
+                     distribution(generator);
     return rn < p ? 1 : 0;
 }

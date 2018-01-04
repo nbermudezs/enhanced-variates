@@ -16,4 +16,6 @@ const string SETUP_NAME = "setup";
 const string RESULT_NAME = "result";
 const string RUN_NAME = "run";
 
+enum class VariateMethod { IID, COMMON, ANTITHETIC };
+
 #endif //EXPERIMENTS_CONSTANTS_H

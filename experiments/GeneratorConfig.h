@@ -18,8 +18,7 @@ using namespace std;
 class GeneratorConfig {
 public:
     GeneratorConfig();
-    GeneratorConfig(vector<int>, bool);
-    bool antithetic;
+    GeneratorConfig(vector<int>);
     vector<int> seeds;
 };
 

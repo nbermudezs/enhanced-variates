@@ -18,6 +18,7 @@ public:
     bitset<VECTOR_SIZE> data;
     Bracket();
     Bracket(bitset<VECTOR_SIZE>);
+    Bracket* smoothen(Bracket*);
 };
 
 

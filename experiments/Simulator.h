@@ -17,13 +17,11 @@
 #include "Scorer.h"
 
 
-enum class VariateMethod { IID, COMMON, ANTITHETIC };
-
-
 class SimulatorSetup {
 public:
     SimulatorSetup(vector<VariateMethod>);
     vector<VariateMethod> variates;
+    bool antithetic;
 };
 
 
