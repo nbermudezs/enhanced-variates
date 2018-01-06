@@ -20,8 +20,8 @@ using namespace std;
 class Serializer {
 public:
     static string getName();
-    static string serialize(Simulator);
-    static string serialize(Statistics);
+    static string serialize(Simulator, int);
+    static string serialize(Statistics, int);
     static string serialize(Simulator, Statistics);
     static void serialize(Simulator, Statistics, string);
     static void serialize(Simulator, string);

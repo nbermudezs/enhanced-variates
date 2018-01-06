@@ -10,18 +10,18 @@ string Serializer::getName() {
     auto t = time(nullptr);
     auto tm = *localtime(&t);
     stringstream ss;
-    ss << put_time(&tm, "%d%m%Y%H%M.json");
+    ss << put_time(&tm, "%d%m%Y%H%M%S");
     return ss.str();
 }
 
-string Serializer::serialize(Simulator simulator) {
-    string outputFile = SETUP_NAME + Serializer::getName();
+string Serializer::serialize(Simulator simulator, int year) {
+    string outputFile = to_string(year) + "/" + Serializer::getName() + SETUP_NAME + ".json";
     Serializer::serialize(simulator, outputFile);
     return outputFile;
 }
 
-string Serializer::serialize(Statistics statistics) {
-    string outputFile = RESULT_NAME + Serializer::getName();
+string Serializer::serialize(Statistics statistics, int year) {
+    string outputFile = to_string(year) + "/" + Serializer::getName() + RESULT_NAME + ".json";
     Serializer::serialize(statistics, outputFile);
     return outputFile;
 }
