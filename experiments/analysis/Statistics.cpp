@@ -6,7 +6,11 @@
 
 #include "Statistics.h"
 
-void Statistics::accountFor(int score, Bracket*) {
+void Statistics::accountFor(int score, Bracket* bracket) {
+    if (score > bestScore) {
+        bestScore = score;
+        bestBracket = bracket;
+    }
     scores.push_back(score);
 }
 

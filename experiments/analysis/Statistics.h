@@ -35,7 +35,9 @@ public:
     vector<int> topK(size_t, bool);
     vector<int> topQuantile(float, bool);
     map<int, int> frequencyTable();
+    Bracket* bestBracket;
 private:
+    int bestScore;
     double _mean = -1;
     map<int, int>* _table = nullptr;
     double _variance = -1;
@@ -52,6 +54,7 @@ private:
         ar(cereal::make_nvp("max", max()));
         ar(cereal::make_nvp("min", min()));
         ar(cereal::make_nvp("frequencyTable", frequencyTable()));
+        ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
     }
 };
 
