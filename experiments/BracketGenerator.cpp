@@ -8,13 +8,16 @@
 
 BracketGenerator::BracketGenerator() {
     cpt = new ConditionalProbabilityTable();
+
+    unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    generator = default_random_engine(seed);
 }
 
 Bracket* BracketGenerator::get() {
     bitset<VECTOR_SIZE> data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
         float p = cpt->P(matchId);
-        data[matchId] = distribution(generator) < p ? 1 : 0;
+        data[VECTOR_SIZE - matchId - 1] = distribution(generator) < p ? 1 : 0;
     }
     return new Bracket(data);
 }
