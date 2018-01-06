@@ -29,17 +29,20 @@ ostream &operator<<(ostream &os, Bracket* bracket) {
 int main() {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     SimulatorSetup* setup = new SimulatorSetup(variates);
+    int year = 2017;
+    bool singleGenerator = true;
     int runs = (int) 1e6;
 
-    string bracketFilePath = "brackets/2017.txt";
+    string bracketFilePath = "brackets/" + to_string(year) + ".txt";
     cout << "Running simulator..." << endl;
     cout << "Replications: " << runs << endl;
     cout << "Bracket path: " << bracketFilePath << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-    Simulator simulator(setup, runs, bracketFilePath);
+    Simulator simulator(setup, runs, bracketFilePath, singleGenerator);
     cout << "Bracket vector: " << simulator.reference << endl;
     Statistics results = simulator.run();
-    chrono::steady_clock::time_point end= chrono::steady_clock::now();
+    chrono::steady_clock::time_point end = chrono::steady_clock::now();
+    cout << "Best bracket:   " << results.bestBracket << endl;
 
     double variance = results.variance();
 
@@ -62,9 +65,9 @@ int main() {
     cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
-    string outputFile = Serializer::serialize(results);
+    string outputFile = Serializer::serialize(results, year);
     cout << "Results saved in " << outputFile << endl;
-    outputFile = Serializer::serialize(simulator);
+    outputFile = Serializer::serialize(simulator, year);
     cout << "Setup saved in " << outputFile << endl;
 
     return 0;
