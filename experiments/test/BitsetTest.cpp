@@ -5,3 +5,12 @@
 //
 
 #include "BitsetTest.h"
+
+void BitsetTest::run() {
+    bitset<5> data;
+
+    assert(data.to_string() == "00000");
+
+    data[0] = 1;
+    assert(data.to_string() == "00001");
+}

@@ -7,12 +7,14 @@
 #ifndef EXPERIMENTS_BITSETTEST_H
 #define EXPERIMENTS_BITSETTEST_H
 
-
+#include <cassert>
+#include <bitset>
+using namespace std;
 
 class BitsetTest {
-
+public:
+    static void run();
 };
-
 
 
 #endif //EXPERIMENTS_BITSETTEST_H
