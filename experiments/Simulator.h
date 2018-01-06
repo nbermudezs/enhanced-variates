@@ -27,10 +27,11 @@ public:
 
 class Simulator {
 public:
-    Simulator(SimulatorSetup*, int, string);
+    Simulator(SimulatorSetup*, int, string, bool);
     Statistics run();
     Bracket* reference;
 private:
+    bool singleGenerator;
     int runs;
     string bracketFilePath;
     SimulatorSetup* setup;
@@ -43,6 +44,7 @@ private:
         ar(CEREAL_NVP(bracketFilePath));
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
         ar(cereal::make_nvp("variates", setup->variates));
+        ar(CEREAL_NVP(singleGenerator));
     }
 };
 

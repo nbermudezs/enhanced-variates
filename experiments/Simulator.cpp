@@ -9,15 +9,22 @@
 Statistics Simulator::run() {
     BracketGenerator generator;
     for (int i = 0; i < this->runs; i++) {
-        GeneratorConfig config;
-        Bracket* random = generator.get(false, config, this->setup->variates);
-        if (setup->antithetic) {
-            Bracket* anti = generator.get(true, config, this->setup->variates);
-            Bracket* result = random->smoothen(anti);
-            int score = Scorer::eval(reference, result);
-            this->stats.accountFor(score, result);
-            continue;
+        Bracket* random;
+        if (singleGenerator) {
+            random = generator.get();
+        } else {
+            GeneratorConfig config;
+            random = generator.get(false, config, this->setup->variates);
+
+            if (setup->antithetic) {
+                Bracket* anti = generator.get(true, config, this->setup->variates);
+                Bracket* result = random->smoothen(anti);
+                int score = Scorer::eval(reference, result);
+                this->stats.accountFor(score, result);
+                continue;
+            }
         }
+        // TODO: figure out how to do antithetic with a single generator
         int score = Scorer::eval(reference, random);
         this->stats.accountFor(score, random);
     }
@@ -27,7 +34,7 @@ Statistics Simulator::run() {
     return this->stats;
 }
 
-Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath) {
+Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool singleGenerator) {
     this->setup = setup;
     if (this->setup->antithetic) {
         this->runs = runs / 2;
@@ -36,6 +43,7 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath) {
     }
     this->bracketFilePath = filePath;
     this->reference = BracketReader::read(filePath);
+    this->singleGenerator = singleGenerator;
 }
 
 SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates) {
