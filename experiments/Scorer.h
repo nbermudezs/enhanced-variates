@@ -7,6 +7,7 @@
 #ifndef EXPERIMENTS_SCORER_H
 #define EXPERIMENTS_SCORER_H
 
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include "Bracket.h"
@@ -14,6 +15,8 @@ using namespace std;
 
 class Scorer {
 public:
+    static int naive_eval (bitset<VECTOR_SIZE>, bitset<VECTOR_SIZE>);
+    static int naive_eval (Bracket *, Bracket *);
     static int eval (bitset<VECTOR_SIZE>, bitset<VECTOR_SIZE>);
     static int eval (Bracket *, Bracket *);
 };
