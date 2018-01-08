@@ -26,16 +26,15 @@ ostream &operator<<(ostream &os, Bracket* bracket) {
     return os;
 }
 
-int main() {
+void simulate(int year, bool singleGenerator, int runs) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     SimulatorSetup* setup = new SimulatorSetup(variates);
-    int year = 2017;
-    bool singleGenerator = true;
-    int runs = (int) 1e6;
 
     string bracketFilePath = "brackets/" + to_string(year) + ".txt";
-    cout << "Running simulator..." << endl;
+    cout << "Running simulator for " << year << " ..." << endl;
+    cout << "Single generator?: " << singleGenerator << endl;
     cout << "Replications: " << runs << endl;
+    cout << "RAND_MAX: " << RAND_MAX <<  endl;
     cout << "Bracket path: " << bracketFilePath << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
     Simulator simulator(setup, runs, bracketFilePath, singleGenerator);
@@ -43,6 +42,22 @@ int main() {
     Statistics results = simulator.run();
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
     cout << "Best bracket:   " << results.bestBracket << endl;
+
+    cout << "Generator statistics" << endl;
+    int minCount = runs, maxCount = 0;
+    string as_array = "[";
+    for (int i = 0; i < VECTOR_SIZE; i++) {
+        if (simulator.generator.bitOnCounts[i] < minCount) {
+            minCount = simulator.generator.bitOnCounts[i];
+        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
+            maxCount = simulator.generator.bitOnCounts[i];
+        }
+        cout << "P(bit" << i << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << endl;
+        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
+    }
+    cout << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;
+    cout << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
+    cout << as_array << "]" << endl;
 
     double variance = results.variance();
 
@@ -69,6 +84,18 @@ int main() {
     cout << "Results saved in " << outputFile << endl;
     outputFile = Serializer::serialize(simulator, year);
     cout << "Setup saved in " << outputFile << endl;
+}
+
+int main() {
+    vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
+    vector<bool> generator = {true, false};
+    int runs = (int) 1e6;
+
+    for (auto year: years) {
+        for (auto singleGenerator: generator) {
+            simulate(year, singleGenerator, runs);
+        }
+    }
 
     return 0;
 }
