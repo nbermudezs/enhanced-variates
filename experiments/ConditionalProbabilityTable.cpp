@@ -8,12 +8,16 @@
 
 // TODO: default to probability 0.5 instead of the hardcoded value in ConditionalProbabilityTable::P
 ConditionalProbabilityTable::ConditionalProbabilityTable() {
-
+    for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
+        this->probabilities.push_back(this->P(i));
+    }
 }
 
-// TODO: load probability table from a file (result of Ian's data)
 ConditionalProbabilityTable::ConditionalProbabilityTable(string filepath) {
-
+    // TODO: load probability table from a file (result of Ian's data)
+    for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
+        this->probabilities.push_back(this->P(i));
+    }
 }
 
 float ConditionalProbabilityTable::P(int matchId) {

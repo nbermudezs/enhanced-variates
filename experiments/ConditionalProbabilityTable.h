@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include "Constants.h"
 using namespace std;
 
 
@@ -18,7 +19,6 @@ public:
     ConditionalProbabilityTable();
     ConditionalProbabilityTable(string);
     float P(int);
-private:
     vector<float> probabilities;
 };
 
