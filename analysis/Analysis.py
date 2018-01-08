@@ -12,6 +12,18 @@ class Analysis:
         print('Min:', np.min(scores))
         print('Mode:', scores[np.argmax(counts)], '(%d)' % np.max(counts))
         print('Mean:', np.average(scores, weights=counts))
+        # print('Quantiles from unique scores')
+        # print('99 Quantile', np.percentile(scores, 99));
+        # print('95 Quantile', np.percentile(scores, 95));
+        # print('90 Quantile', np.percentile(scores, 90));
+        # print('50 Quantile', np.percentile(scores, 50));
+
+        print('Quantiles from all scores')
+        all_scores = Analysis.weight_array(scores, counts)
+        print('99 Quantile', np.percentile(all_scores, 99));
+        print('95 Quantile', np.percentile(all_scores, 95));
+        print('90 Quantile', np.percentile(all_scores, 90));
+        print('50 Quantile', np.percentile(all_scores, 50));
 
     @staticmethod
     def plot(data):
