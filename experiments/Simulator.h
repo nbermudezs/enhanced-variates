@@ -21,7 +21,7 @@ class SimulatorSetup {
 public:
     SimulatorSetup(vector<VariateMethod>);
     vector<VariateMethod> variates;
-    bool antithetic;
+    bool antithetic = false;
 };
 
 
@@ -30,6 +30,7 @@ public:
     Simulator(SimulatorSetup*, int, string, bool);
     Statistics run();
     Bracket* reference;
+    BracketGenerator generator;
 private:
     bool singleGenerator;
     int runs;
@@ -45,6 +46,8 @@ private:
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
         ar(cereal::make_nvp("variates", setup->variates));
         ar(CEREAL_NVP(singleGenerator));
+        ar(CEREAL_NVP(generator));
+        ar(CEREAL_NVP(RAND_MAX));
     }
 };
 

@@ -7,7 +7,6 @@
 #include "Simulator.h"
 
 Statistics Simulator::run() {
-    BracketGenerator generator;
     for (int i = 0; i < this->runs; i++) {
         Bracket* random;
         if (singleGenerator) {
