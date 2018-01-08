@@ -7,7 +7,12 @@
 #ifndef EXPERIMENTS_BRACKETGENERATOR_H
 #define EXPERIMENTS_BRACKETGENERATOR_H
 
+// serialization
+#include <cereal/types/map.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/archives/json.hpp>
 
+#include <map>
 #include <random>
 #include "Bracket.h"
 #include "ConditionalProbabilityTable.h"
@@ -21,11 +26,20 @@ public:
     BracketGenerator();
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
+    map<int, int> bitOnCounts;
 private:
     ConditionalProbabilityTable* cpt;
-    default_random_engine generator;
+    minstd_rand0 generator;
     uniform_real_distribution<float> distribution;
     int getMatchResult(bool, int, GeneratorConfig, vector<VariateMethod>);
+
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize(Archive &ar) {
+        ar(CEREAL_NVP(bitOnCounts));
+        ar(cereal::make_nvp("cpt", cpt->probabilities));
+    }
 };
 
 
