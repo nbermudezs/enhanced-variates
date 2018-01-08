@@ -7,10 +7,10 @@
 #include "GeneratorConfig.h"
 
 GeneratorConfig::GeneratorConfig() {
-    srand(time(NULL));
+    random_device rdev;
     this->seeds = vector<int>(VECTOR_SIZE);
     for (int i = 0; i < VECTOR_SIZE; i++) {
-        this->seeds[i] = abs(rand() * 2 + 1);
+        this->seeds[i] = rdev() * 2 + 1;
     }
 }
 
