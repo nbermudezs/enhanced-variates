@@ -16,7 +16,7 @@
 #include "BracketGenerator.h"
 
 BracketGenerator::BracketGenerator() {
-    cpt = &ConditionalProbabilityTable::getInstance(BRACKET_METADATA_FOLDER + "/allBracketsTTT_metadata.json");
+    cpt = &ConditionalProbabilityTable::getInstance(BRACKET_METADATA_FOLDER + "/allBrackets_metadata.json");
 
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
     generator = minstd_rand0(seed);

@@ -11,7 +11,7 @@
 using namespace std;
 
 const unsigned int VECTOR_SIZE = 63;
-const string BRACKET_METADATA_FOLDER = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/DataForNestor";
+const string BRACKET_METADATA_FOLDER = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/brackets";
 const string RESULTS_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/results";
 const string BASE_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/";
 const string SETUP_NAME = "setup";
