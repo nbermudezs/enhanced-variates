@@ -21,10 +21,7 @@ ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath) {
     const CEREAL_RAPIDJSON_NAMESPACE::Value& array = d["sumOfBrackets"];
     assert(array.IsArray());
     for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
-        if (i < 32)
-            this->probabilities.push_back(1.0 * array[i].GetInt() / YEARS);
-        else
-            this->probabilities.push_back(0.5);
+        this->probabilities.push_back(1.0 * array[i].GetInt() / YEARS);
     }
 }
 
