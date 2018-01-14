@@ -33,9 +33,9 @@ void simulate(int year, bool singleGenerator, int runs) {
     string bracketFilePath = "brackets/" + to_string(year) + ".txt";
     cout << "Running simulator for " << year << " ..." << endl;
     cout << "Single generator?: " << singleGenerator << endl;
-    cout << "Replications: " << runs << endl;
-    cout << "RAND_MAX: " << RAND_MAX <<  endl;
-    cout << "Bracket path: " << bracketFilePath << endl;
+//    cout << "Replications: " << runs << endl;
+//    cout << "RAND_MAX: " << RAND_MAX <<  endl;
+//    cout << "Bracket path: " << bracketFilePath << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
     Simulator simulator(setup, runs, bracketFilePath, singleGenerator);
     cout << "Bracket vector: " << simulator.reference << endl;
@@ -43,21 +43,21 @@ void simulate(int year, bool singleGenerator, int runs) {
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
     cout << "Best bracket:   " << results.bestBracket << endl;
 
-    cout << "Generator statistics" << endl;
-    int minCount = runs, maxCount = 0;
-    string as_array = "[";
-    for (int i = 0; i < VECTOR_SIZE; i++) {
-        if (simulator.generator.bitOnCounts[i] < minCount) {
-            minCount = simulator.generator.bitOnCounts[i];
-        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
-            maxCount = simulator.generator.bitOnCounts[i];
-        }
-        cout << "P(bit" << i << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << endl;
-        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
-    }
-    cout << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;
-    cout << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
-    cout << as_array << "]" << endl;
+//    cout << "Generator statistics" << endl;
+//    int minCount = runs, maxCount = 0;
+//    string as_array = "[";
+//    for (int i = 0; i < VECTOR_SIZE; i++) {
+//        if (simulator.generator.bitOnCounts[i] < minCount) {
+//            minCount = simulator.generator.bitOnCounts[i];
+//        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
+//            maxCount = simulator.generator.bitOnCounts[i];
+//        }
+//        cout << "P(bit" << i << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs " << simulator.generator.cpt->probabilities[i] << endl;
+//        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
+//    }
+//    cout << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;
+//    cout << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
+//    cout << as_array << "]" << endl;
 
     double variance = results.variance();
 
@@ -73,17 +73,18 @@ void simulate(int year, bool singleGenerator, int runs) {
     map<int, int> table = results.frequencyTable();
     cout << table;
 
-    vector<int> top10 = results.topK(10, true);
-    cout << "Top 10: >" << top10.back() << endl;
-
-    top10 = results.topQuantile(0.1, true);
-    cout << "Top 10%: >" << top10.back() << endl;
+//    vector<int> top10 = results.topK(10, true);
+//    cout << "Top 10: >" << top10.back() << endl;
+//
+//    top10 = results.topQuantile(0.1, true);
+//    cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
-    string outputFile = Serializer::serialize(results, year);
-    cout << "Results saved in " << outputFile << endl;
-    outputFile = Serializer::serialize(simulator, year);
-    cout << "Setup saved in " << outputFile << endl;
+//    string outputFile = Serializer::serialize(results, year);
+//    cout << "Results saved in " << outputFile << endl;
+//    outputFile = Serializer::serialize(simulator, year);
+//    cout << "Setup saved in " << outputFile << endl;
+    cout << "-----------------------------------" << endl;
 }
 
 int main() {
@@ -94,6 +95,7 @@ int main() {
     for (auto year: years) {
         for (auto singleGenerator: generator) {
             simulate(year, singleGenerator, runs);
+            break;
         }
     }
 

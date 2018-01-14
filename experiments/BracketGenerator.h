@@ -26,9 +26,9 @@ public:
     BracketGenerator();
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
+    ConditionalProbabilityTable* cpt;
     map<int, int> bitOnCounts;
 private:
-    ConditionalProbabilityTable* cpt;
     minstd_rand0 generator;
     uniform_real_distribution<float> distribution;
     int getMatchResult(bool, int, GeneratorConfig, vector<VariateMethod>);
