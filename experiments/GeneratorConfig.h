@@ -10,6 +10,7 @@
 
 #include <cstdlib>
 #include <chrono>
+#include <cmath>
 #include <random>
 #include <vector>
 #include "Constants.h"
@@ -19,8 +20,9 @@ using namespace std;
 class GeneratorConfig {
 public:
     GeneratorConfig();
-    GeneratorConfig(vector<int>);
-    vector<int> seeds;
+    GeneratorConfig(vector<unsigned int>);
+    vector<unsigned int> seeds;
+    void renew(vector<VariateMethod> variates);
 };
 
 
