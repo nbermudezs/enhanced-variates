@@ -7,9 +7,12 @@
 #ifndef EXPERIMENTS_SMOOTHINGTEST_H
 #define EXPERIMENTS_SMOOTHINGTEST_H
 
+#include <cassert>
+
 
 class SmoothingTest {
-
+public:
+    static void run();
 };
 
 
