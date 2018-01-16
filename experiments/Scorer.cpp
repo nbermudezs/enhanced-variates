@@ -6,7 +6,7 @@
 
 #include "Scorer.h"
 
-int Scorer::naive_eval(bitset<VECTOR_SIZE> reference, bitset<VECTOR_SIZE> input) {
+int Scorer::naive_eval(BracketData reference, BracketData input) {
     int match_value = 320;
 
     int score = 0;
@@ -21,7 +21,7 @@ int Scorer::naive_eval(bitset<VECTOR_SIZE> reference, bitset<VECTOR_SIZE> input)
     return score;
 }
 
-int Scorer::eval(bitset<VECTOR_SIZE> reference, bitset<VECTOR_SIZE> input) {
+int Scorer::eval(BracketData reference, BracketData input) {
     int match_value = 320;
 
     int score = 0;
