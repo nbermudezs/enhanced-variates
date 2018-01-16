@@ -11,7 +11,7 @@ Bracket* BracketReader::read(string filePath) {
     ifstream inFile(BASE_PATH + filePath);
     string vectorData;
     getline(inFile, vectorData);
-    bitset<VECTOR_SIZE> data(vectorData);
+    BracketData data(vectorData);
     inFile.close();
     return new Bracket(data);
 }

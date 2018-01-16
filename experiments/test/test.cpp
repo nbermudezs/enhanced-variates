@@ -6,10 +6,12 @@
 
 #include "BitsetTest.h"
 #include "ScorerTest.h"
+#include "SmoothingTest.h"
 
 int main() {
     BitsetTest::run();
     ScorerTest::run();
+    SmoothingTest::run();
 
     return 0;
 }

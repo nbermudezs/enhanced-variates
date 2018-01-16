@@ -15,13 +15,13 @@ string Serializer::getName() {
 }
 
 string Serializer::serialize(Simulator simulator, int year) {
-    string outputFile = to_string(year) + "/" + Serializer::getName() + SETUP_NAME + ".json";
+    string outputFile = to_string(year) + "/" + to_string(year) + "_" + Serializer::getName() + SETUP_NAME + ".json";
     Serializer::serialize(simulator, outputFile);
     return outputFile;
 }
 
 string Serializer::serialize(Statistics statistics, int year) {
-    string outputFile = to_string(year) + "/" + Serializer::getName() + RESULT_NAME + ".json";
+    string outputFile = to_string(year) + "/" + to_string(year) + "_" + Serializer::getName() + RESULT_NAME + ".json";
     Serializer::serialize(statistics, outputFile);
     return outputFile;
 }

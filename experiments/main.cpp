@@ -21,6 +21,11 @@ ostream &operator<<(ostream &os, map<int, int> &table) {
     return os;
 }
 
+ostream &operator<<(ostream &os, BracketData data) {
+    os << data.to_string();
+    return os;
+}
+
 ostream &operator<<(ostream &os, Bracket* bracket) {
     os << bracket->data;
     return os;
@@ -80,22 +85,21 @@ void simulate(int year, bool singleGenerator, int runs) {
 //    cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
-//    string outputFile = Serializer::serialize(results, year);
-//    cout << "Results saved in " << outputFile << endl;
-//    outputFile = Serializer::serialize(simulator, year);
-//    cout << "Setup saved in " << outputFile << endl;
-    cout << "-----------------------------------" << endl;
+    string outputFile = Serializer::serialize(results, year);
+    cout << "Results saved in " << outputFile << endl;
+    outputFile = Serializer::serialize(simulator, year);
+    cout << "Setup saved in " << outputFile << endl;
+    cout << "------------------------------------------------------------------" << endl << endl << endl;
 }
 
 int main() {
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
-    vector<bool> generator = {true, false};
-    int runs = (int) 1e6;
+    vector<bool> generator = {true};
+    int runs = (int) 1e5;
 
     for (auto year: years) {
         for (auto singleGenerator: generator) {
             simulate(year, singleGenerator, runs);
-            break;
         }
     }
 

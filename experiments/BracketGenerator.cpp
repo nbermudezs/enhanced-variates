@@ -23,7 +23,7 @@ BracketGenerator::BracketGenerator() {
 }
 
 Bracket* BracketGenerator::get() {
-    bitset<VECTOR_SIZE> data;
+    BracketData data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
         float p = cpt->P(matchId);
         int value = distribution(generator) < p ? 1 : 0;
@@ -36,7 +36,7 @@ Bracket* BracketGenerator::get() {
 }
 
 Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, vector<VariateMethod> variates) {
-    bitset<VECTOR_SIZE> data;
+    BracketData data;
     for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
         int value = getMatchResult(antitheticEnabled, matchId, config, variates);
         if (value) {

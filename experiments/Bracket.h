@@ -15,9 +15,8 @@ using namespace std;
 
 class Bracket {
 public:
-    bitset<VECTOR_SIZE> data;
-    Bracket();
-    Bracket(bitset<VECTOR_SIZE>);
+    BracketData data;
+    Bracket(BracketData data);
     Bracket* smoothen(Bracket*);
 };
 
