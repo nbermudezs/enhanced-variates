@@ -6,18 +6,14 @@
 
 #include "Bracket.h"
 
-Bracket::Bracket() {
-
-}
-
-Bracket::Bracket(bitset<VECTOR_SIZE> data) {
+Bracket::Bracket(BracketData data) {
     this->data = data;
 }
 
 Bracket *Bracket::smoothen(Bracket* other) {
-    bitset<VECTOR_SIZE> data;
+    BracketData smoothenData;
     for (int i = 0; i < VECTOR_SIZE; i++) {
-        data[i] = (this->data[i] + other->data[i]) / 2;
+        smoothenData[i] = (this->data[i] + other->data[i]) / 2.;
     }
-    return new Bracket(data);
+    return new Bracket(smoothenData);
 }
