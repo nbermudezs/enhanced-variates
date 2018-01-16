@@ -85,5 +85,5 @@ fabric.properties
 *.out
 *.app
 
-results/
+/experiments/results/
 ExternalLibraries/
