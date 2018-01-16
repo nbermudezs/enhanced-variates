@@ -22,6 +22,8 @@ public:
     SimulatorSetup(vector<VariateMethod>);
     vector<VariateMethod> variates;
     bool antithetic = false;
+    Bracket* smoothen(Bracket* ref, Bracket* other);
+    SmoothingFunction smoothingFunction = SmoothingFunction::AND;
 };
 
 
@@ -44,10 +46,16 @@ private:
         ar(CEREAL_NVP(runs));
         ar(CEREAL_NVP(bracketFilePath));
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
-        ar(cereal::make_nvp("variates", setup->variates));
+
+        auto transformVariate = [](VariateMethod x) { return ENUM_NAME(x); };
+        vector<string> variates(VECTOR_SIZE);
+        transform(begin(setup->variates), end(setup->variates), begin(variates), transformVariate);
+
+        ar(cereal::make_nvp("variates", variates));
         ar(CEREAL_NVP(singleGenerator));
         ar(CEREAL_NVP(generator));
         ar(CEREAL_NVP(RAND_MAX));
+        ar(cereal::make_nvp("smoothingFunction", ENUM_NAME(setup->smoothingFunction)));
     }
 };
 
