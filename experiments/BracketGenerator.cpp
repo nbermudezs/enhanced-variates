@@ -24,7 +24,7 @@ BracketGenerator::BracketGenerator() {
 
 Bracket* BracketGenerator::get() {
     BracketData data;
-    for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
+    for (int matchId = VECTOR_SIZE; matchId >= 0; matchId--) {
         float p = cpt->P(matchId);
         int value = distribution(generator) < p ? 1 : 0;
         if (value) {
@@ -37,7 +37,7 @@ Bracket* BracketGenerator::get() {
 
 Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, vector<VariateMethod> variates) {
     BracketData data;
-    for (int matchId = 0; matchId < VECTOR_SIZE; matchId++) {
+    for (int matchId = VECTOR_SIZE - 1; matchId >= 0; matchId--) {
         int value = getMatchResult(antitheticEnabled, matchId, config, variates);
         if (value) {
             bitOnCounts[matchId]++;
