@@ -23,7 +23,7 @@ Statistics Simulator::run() {
                 Bracket* best;
                 int bestScore = 0;
                 for (Bracket* bracket: brackets) {
-                    int score = Scorer::eval(reference, bracket);
+                    int score = Scorer::evalWithRegionGrouping(reference, bracket);
                     if (bestScore < score) {
                         bestScore = score;
                         best = bracket;
@@ -37,7 +37,7 @@ Statistics Simulator::run() {
             }
         }
         // TODO: figure out how to do antithetic with a single generator
-        int score = Scorer::eval(reference, random);
+        int score = Scorer::evalWithRegionGrouping(reference, random);
         this->stats.accountFor(score, random);
     }
 

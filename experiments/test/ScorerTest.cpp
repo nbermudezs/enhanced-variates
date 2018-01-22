@@ -6,7 +6,68 @@
 
 #include "ScorerTest.h"
 
+void testRegionScorer() {
+    Scorer scorer;
+    BracketData reference;
+    BracketData input;
+    pair<int, bool> score;
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000000000000000000000000000000000000111111111111111000"));
+    score = scorer.evalRegion(reference, input, 3);
+    assert(score.first == 0);
+    assert(!score.second);
+
+    score = scorer.evalRegion(reference, input, 18);
+    assert(score.first == 320);
+    assert(score.second);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000000000000000000000000000000000000111111110000000000"));
+    score = scorer.evalRegion(reference, input, 3);
+    assert(score.first == 0);
+    assert(!score.second);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000001000000000000000000000000000000111111110000000000"));
+    score = scorer.evalRegion(reference, input, 48);
+    assert(score.first == 240);
+    assert(!score.second);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000101000000000000000000000000000000111111110000000000"));
+    score = scorer.evalRegion(reference, input, 48);
+    assert(score.first == 200);
+    assert(!score.second);
+
+    reference = BracketData(string("101001111100100110101011000100101110111111111100101001011100111"));
+    input =     BracketData(string("110111011101100111111011101000111111111111100110101111010100101"));
+    score = scorer.evalRegion(reference, input, 48);
+    assert(score.first == 110);
+    assert(!score.second);
+}
+
+void testEvalWithRegionGrouping() {
+    Scorer scorer;
+    BracketData reference;
+    BracketData input;
+    int score;
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000100"));
+    input =     BracketData(string("000000000000000111111111111111111111111111111111111101110100100"));
+    score = scorer.evalWithRegionGrouping(reference, input);
+    assert(score == 320 + 2 * 160 + 320 + 80 + 40 + 20 + 10);
+
+    reference = BracketData(string("101001111100100110101011000100101110111111111100101001011100111"));
+    input =     BracketData(string("110111011101100111111011101000111111111111100110101111010100101"));
+    score = scorer.evalWithRegionGrouping(reference, input);
+    assert(score == 540);
+}
+
 void ScorerTest::run() {
+    testRegionScorer();
+    testEvalWithRegionGrouping();
+
     Scorer scorer;
     BracketData reference;
     BracketData input;

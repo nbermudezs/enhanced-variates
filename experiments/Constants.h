@@ -14,6 +14,7 @@
 using namespace std;
 
 const unsigned int VECTOR_SIZE = 63;
+const unsigned int REGION_VECTOR_SIZE = 15;
 const string BRACKET_METADATA_FOLDER = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/brackets";
 const string RESULTS_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/results";
 const string BASE_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/";
@@ -47,38 +48,39 @@ static string ENUM_NAME(VariateMethod f) {
 
 
 // TYPEDEFS
-// typedef bitset<VECTOR_SIZE> BracketData;
-typedef struct BracketData {
-    BracketData() {
-        for (int i = 0; i < VECTOR_SIZE; i++) {
-            x[i] = 0;
-        }
-    }
+typedef bitset<VECTOR_SIZE> BracketData;
 
-    explicit BracketData(string data) {
-        for (int i = 0; i < VECTOR_SIZE; i++) {
-            x[VECTOR_SIZE - i - 1] = data[i] - '0';
-        }
-    }
-
-    string to_string() {
-        string result;
-        for (int i = 0; i < VECTOR_SIZE; i++) {
-            float val = x[VECTOR_SIZE - i - 1];
-            if (val == 1) {
-                result.append("1");
-            } else if (val == 0) {
-                result.append("0");
-            } else {
-                result.append("½");
-            }
-        }
-        return result;
-    }
-
-    float x[VECTOR_SIZE];
-    float& operator[](int i) { return x[i]; }
-} BracketData;
+//typedef struct BracketData {
+//    BracketData() {
+//        for (int i = 0; i < VECTOR_SIZE; i++) {
+//            x[i] = 0;
+//        }
+//    }
+//
+//    explicit BracketData(string data) {
+//        for (int i = 0; i < VECTOR_SIZE; i++) {
+//            x[VECTOR_SIZE - i - 1] = data[i] - '0';
+//        }
+//    }
+//
+//    string to_string() {
+//        string result;
+//        for (int i = 0; i < VECTOR_SIZE; i++) {
+//            float val = x[VECTOR_SIZE - i - 1];
+//            if (val == 1) {
+//                result.append("1");
+//            } else if (val == 0) {
+//                result.append("0");
+//            } else {
+//                result.append("½");
+//            }
+//        }
+//        return result;
+//    }
+//
+//    float x[VECTOR_SIZE];
+//    float& operator[](int i) { return x[i]; }
+//} BracketData;
 
 // HELPERS
 #define ENUM_NAME_HELPER(name) #name
