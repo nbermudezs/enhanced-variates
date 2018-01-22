@@ -19,6 +19,9 @@ public:
     static int naive_eval (Bracket *, Bracket *);
     static int eval (BracketData, BracketData);
     static int eval (Bracket *, Bracket *);
+    static int evalWithRegionGrouping(BracketData, BracketData);
+    static int evalWithRegionGrouping(Bracket *, Bracket *);
+    static pair<int, bool> evalRegion(BracketData, BracketData, int);
 };
 
 

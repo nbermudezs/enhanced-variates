@@ -31,11 +31,11 @@ ostream &operator<<(ostream &os, Bracket* bracket) {
     return os;
 }
 
-void simulate(int year, bool singleGenerator, int runs) {
+void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     SimulatorSetup* setup = new SimulatorSetup(variates);
 
-    string bracketFilePath = "brackets/" + to_string(year) + ".txt";
+    string bracketFilePath = "brackets/TTT/" + to_string(year) + ".txt";
     cout << "Running simulator for " << year << " ..." << endl;
     cout << "Single generator?: " << singleGenerator << endl;
 //    cout << "Replications: " << runs << endl;
@@ -85,21 +85,24 @@ void simulate(int year, bool singleGenerator, int runs) {
 //    cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
-    string outputFile = Serializer::serialize(results, year);
-    cout << "Results saved in " << outputFile << endl;
-    outputFile = Serializer::serialize(simulator, year);
-    cout << "Setup saved in " << outputFile << endl;
-    cout << "------------------------------------------------------------------" << endl << endl << endl;
+    if (saveFile) {
+        string outputFile = Serializer::serialize(results, year);
+        cout << "Results saved in " << outputFile << endl;
+        outputFile = Serializer::serialize(simulator, year);
+        cout << "Setup saved in " << outputFile << endl;
+        cout << "------------------------------------------------------------------" << endl << endl << endl;
+    }
 }
 
 int main() {
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
     vector<bool> generator = {true};
     int runs = (int) 1e5;
+    bool saveFile = false;
 
     for (auto year: years) {
         for (auto singleGenerator: generator) {
-            simulate(year, singleGenerator, runs);
+            simulate(year, singleGenerator, runs, saveFile);
         }
     }
 
