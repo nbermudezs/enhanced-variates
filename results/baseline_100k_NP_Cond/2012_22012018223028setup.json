@@ -1,0 +1,332 @@
+{
+    "setup": {
+        "runs": 100000,
+        "bracketFilePath": "brackets/TTT/2012.txt",
+        "bracket": "110101001001111101111101001001111111111010100110001011010100101",
+        "variates": [
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID",
+            "IID"
+        ],
+        "singleGenerator": true,
+        "generator": {
+            "bitOnCounts": [
+                {
+                    "key": 0,
+                    "value": 80873
+                },
+                {
+                    "key": 1,
+                    "value": 35580
+                },
+                {
+                    "key": 2,
+                    "value": 71126
+                },
+                {
+                    "key": 3,
+                    "value": 85105
+                },
+                {
+                    "key": 4,
+                    "value": 60893
+                },
+                {
+                    "key": 5,
+                    "value": 83850
+                },
+                {
+                    "key": 6,
+                    "value": 68859
+                },
+                {
+                    "key": 7,
+                    "value": 90990
+                },
+                {
+                    "key": 8,
+                    "value": 75648
+                },
+                {
+                    "key": 9,
+                    "value": 43520
+                },
+                {
+                    "key": 10,
+                    "value": 42250
+                },
+                {
+                    "key": 11,
+                    "value": 43028
+                },
+                {
+                    "key": 12,
+                    "value": 67380
+                },
+                {
+                    "key": 13,
+                    "value": 59125
+                },
+                {
+                    "key": 14,
+                    "value": 63329
+                },
+                {
+                    "key": 15,
+                    "value": 78593
+                },
+                {
+                    "key": 16,
+                    "value": 46055
+                },
+                {
+                    "key": 17,
+                    "value": 82069
+                },
+                {
+                    "key": 18,
+                    "value": 79341
+                },
+                {
+                    "key": 19,
+                    "value": 71686
+                },
+                {
+                    "key": 20,
+                    "value": 73644
+                },
+                {
+                    "key": 21,
+                    "value": 64796
+                },
+                {
+                    "key": 22,
+                    "value": 83385
+                },
+                {
+                    "key": 23,
+                    "value": 73889
+                },
+                {
+                    "key": 24,
+                    "value": 38245
+                },
+                {
+                    "key": 25,
+                    "value": 61396
+                },
+                {
+                    "key": 26,
+                    "value": 45829
+                },
+                {
+                    "key": 27,
+                    "value": 66321
+                },
+                {
+                    "key": 28,
+                    "value": 27657
+                },
+                {
+                    "key": 29,
+                    "value": 47587
+                },
+                {
+                    "key": 30,
+                    "value": 100000
+                },
+                {
+                    "key": 31,
+                    "value": 99575
+                },
+                {
+                    "key": 32,
+                    "value": 97557
+                },
+                {
+                    "key": 33,
+                    "value": 99579
+                },
+                {
+                    "key": 34,
+                    "value": 65487
+                },
+                {
+                    "key": 35,
+                    "value": 84778
+                },
+                {
+                    "key": 36,
+                    "value": 55874
+                },
+                {
+                    "key": 37,
+                    "value": 80515
+                },
+                {
+                    "key": 38,
+                    "value": 98698
+                },
+                {
+                    "key": 39,
+                    "value": 94713
+                },
+                {
+                    "key": 40,
+                    "value": 47093
+                },
+                {
+                    "key": 41,
+                    "value": 36401
+                },
+                {
+                    "key": 42,
+                    "value": 93449
+                },
+                {
+                    "key": 43,
+                    "value": 50498
+                },
+                {
+                    "key": 44,
+                    "value": 38928
+                },
+                {
+                    "key": 45,
+                    "value": 100000
+                },
+                {
+                    "key": 46,
+                    "value": 100000
+                },
+                {
+                    "key": 47,
+                    "value": 66009
+                },
+                {
+                    "key": 48,
+                    "value": 56841
+                },
+                {
+                    "key": 49,
+                    "value": 72268
+                },
+                {
+                    "key": 50,
+                    "value": 93233
+                },
+                {
+                    "key": 51,
+                    "value": 59937
+                },
+                {
+                    "key": 52,
+                    "value": 86265
+                },
+                {
+                    "key": 53,
+                    "value": 99243
+                },
+                {
+                    "key": 54,
+                    "value": 96905
+                },
+                {
+                    "key": 55,
+                    "value": 46151
+                },
+                {
+                    "key": 56,
+                    "value": 23370
+                },
+                {
+                    "key": 57,
+                    "value": 96198
+                },
+                {
+                    "key": 58,
+                    "value": 38536
+                },
+                {
+                    "key": 59,
+                    "value": 50724
+                },
+                {
+                    "key": 60,
+                    "value": 36945
+                },
+                {
+                    "key": 61,
+                    "value": 30095
+                },
+                {
+                    "key": 62,
+                    "value": 45446
+                }
+            ],
+            "cpt": []
+        },
+        "RAND_MAX": 2147483647,
+        "smoothingFunction": "AND"
+    }
+}
