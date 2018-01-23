@@ -7,9 +7,11 @@
 #ifndef EXPERIMENTS_CONDITIONALPROBABILITYTABLE_H
 #define EXPERIMENTS_CONDITIONALPROBABILITYTABLE_H
 
+#include <cmath>
 #include <cereal/external/rapidjson/document.h>
 #include <cereal/external/rapidjson/istreamwrapper.h>
 #include <fstream>
+#include <map>
 #include <string>
 #include <vector>
 #include "Constants.h"
@@ -21,10 +23,17 @@ const int YEARS = 33;
 class ConditionalProbabilityTable {
 public:
     ConditionalProbabilityTable();
-    ConditionalProbabilityTable(string);
+    ConditionalProbabilityTable(string, bool, int);
     float P(int);
+    float P(int, BracketData);
     vector<float> probabilities;
-    static ConditionalProbabilityTable& getInstance(string);
+    int historyCount;
+    map<int, map<int, int>> conditionalCounts; // { "bit0": { "parent-0": a, "parent-1": b }, ... }
+    map<int, int> totalCounts;
+    static ConditionalProbabilityTable& getInstance(string, bool, int);
+
+private:
+    bool isMetadataFile;
 };
 
 

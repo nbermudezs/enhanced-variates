@@ -53,13 +53,15 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     } else {
         this->runs = runs;
     }
+    this->generator = BracketGenerator(setup->year);
     this->bracketFilePath = filePath;
     this->reference = BracketReader::read(filePath);
     this->singleGenerator = singleGenerator;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
     this->variates = variates;
+    this->year = year;
     for (auto i: variates) {
         if (i == VariateMethod::ANTITHETIC) {
             this->antithetic = true;
