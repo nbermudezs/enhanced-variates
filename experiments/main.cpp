@@ -33,7 +33,7 @@ ostream &operator<<(ostream &os, Bracket* bracket) {
 
 void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
-    SimulatorSetup* setup = new SimulatorSetup(variates);
+    SimulatorSetup* setup = new SimulatorSetup(variates, year);
 
     string bracketFilePath = "brackets/TTT/" + to_string(year) + ".txt";
     cout << "Running simulator for " << year << " ..." << endl;
@@ -57,7 +57,7 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 //        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
 //            maxCount = simulator.generator.bitOnCounts[i];
 //        }
-//        cout << "P(bit" << i << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs " << simulator.generator.cpt->probabilities[i] << endl;
+//        cout << "P(bit" << (VECTOR_SIZE - i - 1) << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs " << simulator.generator.cpt->probabilities[i] << endl;
 //        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
 //    }
 //    cout << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;

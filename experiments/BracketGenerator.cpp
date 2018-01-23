@@ -15,8 +15,8 @@
 
 #include "BracketGenerator.h"
 
-BracketGenerator::BracketGenerator() {
-    cpt = &ConditionalProbabilityTable::getInstance(BRACKET_METADATA_FOLDER + "/TTT/allBrackets_metadata.json");
+BracketGenerator::BracketGenerator(int year) {
+    cpt = &ConditionalProbabilityTable::getInstance(BRACKET_METADATA_FOLDER + "/TTT/allBracketsTTT.json", false, year);
 
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
     generator = minstd_rand0(seed);
@@ -24,8 +24,8 @@ BracketGenerator::BracketGenerator() {
 
 Bracket* BracketGenerator::get() {
     BracketData data;
-    for (int matchId = VECTOR_SIZE; matchId >= 0; matchId--) {
-        float p = cpt->P(matchId);
+    for (int matchId = VECTOR_SIZE - 1; matchId >= 0; matchId--) {
+        float p = cpt->P(matchId, data);
         int value = distribution(generator) < p ? 1 : 0;
         if (value) {
             bitOnCounts[matchId]++;
@@ -38,7 +38,7 @@ Bracket* BracketGenerator::get() {
 Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, vector<VariateMethod> variates) {
     BracketData data;
     for (int matchId = VECTOR_SIZE - 1; matchId >= 0; matchId--) {
-        int value = getMatchResult(antitheticEnabled, matchId, config, variates);
+        int value = getMatchResult(data, antitheticEnabled, matchId, config, variates);
         if (value) {
             bitOnCounts[matchId]++;
         }
@@ -47,12 +47,12 @@ Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, v
     return new Bracket(data);
 }
 
-int BracketGenerator::getMatchResult(bool antitheticEnabled, int matchId, GeneratorConfig config, vector<VariateMethod> variates) {
+int BracketGenerator::getMatchResult(BracketData data, bool antitheticEnabled, int matchId, GeneratorConfig config, vector<VariateMethod> variates) {
     int seed = config.seeds[matchId];
     VariateMethod type = variates[matchId];
     generator = minstd_rand0(seed);
 
-    float p = cpt->P(matchId);
+    float p = cpt->P(matchId, data);
     const float rn = type == VariateMethod::ANTITHETIC && antitheticEnabled ?
                      (1 - distribution(generator)) :
                      distribution(generator);

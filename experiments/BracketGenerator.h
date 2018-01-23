@@ -23,7 +23,7 @@ using namespace std;
 
 class BracketGenerator {
 public:
-    BracketGenerator();
+    BracketGenerator(int year);
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
     ConditionalProbabilityTable* cpt;
@@ -31,7 +31,7 @@ public:
 private:
     minstd_rand0 generator;
     uniform_real_distribution<float> distribution;
-    int getMatchResult(bool, int, GeneratorConfig, vector<VariateMethod>);
+    int getMatchResult(BracketData, bool, int, GeneratorConfig, vector<VariateMethod>);
 
     friend class cereal::access;
 
