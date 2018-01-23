@@ -135,3 +135,14 @@ pair<int, bool> Scorer::evalRegion(BracketData reference, BracketData input, int
     }
     return pair<int, bool>(score, finalsMatch);
 }
+
+int Scorer::l1(BracketData ref, BracketData input) {
+    int count = 0;
+    for (unsigned int i = 0; i < VECTOR_SIZE; i++)
+        count += abs(ref[i] - input[i]);
+    return count;
+}
+
+int Scorer::l1(Bracket* ref, Bracket* input) {
+    return Scorer::l1(ref->data, input->data);
+}

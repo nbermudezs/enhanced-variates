@@ -6,6 +6,43 @@
 
 #include "ScorerTest.h"
 
+void testL1Distance() {
+    Scorer scorer;
+    BracketData reference;
+    BracketData input;
+    int score;
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    score = Scorer::l1(reference, input);
+    assert(score == 0);
+
+    reference = BracketData(string("000000000000000000000000000000001111111111111111111111111111111"));
+    input =     BracketData(string("000000000000000000000000000000001111111111111111111111111111111"));
+    score = Scorer::l1(reference, input);
+    assert(score == 0);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("010000000000000000000000000000000000000000000000000000000000000"));
+    score = Scorer::l1(reference, input);
+    assert(score == 1);
+
+    reference = BracketData(string("010000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    score = Scorer::l1(reference, input);
+    assert(score == 1);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("000000000000000000000000000000000000000000000000000000000000010"));
+    score = Scorer::l1(reference, input);
+    assert(score == 1);
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000000"));
+    input =     BracketData(string("111111111111111111111111111111111111111111111111111111111111111"));
+    score = Scorer::l1(reference, input);
+    assert(score == 63);
+}
+
 void testRegionScorer() {
     Scorer scorer;
     BracketData reference;
@@ -67,6 +104,7 @@ void testEvalWithRegionGrouping() {
 void ScorerTest::run() {
     testRegionScorer();
     testEvalWithRegionGrouping();
+    testL1Distance();
 
     Scorer scorer;
     BracketData reference;

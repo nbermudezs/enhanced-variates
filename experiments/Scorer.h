@@ -22,6 +22,10 @@ public:
     static int evalWithRegionGrouping(BracketData, BracketData);
     static int evalWithRegionGrouping(Bracket *, Bracket *);
     static pair<int, bool> evalRegion(BracketData, BracketData, int);
+
+    // Manhattan distance
+    static int l1(BracketData, BracketData);
+    static int l1(Bracket *, Bracket *);
 };
 
 
