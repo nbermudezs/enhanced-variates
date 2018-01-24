@@ -1,35 +1,10 @@
 #include <cmath>
 #include <iostream>
 #include "output/Serializer.h"
+#include "analysis/Misc.h"
+#include "utils/PrintUtils.h"
 
 using namespace std;
-
-ostream &operator<<(ostream &os, vector<int> &v) {
-    for(auto &i: v) {
-        os << i << " ";
-    }
-    os << endl;
-    return os;
-}
-
-ostream &operator<<(ostream &os, map<int, int> &table) {
-    os << "|------|------|" << endl;
-    for (auto &it: table) {
-        os << "|" << setw(6) << it.first << "|" << setw(6) << it.second << "|" << endl;
-    }
-    os << " ------------- " << endl;
-    return os;
-}
-
-ostream &operator<<(ostream &os, BracketData data) {
-    os << data.to_string();
-    return os;
-}
-
-ostream &operator<<(ostream &os, Bracket* bracket) {
-    os << bracket->data;
-    return os;
-}
 
 void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
@@ -95,6 +70,9 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 }
 
 int main() {
+    auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json");
+    printL1Matrix(cout, l1Matrix);
+
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
     vector<bool> generator = {true};
     int runs = (int) 1e5;
