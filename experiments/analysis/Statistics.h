@@ -57,6 +57,7 @@ private:
         ar(cereal::make_nvp("min", min()));
         ar(cereal::make_nvp("frequencyTable", frequencyTable()));
         ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
+        ar(cereal::make_nvp("l1ScoreMatrix", l1DistributionMatrix()));
     }
 };
 
