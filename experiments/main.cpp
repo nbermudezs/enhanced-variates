@@ -39,19 +39,13 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 //    cout << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
 //    cout << as_array << "]" << endl;
 
-    double variance = results.variance();
+    printStatisticalMeasures(cout, results);
 
-    cout << "Mean: " << results.mean() << endl;
-    cout << "Variance: " << variance << endl;
-    cout << "Std: " << sqrt(variance) << endl;
-    cout << "Max score: " << results.max() << endl;
-    cout << "Min score: " << results.min() << endl;
-    cout << "Mode: " << results.mode() << endl;
-
-    cout << "Frequency table: " << endl;
-    cout << "|" << setw(6) << "Score" << "|" << setw(6) << "Count" << "|" << endl;
     map<int, int> table = results.frequencyTable();
-    cout << table;
+    printFrequencyTable(cout, table);
+
+    map<int, map<int, int>> l1Dist = results.l1DistributionMatrix();
+    printMatrix(cout, l1Dist);
 
 //    vector<int> top10 = results.topK(10, true);
 //    cout << "Top 10: >" << top10.back() << endl;
@@ -72,7 +66,7 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 int main() {
     // uncomment to print out L1 distance between the 33 years of brackets.
     // auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json");
-    // printL1Matrix(cout, l1Matrix);
+    // printMatrix(cout, l1Matrix);
 
     // uncomment to print out conditional probability matrix
     // auto conditionalProbMatrix = Misc::conditionalProbabilityMatrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json", 0);
