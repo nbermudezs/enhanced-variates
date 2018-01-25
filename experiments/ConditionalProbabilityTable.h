@@ -24,10 +24,10 @@ class ConditionalProbabilityTable {
 public:
     ConditionalProbabilityTable();
     ConditionalProbabilityTable(string, bool, int);
-    float P(int);
-    float P(int, BracketData);
+    double P(int);
+    double P(int, BracketData);
     vector<float> probabilities;
-    int historyCount;
+    int historyCount = 0;
     map<int, map<int, int>> conditionalCounts; // { "bit0": { "parent-0": a, "parent-1": b }, ... }
     map<int, int> totalCounts;
     static ConditionalProbabilityTable& getInstance(string, bool, int);

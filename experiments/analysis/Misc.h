@@ -7,6 +7,7 @@
 #ifndef EXPERIMENTS_MISC_H
 #define EXPERIMENTS_MISC_H
 
+#include "../ConditionalProbabilityTable.h"
 #include "../Constants.h"
 #include "../Scorer.h"
 
@@ -20,6 +21,7 @@ using namespace std;
 class Misc {
 public:
     static map<int, map<int, int>> l1Matrix(string filePath);
+    static map<int, map<int, double>> conditionalProbabilityMatrix(string filePath, int year);
 };
 
 

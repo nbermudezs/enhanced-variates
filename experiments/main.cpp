@@ -70,8 +70,13 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 }
 
 int main() {
-    auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json");
-    printL1Matrix(cout, l1Matrix);
+    // uncomment to print out L1 distance between the 33 years of brackets.
+    // auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json");
+    // printL1Matrix(cout, l1Matrix);
+
+    // uncomment to print out conditional probability matrix
+    // auto conditionalProbMatrix = Misc::conditionalProbabilityMatrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json", 0);
+    // printProbMatrix(cout, conditionalProbMatrix);
 
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
     vector<bool> generator = {true};

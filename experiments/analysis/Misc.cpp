@@ -34,3 +34,17 @@ map<int, map<int, int>> Misc::l1Matrix(string filePath) {
 
     return result;
 }
+
+map<int, map<int, double>> Misc::conditionalProbabilityMatrix(string filePath, int year) {
+    map<int, map<int, float>> result;
+    BracketData refOnes ("111111111111111111111111111111111111111111111111111111111111111");
+    BracketData refZeros("000000000000000000000000000000000000000000000000000000000000000");
+
+    ConditionalProbabilityTable table(filePath, false, year);
+    for (unsigned int bit = 0; bit < VECTOR_SIZE; bit++) {
+        result[bit][1] = table.P(bit, refOnes);
+        result[bit][0] = table.P(bit, refZeros);
+    }
+
+    return result;
+}
