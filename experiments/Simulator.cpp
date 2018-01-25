@@ -29,16 +29,17 @@ Statistics Simulator::run() {
                         best = bracket;
                     }
                 }
-                this->stats.accountFor(bestScore, best);
-                this->stats.accountFor(Scorer::eval(reference, random), random);
-                this->stats.accountFor(Scorer::eval(reference, anti), anti);
+                this->stats.accountFor(bestScore, 0, best);
+                this->stats.accountFor(Scorer::eval(reference, random), 0, random);
+                this->stats.accountFor(Scorer::eval(reference, anti), 0, anti);
                 // this->stats.accountFor(Scorer::eval(reference, result), result);
                 continue;
             }
         }
         // TODO: figure out how to do antithetic with a single generator
         int score = Scorer::evalWithRegionGrouping(reference, random);
-        this->stats.accountFor(score, random);
+        int l1 = Scorer::l1(reference, random);
+        this->stats.accountFor(score, l1, random);
     }
 
     this->stats.done();

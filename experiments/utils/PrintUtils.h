@@ -10,6 +10,7 @@
 #include <map>
 #include <vector>
 #include "../Constants.h"
+#include "../analysis/Statistics.h"
 
 ostream &operator<<(ostream &os, vector<int> &v) {
     for(auto &i: v) {
@@ -38,19 +39,43 @@ ostream &operator<<(ostream &os, Bracket* bracket) {
     return os;
 }
 
-void printL1Matrix(ostream &os, map<int, map<int, int>> matrix) {
-    // header
+void printFrequencyTable(ostream &os, map<int, int> table) {
+    os << "Frequency table: " << endl;
+    os << "|" << setw(6) << "Score" << "|" << setw(6) << "Count" << "|" << endl;
+    os << table;
+}
+
+void printStatisticalMeasures(ostream &os, Statistics results) {
+    double variance = results.variance();
+
+    os << "Mean: " << results.mean() << endl;
+    os << "Variance: " << variance << endl;
+    os << "Std: " << sqrt(variance) << endl;
+    os << "Max score: " << results.max() << endl;
+    os << "Min score: " << results.min() << endl;
+    os << "Mode: " << results.mode() << endl;
+}
+
+void printMatrix(ostream &os, map<int, map<int, int>> matrix) {
+    // find values in the header
+    set<int> keys;
+    for (auto rowPair: matrix) {
+        for (auto colPair: rowPair.second) {
+            keys.insert(colPair.first);
+        }
+    }
+    // print header
     os << "|" << setw(5) << " " << "|";
-    for (auto pair: matrix)
-        os << setw(5) << pair.first << "|";
+    for (auto key: keys) {
+        os << setw(5) << key << "|";
+    }
     os << endl;
 
-    // content
     for (auto pair: matrix) {
         // one row
         os << "|" << setw(5) << pair.first << "|";
-        for (auto l1s: pair.second) {
-            os << setw(5) << l1s.second << "|";
+        for (auto key: keys) {
+            os << setw(5) << pair.second[key] << "|";
         }
         os << endl;
     }

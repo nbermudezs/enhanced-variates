@@ -24,7 +24,7 @@ using namespace std;
 
 class Statistics {
 public:
-    void accountFor(int score, Bracket* bracket);
+    void accountFor(int score, int l1, Bracket* bracket);
     void done();
     double mean();
     int mode();
@@ -35,6 +35,7 @@ public:
     vector<int> topK(size_t, bool);
     vector<int> topQuantile(float, bool);
     map<int, int> frequencyTable();
+    map<int, map<int, int>> l1DistributionMatrix();
     Bracket* bestBracket;
 private:
     int bestScore;
@@ -44,6 +45,7 @@ private:
 
     bool isDone = false;
     vector<int> scores;
+    map<int, vector<int>> l1Distances;
 
     friend class cereal::access;
     template <class Archive>

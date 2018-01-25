@@ -6,12 +6,13 @@
 
 #include "Statistics.h"
 
-void Statistics::accountFor(int score, Bracket* bracket) {
+void Statistics::accountFor(int score, int l1, Bracket* bracket) {
     if (score > bestScore) {
         bestScore = score;
         bestBracket = bracket;
     }
     scores.push_back(score);
+    l1Distances[l1].push_back(score);
 }
 
 void Statistics::done() {
@@ -110,4 +111,16 @@ map<int, int> Statistics::frequencyTable() {
         table[score]++;
     }
     return table;
+}
+
+map<int, map<int, int>> Statistics::l1DistributionMatrix() {
+    map<int, map<int, int>> result;
+
+    for (auto bitDistancesPair: l1Distances) {
+        for (auto l1: bitDistancesPair.second) {
+            result[bitDistancesPair.first][l1]++;
+        }
+    }
+
+    return result;
 }
