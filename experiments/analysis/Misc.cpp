@@ -36,7 +36,7 @@ map<int, map<int, int>> Misc::l1Matrix(string filePath) {
 }
 
 map<int, map<int, double>> Misc::conditionalProbabilityMatrix(string filePath, int year) {
-    map<int, map<int, float>> result;
+    map<int, map<int, double>> result;
     BracketData refOnes ("111111111111111111111111111111111111111111111111111111111111111");
     BracketData refZeros("000000000000000000000000000000000000000000000000000000000000000");
 
