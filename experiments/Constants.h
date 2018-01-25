@@ -18,6 +18,7 @@ const unsigned int REGION_VECTOR_SIZE = 15;
 const string BRACKET_METADATA_FOLDER = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/brackets";
 const string RESULTS_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/results";
 const string BASE_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/";
+const string TEST_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/test";
 const string SETUP_NAME = "setup";
 const string RESULT_NAME = "result";
 const string RUN_NAME = "run";

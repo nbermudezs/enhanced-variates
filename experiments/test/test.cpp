@@ -5,11 +5,13 @@
 //
 
 #include "BitsetTest.h"
+#include "ConditionalProbabilityTableTest.h"
 #include "ScorerTest.h"
 #include "SmoothingTest.h"
 
 int main() {
     BitsetTest::run();
+    ConditionalProbabilityTableTest::run();
     ScorerTest::run();
     SmoothingTest::run();
 

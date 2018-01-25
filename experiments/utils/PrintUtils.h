@@ -56,4 +56,22 @@ void printL1Matrix(ostream &os, map<int, map<int, int>> matrix) {
     }
 }
 
+void printProbMatrix(ostream &os, map<int, map<int, float>> matrix) {
+    // header
+    os << "|" << setw(8) << " " << "|";
+    for (auto pair: matrix[0])
+            os << setw(8) << pair.first << "|";
+    os << endl;
+
+    // content
+    for (auto pair: matrix) {
+        // one row
+        os << "|" << setw(8) << pair.first << "|";
+        for (auto l1s: pair.second) {
+            os << setw(8) << setprecision(6) << l1s.second << "|";
+        }
+        os << endl;
+    }
+}
+
 #endif //EXPERIMENTS_PRINTUTILS_H

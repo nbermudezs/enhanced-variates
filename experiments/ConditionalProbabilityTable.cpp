@@ -74,11 +74,11 @@ ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool i
     }
 }
 
-float ConditionalProbabilityTable::P(int matchId) {
+double ConditionalProbabilityTable::P(int matchId) {
     return this->probabilities[matchId];
 }
 
-float ConditionalProbabilityTable::P(int matchId, BracketData data) {
+double ConditionalProbabilityTable::P(int matchId, BracketData data) {
     if (this->isMetadataFile) {
         return this->P(matchId);
     }
@@ -88,8 +88,8 @@ float ConditionalProbabilityTable::P(int matchId, BracketData data) {
     int parentBit = getParentBit(matchId);
     int parentValue = data[VECTOR_SIZE - parentBit - 1];
     int totalParent = data[parentBit] ? totalCounts[parentBit] : historyCount - totalCounts[parentBit];
-    float pParent = 1. * totalParent / historyCount;
-    float pJoint = 1. * conditionalCounts[matchId][parentValue] / historyCount;
+    double pParent = 1. * totalParent / historyCount;
+    double pJoint = 1. * conditionalCounts[matchId][parentValue] / historyCount;
     return pJoint / pParent;
 }
 
