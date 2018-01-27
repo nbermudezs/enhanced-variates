@@ -22,6 +22,7 @@ const string TEST_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Rese
 const string SETUP_NAME = "setup";
 const string RESULT_NAME = "result";
 const string RUN_NAME = "run";
+const string VERSION = "1.2";
 
 // ENUMS
 enum class VariateMethod { IID = 0, COMMON, ANTITHETIC };
