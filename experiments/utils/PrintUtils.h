@@ -81,7 +81,14 @@ void printMatrix(ostream &os, map<int, map<int, int>> matrix) {
     }
 }
 
-void printProbMatrix(ostream &os, map<int, map<int, float>> matrix) {
+void printMatrix(string filePath, map<int, map<int, int>> matrix) {
+    ofstream file;
+    file.open(filePath);
+    printMatrix(file, matrix);
+    file.close();
+}
+
+void printProbMatrix(ostream &os, map<int, map<int, double>> matrix) {
     // header
     os << "|" << setw(8) << " " << "|";
     for (auto pair: matrix[0])
@@ -97,6 +104,13 @@ void printProbMatrix(ostream &os, map<int, map<int, float>> matrix) {
         }
         os << endl;
     }
+}
+
+void printProbMatrix(string filePath, map<int, map<int, double>> matrix) {
+    ofstream file;
+    file.open(filePath);
+    printProbMatrix(file, matrix);
+    file.close();
 }
 
 #endif //EXPERIMENTS_PRINTUTILS_H
