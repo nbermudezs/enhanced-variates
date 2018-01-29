@@ -56,6 +56,32 @@ void printStatisticalMeasures(ostream &os, Statistics results) {
     os << "Mode: " << results.mode() << endl;
 }
 
+void printBitProbabilities(ostream &os, int runs, Simulator &simulator) {
+    if (!simulator.generator.cpt->probabilities.size())
+        return;
+
+    os << "Generator statistics" << endl;
+    os << "P(bit i = 1) = " << setw(7) << "Obs." << " vs " << setw(8) << "Exp" << endl;
+    int minCount = runs, maxCount = 0;
+    string as_array = "[";
+    for (int i = 0; i < VECTOR_SIZE; i++) {
+        if (simulator.generator.bitOnCounts[i] < minCount) {
+            minCount = simulator.generator.bitOnCounts[i];
+        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
+            maxCount = simulator.generator.bitOnCounts[i];
+        }
+        os << "P(" << setw(5) << "bit" + to_string(VECTOR_SIZE - i - 1) << " = 1) = ";
+        os << setw(7) << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs "
+           << setw(8) << simulator.generator.cpt->probabilities[i]
+           << endl;
+
+        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
+    }
+    os << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;
+    os << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
+    os << as_array << "]" << endl;
+}
+
 void printMatrix(ostream &os, map<int, map<int, int>> matrix) {
     // find values in the header
     set<int> keys;
@@ -81,7 +107,14 @@ void printMatrix(ostream &os, map<int, map<int, int>> matrix) {
     }
 }
 
-void printProbMatrix(ostream &os, map<int, map<int, float>> matrix) {
+void printMatrix(string filePath, map<int, map<int, int>> matrix) {
+    ofstream file;
+    file.open(filePath);
+    printMatrix(file, matrix);
+    file.close();
+}
+
+void printProbMatrix(ostream &os, map<int, map<int, double>> matrix) {
     // header
     os << "|" << setw(8) << " " << "|";
     for (auto pair: matrix[0])
@@ -97,6 +130,13 @@ void printProbMatrix(ostream &os, map<int, map<int, float>> matrix) {
         }
         os << endl;
     }
+}
+
+void printProbMatrix(string filePath, map<int, map<int, double>> matrix) {
+    ofstream file;
+    file.open(filePath);
+    printProbMatrix(file, matrix);
+    file.close();
 }
 
 #endif //EXPERIMENTS_PRINTUTILS_H

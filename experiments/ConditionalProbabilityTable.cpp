@@ -71,6 +71,8 @@ ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool i
                 }
             }
         }
+        for (unsigned int i = 0; i < VECTOR_SIZE; i++)
+            this->probabilities.push_back(1.0 * totalCounts[i] / historyCount);
     }
 }
 
