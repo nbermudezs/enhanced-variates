@@ -56,7 +56,7 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     }
     this->generator = BracketGenerator(setup->year);
     this->bracketFilePath = filePath;
-    this->reference = BracketReader::read(filePath);
+    this->reference = BracketReader::readSingle(filePath, setup->year);
     this->singleGenerator = singleGenerator;
 }
 
