@@ -1,21 +1,17 @@
 #include <cmath>
 #include <iostream>
 #include "output/Serializer.h"
-#include "analysis/Misc.h"
 #include "utils/PrintUtils.h"
 
 using namespace std;
 
-void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
+void simulate(int year, bool singleGenerator, int runs, bool saveFile, string format) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     SimulatorSetup* setup = new SimulatorSetup(variates, year);
 
-    string bracketFilePath = "brackets/TTT/" + to_string(year) + ".txt";
+    string bracketFilePath = "brackets/" + format + "/allBrackets" + format + ".json";
     cout << "Running simulator for " << year << " ..." << endl;
     cout << "Single generator?: " << singleGenerator << endl;
-//    cout << "Replications: " << runs << endl;
-//    cout << "RAND_MAX: " << RAND_MAX <<  endl;
-//    cout << "Bracket path: " << bracketFilePath << endl;
     chrono::steady_clock::time_point begin = chrono::steady_clock::now();
     Simulator simulator(setup, runs, bracketFilePath, singleGenerator);
     cout << "Bracket vector: " << simulator.reference << endl;
@@ -23,21 +19,8 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
     cout << "Best bracket:   " << results.bestBracket << endl;
 
-//    cout << "Generator statistics" << endl;
-//    int minCount = runs, maxCount = 0;
-//    string as_array = "[";
-//    for (int i = 0; i < VECTOR_SIZE; i++) {
-//        if (simulator.generator.bitOnCounts[i] < minCount) {
-//            minCount = simulator.generator.bitOnCounts[i];
-//        } else if (simulator.generator.bitOnCounts[i] > maxCount) {
-//            maxCount = simulator.generator.bitOnCounts[i];
-//        }
-//        cout << "P(bit" << (VECTOR_SIZE - i - 1) << " = 1) = " << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs " << simulator.generator.cpt->probabilities[i] << endl;
-//        as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";
-//    }
-//    cout << "Min[P(bit = 1)] = " << 1.0 * minCount / runs << endl;
-//    cout << "Max[P(bit = 1)] = " << 1.0 * maxCount / runs << endl;
-//    cout << as_array << "]" << endl;
+    // uncomment to print the observed probability of a bit being 1 vs the expected one (from history)
+    // printBitProbabilities(cout, runs, simulator);
 
     printStatisticalMeasures(cout, results);
 
@@ -47,11 +30,6 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
     map<int, map<int, int>> l1Dist = results.l1DistributionMatrix();
     printMatrix(cout, l1Dist);
 
-//    vector<int> top10 = results.topK(10, true);
-//    cout << "Top 10: >" << top10.back() << endl;
-//
-//    top10 = results.topQuantile(0.1, true);
-//    cout << "Top 10%: >" << top10.back() << endl;
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     if (saveFile) {
@@ -65,21 +43,29 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile) {
 
 int main() {
     // uncomment to print out L1 distance between the 33 years of brackets.
-    // auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json");
-    // printMatrix(cout, l1Matrix);
+    // auto l1Matrix = Misc::l1Matrix(BASE_PATH + "/brackets/" + format + "/allBrackets" + format + ".json");
+    // printMatrix(RESULTS_PATH + "/L1Matrices/all" + format + ".txt", l1Matrix);
 
     // uncomment to print out conditional probability matrix
-    // auto conditionalProbMatrix = Misc::conditionalProbabilityMatrix(BASE_PATH + "/brackets/TTT/allBracketsTTT.json", 0);
-    // printProbMatrix(cout, conditionalProbMatrix);
+    // int excludedYear = 0;
+    // auto conditionalProbMatrix = Misc::conditionalProbabilityMatrix(
+    //         BASE_PATH + "/brackets/" + format + "/allBrackets" + format + ".json",
+    //         excludedYear);
+    // printProbMatrix(
+    //         RESULTS_PATH + "/CPT/all" + format + "-" + to_string(excludedYear) + ".txt",
+    //         conditionalProbMatrix);
 
+    vector<string> formats = {"TTT", "FFF"};
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
-    vector<bool> generator = {true};
+    vector<bool> singleGeneratorFlag = {true};
     int runs = (int) 1e5;
     bool saveFile = false;
 
     for (auto year: years) {
-        for (auto singleGenerator: generator) {
-            simulate(year, singleGenerator, runs, saveFile);
+        for (auto singleGenerator: singleGeneratorFlag) {
+            for (auto format: formats) {
+                simulate(year, singleGenerator, runs, saveFile, format);
+            }
         }
     }
 
