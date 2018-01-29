@@ -33,9 +33,9 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFile, string fo
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
     if (saveFile) {
-        string outputFile = Serializer::serialize(results, year);
+        string outputFile = Serializer::serialize(results, format, year);
         cout << "Results saved in " << outputFile << endl;
-        outputFile = Serializer::serialize(simulator, year);
+        outputFile = Serializer::serialize(simulator, format, year);
         cout << "Setup saved in " << outputFile << endl;
         cout << "------------------------------------------------------------------" << endl << endl << endl;
     }
