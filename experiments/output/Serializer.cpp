@@ -35,6 +35,7 @@ string Serializer::serialize(Simulator simulator, Statistics statistics) {
 void Serializer::serialize(Simulator simulator, Statistics statistics, string outputFile) {
     ofstream file(RESULTS_PATH + "/" + outputFile);
     cereal::JSONOutputArchive archive(file);
+    archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("setup", simulator));
     archive(cereal::make_nvp("statistics", statistics));
 }
@@ -42,11 +43,13 @@ void Serializer::serialize(Simulator simulator, Statistics statistics, string ou
 void Serializer::serialize(Simulator simulator, string outputFile) {
     ofstream file(RESULTS_PATH + "/" + outputFile);
     cereal::JSONOutputArchive archive(file);
+    archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("setup", simulator));
 }
 
 void Serializer::serialize(Statistics statistics, string outputFile) {
     ofstream file(RESULTS_PATH + "/" + outputFile);
     cereal::JSONOutputArchive archive(file);
+    archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("statistics", statistics));
 }
