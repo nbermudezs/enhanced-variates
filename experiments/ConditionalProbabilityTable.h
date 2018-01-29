@@ -26,7 +26,7 @@ public:
     ConditionalProbabilityTable(string, bool, int);
     double P(int);
     double P(int, BracketData);
-    vector<float> probabilities;
+    vector<double> probabilities;
     int historyCount = 0;
     map<int, map<int, int>> conditionalCounts; // { "bit0": { "parent-0": a, "parent-1": b }, ... }
     map<int, int> totalCounts;
