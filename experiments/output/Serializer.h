@@ -10,6 +10,7 @@
 
 #include <ctime>
 #include <fstream>
+#include <string>
 #include <iomanip>
 #include "../Constants.h"
 #include "../Simulator.h"
@@ -20,12 +21,12 @@ using namespace std;
 class Serializer {
 public:
     static string getName();
-    static string serialize(Simulator, int);
-    static string serialize(Statistics, int);
+    static string serialize(Simulator simulator, string format, int year);
+    static string serialize(Statistics statistics, string format, int year);
     static string serialize(Simulator, Statistics);
     static void serialize(Simulator, Statistics, string);
-    static void serialize(Simulator, string);
-    static void serialize(Statistics, string);
+    static void serialize(Simulator simulator, string format, string filePath);
+    static void serialize(Statistics, string format, string filePath);
 };
 
 
