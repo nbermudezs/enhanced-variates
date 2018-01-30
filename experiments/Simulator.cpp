@@ -29,16 +29,16 @@ Statistics Simulator::run() {
                         best = bracket;
                     }
                 }
-                this->stats.accountFor(bestScore, 0, best);
-                this->stats.accountFor(Scorer::eval(reference, random), 0, random);
-                this->stats.accountFor(Scorer::eval(reference, anti), 0, anti);
+                this->stats.accountFor(bestScore, vector<int>(), best);
+                this->stats.accountFor(Scorer::eval(reference, random), vector<int>(), random);
+                this->stats.accountFor(Scorer::eval(reference, anti), vector<int>(), anti);
                 // this->stats.accountFor(Scorer::eval(reference, result), result);
                 continue;
             }
         }
         // TODO: figure out how to do antithetic with a single generator
         int score = Scorer::evalWithRegionGrouping(reference, random);
-        int l1 = Scorer::l1(reference, random);
+        vector<int> l1 = Scorer::l1ByRounds(reference, random);
         this->stats.accountFor(score, l1, random);
     }
 
@@ -88,7 +88,7 @@ Bracket *SimulatorSetup::smoothen(Bracket *ref, Bracket *other) {
             fn = [](int bit_a, int bit_b) { return 1. * (bit_a & bit_b); };
     }
     for (int i = 0; i < VECTOR_SIZE; i++) {
-        smoothenData[i] = fn(ref->data[i], other->data[i]);
+        smoothenData[i] = fn(ref->data[i], other->data[i]) > 0;
     }
     return new Bracket(smoothenData);
 }

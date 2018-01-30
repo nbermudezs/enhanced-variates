@@ -19,23 +19,61 @@
 #include <set>
 #include <vector>
 #include "../Bracket.h"
+#include "../Constants.h"
 using namespace std;
 
 
 class Statistics {
 public:
-    void accountFor(int score, int l1, Bracket* bracket);
+    /**
+     * Keeps track of the score and different L1 norms calculated for the given bracket based off the reference bracket
+     * of the particular year.
+     * @param score The ESPN-based score achieved by the bracket.
+     * @param l1s Vector of L1 norms for the different rounds.
+     * @param bracket The actual bracket that achieved the score.
+     */
+    void accountFor(int score, vector<int> l1s, Bracket* bracket);
+
+    /**
+     * Marks the tracking of replications as done.
+     * Used to avoid some re-computations when possible.
+     */
     void done();
+
     double mean();
     int mode();
     double variance();
     double std();
     int max();
     int min();
+
     vector<int> topK(size_t, bool);
     vector<int> topQuantile(float, bool);
+
+    /**
+     * Creates and returns a table counting how many times each score was achieved.
+     * @return Map where the keys are the scores and the values are the number of times that score occurred.
+     */
     map<int, int> frequencyTable();
+
+    /**
+     * Creates a 2D matrix containing how many times a score occurred with a particular L1 norm.
+     * The first key is the L1 norm. L1 norm is calculated using all 62 bits
+     * The second key is the ESPN-score
+     * The value is the count
+     * @return 2D matrix containig the counts
+     */
     map<int, map<int, int>> l1DistributionMatrix();
+
+    /**
+     * Creates a 2D matrix containing how many times a score occurred with a particular L1 norm.
+     * The first key is the L1 norm. L1 norm is calculated using only the bits corresponding to the given round param
+     * The second key is the ESPN-score
+     * The value is the count
+     * @param round Which round of games will be used for the L1 norm.
+     * @return 2D matrix containig the counts
+     */
+    map<int, map<int, int>> l1DistributionMatrix(ROUND round);
     Bracket* bestBracket;
 private:
     int bestScore;
@@ -45,7 +83,14 @@ private:
 
     bool isDone = false;
     vector<int> scores;
-    map<int, vector<int>> l1Distances;
+
+    /**
+     * Stores the L1 norms for the different rounds
+     * The first key of the map is the round (64, 32, 16, 8, 4, 2, ALL)
+     * The second key is the actual L1 norm value
+     * The vector<int> value keeps track of the different scores obtained with the same norm.
+     */
+    map<int, map<int, vector<int>>> l1Distances;
 
     friend class cereal::access;
     template <class Archive>
@@ -57,7 +102,8 @@ private:
         ar(cereal::make_nvp("min", min()));
         ar(cereal::make_nvp("frequencyTable", frequencyTable()));
         ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
-        ar(cereal::make_nvp("l1ScoreMatrix", l1DistributionMatrix()));
+        for (auto roundPair: RoundNames)
+            ar(cereal::make_nvp("l1ScoreMatrix-" + roundPair.second, l1DistributionMatrix(roundPair.first)));
     }
 };
 

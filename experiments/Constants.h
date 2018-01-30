@@ -24,7 +24,27 @@ const string RESULT_NAME = "result";
 const string RUN_NAME = "run";
 const string VERSION = "1.2";
 
+
 // ENUMS
+enum class ROUND {
+    ROUND_64 = 0,
+    ROUND_32,
+    ROUND_16,
+    REGION_FINALS,
+    SEMI_FINALS,
+    FINAL,
+    ALL
+};
+static map<ROUND, string> RoundNames = {
+        pair<ROUND, string>(ROUND::ROUND_64, "64"),
+        pair<ROUND, string>(ROUND::ROUND_32, "32"),
+        pair<ROUND, string>(ROUND::ROUND_16, "16"),
+        pair<ROUND, string>(ROUND::REGION_FINALS, "RF"),
+        pair<ROUND, string>(ROUND::SEMI_FINALS, "SF"),
+        pair<ROUND, string>(ROUND::FINAL, "F"),
+        pair<ROUND, string>(ROUND::ALL, "ALL")
+};
+
 enum class VariateMethod { IID = 0, COMMON, ANTITHETIC };
 static map<VariateMethod, string> VariateMethodNames = {
         pair<VariateMethod, string>(VariateMethod::IID, "IID"),
