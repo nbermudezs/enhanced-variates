@@ -29,7 +29,6 @@ int getParentBit(int bit) {
     return parent;
 }
 
-// TODO: default to probability 0.5 instead of the hardcoded value in ConditionalProbabilityTable::P
 ConditionalProbabilityTable::ConditionalProbabilityTable() {
     for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
         this->probabilities.push_back(0.5);

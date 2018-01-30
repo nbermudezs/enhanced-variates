@@ -18,3 +18,23 @@ Bracket *Bracket::smoothen(Bracket* other) {
     }
     return new Bracket(smoothenData);
 }
+
+Bracket *Bracket::flip(vector<int> positions) {
+    BracketData clone(this->data);
+    for (auto pos: positions)
+        clone[pos] = !clone[pos];
+    return new Bracket(clone);
+}
+
+Bracket *Bracket::flip(int position) {
+    return this->flip(vector<int> { position });
+}
+
+void Bracket::addChild(Bracket *child) {
+    this->children.push_back(child);
+}
+
+void Bracket::setMetadata(vector<int> l1Norms, int score) {
+    this->l1Norms = l1Norms;
+    this->score = score;
+}
