@@ -176,7 +176,7 @@ vector<int> Scorer::l1ByRounds(BracketData ref, BracketData input) {
         int count = 0;
         for (unsigned int i = 0; i < VECTOR_SIZE; i++)
             if(func(i))
-                count += abs(ref[i] - input[i]);
+                count += abs(ref[VECTOR_SIZE - i - 1] - input[VECTOR_SIZE - i - 1]);
         result.push_back(count);
     }
 
