@@ -20,12 +20,14 @@
 
 class SimulatorSetup {
 public:
-    SimulatorSetup(vector<VariateMethod>, int);
+    SimulatorSetup(vector<VariateMethod> variates, int year);
+    SimulatorSetup(vector<VariateMethod> variates, int year, bool flipBits);
     vector<VariateMethod> variates;
     bool antithetic = false;
     Bracket* smoothen(Bracket* ref, Bracket* other);
     SmoothingFunction smoothingFunction = SmoothingFunction::AND;
     int year;
+    bool flipBits = false;
 };
 
 
@@ -47,6 +49,7 @@ private:
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(runs));
         ar(CEREAL_NVP(bracketFilePath));
+        ar(cereal::make_nvp("flipBits", setup->flipBits));
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
 
         auto transformVariate = [](VariateMethod x) { return ENUM_NAME(x); };
@@ -57,7 +60,7 @@ private:
         ar(CEREAL_NVP(singleGenerator));
         ar(CEREAL_NVP(generator));
         ar(CEREAL_NVP(RAND_MAX));
-        ar(cereal::make_nvp("smoothingFunction", ENUM_NAME(setup->smoothingFunction)));
+        // ar(cereal::make_nvp("smoothingFunction", ENUM_NAME(setup->smoothingFunction)));
     }
 };
 

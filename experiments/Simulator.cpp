@@ -40,7 +40,18 @@ Statistics Simulator::run() {
         // TODO: figure out how to do antithetic with a single generator
         int score = Scorer::evalWithRegionGrouping(reference, random);
         vector<int> l1 = Scorer::l1ByRounds(reference, random);
+        random->setMetadata(l1, score);
         this->stats.accountFor(score, l1, random);
+
+        if (this->setup->flipBits) {
+            for (int i = 0; i < VECTOR_SIZE; i++) {
+                Bracket* flipped = random->flip(i);
+                l1 = Scorer::l1ByRounds(reference, flipped);
+                score = Scorer::evalWithRegionGrouping(reference, flipped);
+                flipped->setMetadata(l1, score);
+                random->addChild(flipped);
+            }
+        }
     }
 
     this->stats.done();
@@ -70,6 +81,10 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
             break;
         }
     }
+}
+
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, bool flipBits) : SimulatorSetup(variates, year) {
+    this->flipBits = flipBits;
 }
 
 Bracket *SimulatorSetup::smoothen(Bracket *ref, Bracket *other) {
