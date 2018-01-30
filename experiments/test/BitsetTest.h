@@ -1,8 +1,9 @@
-//
-// Created by Nestor Bermudez Sarmiento on 1/4/18.
-// nab6@illinois.edu, nestor.bermudezs@gmail.com
-// University of Illinois at Urbana-Champaign
-//
+/**
+ * @author Nestor Bermudez Sarmiento
+ * @email nab6@illinois.edu
+ * @email nestor.bermudezs@gmail.com
+ * @version 1.0, 1/4/18
+ */
 
 #ifndef EXPERIMENTS_BITSETTEST_H
 #define EXPERIMENTS_BITSETTEST_H

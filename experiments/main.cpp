@@ -1,3 +1,10 @@
+/**
+ * @author Nestor Bermudez Sarmiento
+ * @email nab6@illinois.edu
+ * @email nestor.bermudezs@gmail.com
+ * @version 1.0, 12/30/17
+ */
+
 #include <cmath>
 #include <iostream>
 #include "analysis/Misc.h"

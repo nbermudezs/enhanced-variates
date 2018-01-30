@@ -1,8 +1,9 @@
-//
-// Created by Nestor Bermudez Sarmiento on 12/30/17.
-// nab6@illinois.edu, nestor.bermudezs@gmail.com
-// University of Illinois at Urbana-Champaign
-//
+/**
+ * @author Nestor Bermudez Sarmiento
+ * @email nab6@illinois.edu
+ * @email nestor.bermudezs@gmail.com
+ * @version 1.0, 12/30/17
+ */
 
 #ifndef EXPERIMENTS_BRACKET_H
 #define EXPERIMENTS_BRACKET_H
