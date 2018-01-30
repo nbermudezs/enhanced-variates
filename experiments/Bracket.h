@@ -18,7 +18,13 @@ class Bracket {
 public:
     BracketData data;
     Bracket(BracketData data);
+    Bracket(BracketData data, vector<int> flips);
     Bracket* smoothen(Bracket*);
+
+    /**
+     * Stores the indices of the bits that were flipped resulting in this Bracket.
+     */
+    vector<int> flips;
 
     /**
      * Creates a new Bracket with the bits flipped in the positions provided
