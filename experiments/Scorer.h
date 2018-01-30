@@ -26,6 +26,8 @@ public:
     // Manhattan distance
     static int l1(BracketData, BracketData);
     static int l1(Bracket *, Bracket *);
+    static vector<int> l1ByRounds(BracketData ref, BracketData input);
+    static vector<int> l1ByRounds(Bracket *ref, Bracket *input);
 };
 
 

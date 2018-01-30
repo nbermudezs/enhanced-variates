@@ -146,3 +146,42 @@ int Scorer::l1(BracketData ref, BracketData input) {
 int Scorer::l1(Bracket* ref, Bracket* input) {
     return Scorer::l1(ref->data, input->data);
 }
+
+vector<int> Scorer::l1ByRounds(BracketData ref, BracketData input) {
+    vector<int> result;
+
+    std::function<bool(int)> round64 = [](int bit) {
+        return bit < 60 && bit % 15 < 8;
+    };
+    std::function<bool(int)> round32 = [](int bit) {
+        return bit < 60 && bit % 15 >= 8 && bit % 15 < 12;
+    };
+    std::function<bool(int)> round16 = [](int bit) {
+        return bit < 60 && bit % 15 >= 12 && bit % 15 < 14;
+    };
+    std::function<bool(int)> regionFinal = [](int bit) {
+        return bit < 60 && bit % 15 == 14;
+    };
+    std::function<bool(int)> semiFinals = [](int bit) {
+        return bit == 60 || bit == 61;
+    };
+    std::function<bool(int)> finals = [](int bit) {
+        return bit == 62;
+    };
+    std::function<bool(int)> all = [](int bit) { return true; };
+    vector<std::function<bool(int)>> functions = {round64, round32, round16, regionFinal, semiFinals, finals, all};
+
+    for (auto func: functions) {
+        int count = 0;
+        for (unsigned int i = 0; i < VECTOR_SIZE; i++)
+            if(func(i))
+                count += abs(ref[i] - input[i]);
+        result.push_back(count);
+    }
+
+    return result;
+}
+
+vector<int> Scorer::l1ByRounds(Bracket *ref, Bracket *input) {
+    return Scorer::l1ByRounds(ref->data, input->data);
+}
