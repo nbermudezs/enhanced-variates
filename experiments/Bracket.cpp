@@ -11,10 +11,35 @@ Bracket::Bracket(BracketData data) {
     this->data = data;
 }
 
+Bracket::Bracket(BracketData data, vector<int> flips) {
+    this->data = data;
+    this->flips = flips;
+}
+
 Bracket *Bracket::smoothen(Bracket* other) {
     BracketData smoothenData;
     for (int i = 0; i < VECTOR_SIZE; i++) {
         smoothenData[i] = (this->data[i] + other->data[i]) / 2.;
     }
     return new Bracket(smoothenData);
+}
+
+Bracket *Bracket::flip(vector<int> positions) {
+    BracketData clone(this->data);
+    for (auto pos: positions)
+        clone[pos] = !clone[pos];
+    return new Bracket(clone, positions);
+}
+
+Bracket *Bracket::flip(int position) {
+    return this->flip(vector<int> { position });
+}
+
+void Bracket::addChild(Bracket *child) {
+    this->children.push_back(child);
+}
+
+void Bracket::setMetadata(vector<int> l1Norms, int score) {
+    this->l1Norms = l1Norms;
+    this->score = score;
 }

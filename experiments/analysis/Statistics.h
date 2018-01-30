@@ -93,6 +93,11 @@ private:
      */
     map<int, map<int, vector<int>>> l1Distances;
 
+    /**
+     * Stores the roots of the bracket graphs created by flipping one or more bits
+     */
+    vector<Bracket*> subGraphs;
+
     friend class cereal::access;
     template <class Archive>
     void serialize(Archive &ar) {

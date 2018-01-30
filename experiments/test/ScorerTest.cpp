@@ -44,6 +44,24 @@ void testL1Distance() {
     assert(score == 63);
 }
 
+void testL1ByRegions() {
+    Scorer scorer;
+    BracketData reference;
+    BracketData input;
+    vector<int> norms;
+
+    reference = BracketData(string("000000000000000000000000000000000000000000000000000000000000100"));
+    input =     BracketData(string("000000001000000000000000000001000000000000110000000000000110111"));
+    norms = Scorer::l1ByRounds(reference, input);
+    assert(norms[static_cast<int>(ROUND::ALL)] == 8);
+    assert(norms[static_cast<int>(ROUND::ROUND_64)] == 0);
+    assert(norms[static_cast<int>(ROUND::ROUND_32)] == 1);
+    assert(norms[static_cast<int>(ROUND::ROUND_16)] == 4);
+    assert(norms[static_cast<int>(ROUND::REGION_FINALS)] == 1);
+    assert(norms[static_cast<int>(ROUND::SEMI_FINALS)] == 1);
+    assert(norms[static_cast<int>(ROUND::FINAL)] == 1);
+}
+
 void testRegionScorer() {
     Scorer scorer;
     BracketData reference;
@@ -106,6 +124,7 @@ void ScorerTest::run() {
     testRegionScorer();
     testEvalWithRegionGrouping();
     testL1Distance();
+    testL1ByRegions();
 
     Scorer scorer;
     BracketData reference;

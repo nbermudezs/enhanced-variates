@@ -16,6 +16,7 @@ void Statistics::accountFor(int score, vector<int> l1s, Bracket* bracket) {
     for (int round = static_cast<int>(ROUND::ROUND_64); round <= static_cast<int>(ROUND::ALL); round++) {
         l1Distances[round][l1s[round]].push_back(score);
     }
+    this->subGraphs.push_back(bracket);
 }
 
 void Statistics::done() {
