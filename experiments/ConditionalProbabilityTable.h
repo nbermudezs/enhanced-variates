@@ -24,7 +24,8 @@ const int YEARS = 33;
 class ConditionalProbabilityTable {
 public:
     ConditionalProbabilityTable();
-    ConditionalProbabilityTable(string, bool, int);
+    ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year);
+    ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year, map<int, double> overrides);
     double P(int);
     double P(int, BracketData);
     vector<double> probabilities;
@@ -32,9 +33,12 @@ public:
     map<int, map<int, int>> conditionalCounts; // { "bit0": { "parent-0": a, "parent-1": b }, ... }
     map<int, int> totalCounts;
     static ConditionalProbabilityTable& getInstance(string, bool, int);
+    static ConditionalProbabilityTable& getInstance(string filePath, bool isMetadataFile, int year,
+                                                    map<int, double> overrides);
 
 private:
     bool isMetadataFile;
+    map<int, double> overrides;
 };
 
 

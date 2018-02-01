@@ -76,11 +76,20 @@ ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool i
     }
 }
 
+ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year,
+                                                         map<int, double> overrides):
+        ConditionalProbabilityTable(filePath, isMetadataFile, year) {
+    this->overrides = overrides;
+}
+
 double ConditionalProbabilityTable::P(int matchId) {
     return this->probabilities[matchId];
 }
 
 double ConditionalProbabilityTable::P(int matchId, BracketData data) {
+    if (this->overrides.count(matchId))
+        return this->overrides[matchId];
+
     if (this->isMetadataFile) {
         return this->P(matchId);
     }
@@ -105,4 +114,10 @@ ConditionalProbabilityTable& ConditionalProbabilityTable::getInstance(string pat
         instances[year] = ConditionalProbabilityTable(path, isMetadataFile, year);
     }
     return instances[year];
+}
+
+ConditionalProbabilityTable &
+ConditionalProbabilityTable::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides) {
+    static ConditionalProbabilityTable instance(filePath, isMetadataFile, year, overrides);
+    return instance;
 }
