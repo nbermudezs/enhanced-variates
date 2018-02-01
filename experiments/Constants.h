@@ -16,10 +16,10 @@ using namespace std;
 
 const unsigned int VECTOR_SIZE = 63;
 const unsigned int REGION_VECTOR_SIZE = 15;
-const string BRACKET_METADATA_FOLDER = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/brackets";
-const string RESULTS_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/results";
-const string BASE_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/";
-const string TEST_PATH = "/Users/nbermudezs/Documents/Personal/College/UIUC/Research.nosync/shj/enhanced-variates/experiments/test";
+const string BRACKET_METADATA_FOLDER = "../brackets";
+const string RESULTS_PATH = "../results";
+const string BASE_PATH = "../";
+const string TEST_PATH = "../test";
 const string SETUP_NAME = "setup";
 const string RESULT_NAME = "result";
 const string RUN_NAME = "run";
