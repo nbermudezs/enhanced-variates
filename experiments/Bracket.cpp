@@ -27,7 +27,7 @@ Bracket *Bracket::smoothen(Bracket* other) {
 Bracket *Bracket::flip(vector<int> positions) {
     BracketData clone(this->data);
     for (auto pos: positions)
-        clone[pos] = !clone[pos];
+        clone[VECTOR_SIZE - pos - 1] = !clone[VECTOR_SIZE - pos - 1];
     return new Bracket(clone, positions);
 }
 
