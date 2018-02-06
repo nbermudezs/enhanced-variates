@@ -50,11 +50,11 @@ void printStatisticalMeasures(ostream &os, Statistics results) {
     double variance = results.variance();
 
     os << "Mean: " << results.mean() << endl;
-    os << "Variance: " << variance << endl;
+    // os << "Variance: " << variance << endl;
     os << "Std: " << sqrt(variance) << endl;
     os << "Max score: " << results.max() << endl;
-    os << "Min score: " << results.min() << endl;
-    os << "Mode: " << results.mode() << endl;
+    // os << "Min score: " << results.min() << endl;
+    // os << "Mode: " << results.mode() << endl;
 }
 
 void printBitProbabilities(ostream &os, int runs, Simulator &simulator) {
