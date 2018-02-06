@@ -47,9 +47,10 @@ Statistics Simulator::run() {
             for (int i = 0; i < VECTOR_SIZE; i++) {
                 Bracket* flipped = random->flip(i);
                 l1 = Scorer::l1ByRounds(reference, flipped);
-                score = Scorer::evalWithRegionGrouping(reference, flipped);
-                flipped->setMetadata(l1, score);
+                int flippedScore = Scorer::evalWithRegionGrouping(reference, flipped);
+                flipped->setMetadata(l1, flippedScore);
                 random->addChild(flipped);
+                this->stats.recordFlippedBracket(flippedScore, l1, flipped);
             }
         }
     }
