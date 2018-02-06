@@ -132,3 +132,14 @@ map<int, map<int, int>> Statistics::l1DistributionMatrix(ROUND round) {
 
     return result;
 }
+
+void Statistics::recordFlippedBracket(int scoreDelta, vector<int> l1s, Bracket *bracket) {
+    // TODO: change the assumption of l1s having a single element
+    int bit = bracket->flips[0];
+
+    if (scoreDeltas.size() <= bit) {
+        scoreDeltas.push_back(new map<int, int>());
+    }
+    map<int, int> *bitScores = scoreDeltas[bit];
+    bitScores->operator[](scoreDelta) += 1;
+}

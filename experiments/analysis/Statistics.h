@@ -35,6 +35,8 @@ public:
      */
     void accountFor(int score, vector<int> l1s, Bracket* bracket);
 
+    void recordFlippedBracket(int scoreDelta, vector<int> l1s, Bracket *bracket);
+
     /**
      * Marks the tracking of replications as done.
      * Used to avoid some re-computations when possible.
@@ -77,7 +79,7 @@ public:
     map<int, map<int, int>> l1DistributionMatrix(ROUND round);
     Bracket* bestBracket;
 private:
-    int bestScore;
+    int bestScore = 0;
     double _mean = -1;
     map<int, int>* _table = nullptr;
     double _variance = -1;
@@ -98,6 +100,8 @@ private:
      */
     vector<Bracket*> subGraphs;
 
+    vector<map<int, int>*> scoreDeltas;
+
     friend class cereal::access;
     template <class Archive>
     void serialize(Archive &ar) {
@@ -110,6 +114,13 @@ private:
         ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
         for (auto roundPair: RoundNames)
             ar(cereal::make_nvp("l1ScoreMatrix-" + roundPair.second, l1DistributionMatrix(roundPair.first)));
+        for (int i = 0; i < VECTOR_SIZE; i++)
+            ar(cereal::make_nvp("scoresDeltaBit" + to_string(i), *scoreDeltas[i]));
+
+        vector<Bracket> tmp;
+        for (int i = 0; i < subGraphs.size(); i++)
+            tmp.push_back(*subGraphs[i]);
+        ar(cereal::make_nvp("brackets", tmp));
     }
 };
 
