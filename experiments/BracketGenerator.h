@@ -16,7 +16,7 @@
 #include <map>
 #include <random>
 #include "Bracket.h"
-#include "cpt/ConditionalProbabilityTable.h"
+#include "cpt/BackwardCPT.h"
 #include "GeneratorConfig.h"
 
 using namespace std;

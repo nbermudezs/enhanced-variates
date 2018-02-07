@@ -22,7 +22,7 @@ using namespace std;
 const int YEARS = 33;
 
 
-class ConditionalProbabilityTable: public BaseCPT {
+class BackwardCPT: public BaseCPT {
 public:
     /**
      * Overrides
@@ -31,8 +31,8 @@ public:
     double P(int bitId);
     double P(int bitId, BracketData data);
 
-    static ConditionalProbabilityTable& getInstance(string, bool, int);
-    static ConditionalProbabilityTable& getInstance(string filePath, bool isMetadataFile, int year,
+    static BackwardCPT& getInstance(string, bool, int);
+    static BackwardCPT& getInstance(string filePath, bool isMetadataFile, int year,
                                                     map<int, double> overrides);
 
     /**
@@ -50,7 +50,7 @@ public:
      * same instance will be returned every time this method is called.
      * @return an instance of this class.
      */
-    static ConditionalProbabilityTable& getInstance(string filePath, bool isMetadataFile, int year,
+    static BackwardCPT& getInstance(string filePath, bool isMetadataFile, int year,
                                                     map<int, double> overrides, string instanceKey);
 
     /**
@@ -63,7 +63,7 @@ public:
     /**
      * Constructs an empty instance of this class.
      */
-    ConditionalProbabilityTable();
+    BackwardCPT();
 
     /**
      * Creates an instance of this class
@@ -75,7 +75,7 @@ public:
      * @param year indicates which year, if any, must be omitted from the brackets
      * contained in the file. This argument only has effect when isMetadataFile is false.
      */
-    ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year);
+    BackwardCPT(string filePath, bool isMetadataFile, int year);
 
     /**
      * Creates an instance of this class
@@ -90,10 +90,10 @@ public:
      * of such bit being 1. These probabilities override whatever probability computed from
      * the provided file.
      */
-    ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year, map<int, double> overrides);
+    BackwardCPT(string filePath, bool isMetadataFile, int year, map<int, double> overrides);
 
 private:
-    static map<string, ConditionalProbabilityTable*> instances;
+    static map<string, BackwardCPT*> instances;
 };
 
 

@@ -8,7 +8,7 @@
 #ifndef EXPERIMENTS_CONDITIONALPROBABILITYTABLETEST_H
 #define EXPERIMENTS_CONDITIONALPROBABILITYTABLETEST_H
 
-#include "../cpt/ConditionalProbabilityTable.h"
+#include "../cpt/BackwardCPT.h"
 
 
 class ConditionalProbabilityTableTest {

@@ -21,7 +21,7 @@ BracketGenerator::BracketGenerator(string format, int year) {
 //    for (int i = 0; i < VECTOR_SIZE; i++)
 //        if (i < 60 && i % 15 < 4)
 //            overrides[i] = 1.;
-    cpt = &ConditionalProbabilityTable::getInstance(
+    cpt = &BackwardCPT::getInstance(
             BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets" + format + ".json",
             false,
             year,

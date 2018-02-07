@@ -5,9 +5,9 @@
  * @version 1.0, 12/30/17
  */
 
-#include "ConditionalProbabilityTable.h"
+#include "BackwardCPT.h"
 
-map<string, ConditionalProbabilityTable*> ConditionalProbabilityTable::instances;
+map<string, BackwardCPT*> BackwardCPT::instances;
 
 int getParentBit(int bit) {
     int parent;
@@ -31,13 +31,13 @@ int getParentBit(int bit) {
     return parent;
 }
 
-ConditionalProbabilityTable::ConditionalProbabilityTable() {
+BackwardCPT::BackwardCPT() {
     for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
         this->probabilities.push_back(0.5);
     }
 }
 
-ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year) {
+BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year) {
     this->isMetadataFile = isMetadataFile;
 
     ifstream file(filePath);
@@ -78,17 +78,17 @@ ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool i
     }
 }
 
-ConditionalProbabilityTable::ConditionalProbabilityTable(string filePath, bool isMetadataFile, int year,
+BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year,
                                                          map<int, double> overrides):
-        ConditionalProbabilityTable(filePath, isMetadataFile, year) {
+        BackwardCPT(filePath, isMetadataFile, year) {
     this->overrides = overrides;
 }
 
-double ConditionalProbabilityTable::P(int matchId) {
+double BackwardCPT::P(int matchId) {
     return this->probabilities[matchId];
 }
 
-double ConditionalProbabilityTable::P(int matchId, BracketData data) {
+double BackwardCPT::P(int matchId, BracketData data) {
     if (this->overrides.count(matchId))
         return this->overrides[matchId];
 
@@ -106,29 +106,29 @@ double ConditionalProbabilityTable::P(int matchId, BracketData data) {
     return pJoint / pParent;
 }
 
-ConditionalProbabilityTable& ConditionalProbabilityTable::getInstance(string path, bool isMetadataFile, int year) {
-    static ConditionalProbabilityTable instance(path, isMetadataFile, year);
+BackwardCPT& BackwardCPT::getInstance(string path, bool isMetadataFile, int year) {
+    static BackwardCPT instance(path, isMetadataFile, year);
     return instance;
 
     // TODO: fix this, we should have a different instance per year
-    static map<int, ConditionalProbabilityTable> instances;
+    static map<int, BackwardCPT> instances;
     if (instances.find(year) == end(instances)) {
-        instances[year] = ConditionalProbabilityTable(path, isMetadataFile, year);
+        instances[year] = BackwardCPT(path, isMetadataFile, year);
     }
     return instances[year];
 }
 
-ConditionalProbabilityTable &
-ConditionalProbabilityTable::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides) {
-    static ConditionalProbabilityTable instance(filePath, isMetadataFile, year, overrides);
+BackwardCPT &
+BackwardCPT::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides) {
+    static BackwardCPT instance(filePath, isMetadataFile, year, overrides);
     return instance;
 }
 
-ConditionalProbabilityTable &
-ConditionalProbabilityTable::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides,
+BackwardCPT &
+BackwardCPT::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides,
                                          string instanceKey) {
     if (!instances[instanceKey]) {
-        ConditionalProbabilityTable *instance = new ConditionalProbabilityTable(filePath, isMetadataFile, year, overrides);
+        BackwardCPT *instance = new BackwardCPT(filePath, isMetadataFile, year, overrides);
         instances[instanceKey] = instance;
     }
     return *instances[instanceKey];

@@ -8,7 +8,7 @@
 #ifndef EXPERIMENTS_MISC_H
 #define EXPERIMENTS_MISC_H
 
-#include "../cpt/ConditionalProbabilityTable.h"
+#include "../cpt/BackwardCPT.h"
 #include "../Constants.h"
 #include "../Scorer.h"
 
