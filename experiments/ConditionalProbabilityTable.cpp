@@ -7,6 +7,8 @@
 
 #include "ConditionalProbabilityTable.h"
 
+map<string, ConditionalProbabilityTable*> ConditionalProbabilityTable::instances;
+
 int getParentBit(int bit) {
     int parent;
     if (bit == 14 || bit == 29)
@@ -120,4 +122,14 @@ ConditionalProbabilityTable &
 ConditionalProbabilityTable::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides) {
     static ConditionalProbabilityTable instance(filePath, isMetadataFile, year, overrides);
     return instance;
+}
+
+ConditionalProbabilityTable &
+ConditionalProbabilityTable::getInstance(string filePath, bool isMetadataFile, int year, map<int, double> overrides,
+                                         string instanceKey) {
+    if (!instances[instanceKey]) {
+        ConditionalProbabilityTable *instance = new ConditionalProbabilityTable(filePath, isMetadataFile, year, overrides);
+        instances[instanceKey] = instance;
+    }
+    return *instances[instanceKey];
 }

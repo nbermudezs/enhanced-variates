@@ -35,10 +35,13 @@ public:
     static ConditionalProbabilityTable& getInstance(string, bool, int);
     static ConditionalProbabilityTable& getInstance(string filePath, bool isMetadataFile, int year,
                                                     map<int, double> overrides);
+    static ConditionalProbabilityTable& getInstance(string filePath, bool isMetadataFile, int year,
+                                                    map<int, double> overrides, string instanceKey);
 
 private:
     bool isMetadataFile;
     map<int, double> overrides;
+    static map<string, ConditionalProbabilityTable*> instances;
 };
 
 
