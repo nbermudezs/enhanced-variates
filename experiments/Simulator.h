@@ -20,14 +20,17 @@
 
 class SimulatorSetup {
 public:
-    SimulatorSetup(vector<VariateMethod> variates, int year);
-    SimulatorSetup(vector<VariateMethod> variates, int year, bool flipBits);
-    vector<VariateMethod> variates;
-    bool antithetic = false;
+    SimulatorSetup(vector<VariateMethod> variates, int year, string format);
+    SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits);
     Bracket* smoothen(Bracket* ref, Bracket* other);
-    SmoothingFunction smoothingFunction = SmoothingFunction::AND;
-    int year;
+
+    // attributes
+    bool antithetic = false;
     bool flipBits = false;
+    string format;
+    SmoothingFunction smoothingFunction = SmoothingFunction::AND;
+    vector<VariateMethod> variates;
+    int year;
 };
 
 
@@ -36,7 +39,7 @@ public:
     Simulator(SimulatorSetup*, int, string, bool);
     Statistics run();
     Bracket* reference;
-    BracketGenerator generator = BracketGenerator(0);
+    BracketGenerator generator = BracketGenerator("TTT", 0);
 private:
     bool singleGenerator;
     int runs;

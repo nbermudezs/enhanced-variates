@@ -24,7 +24,7 @@ using namespace std;
 
 class BracketGenerator {
 public:
-    BracketGenerator(int year);
+    BracketGenerator(string format, int year);
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
     ConditionalProbabilityTable* cpt;

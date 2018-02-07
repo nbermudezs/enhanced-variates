@@ -67,15 +67,16 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     } else {
         this->runs = runs;
     }
-    this->generator = BracketGenerator(setup->year);
+    this->generator = BracketGenerator(setup->format, setup->year);
     this->bracketFilePath = filePath;
     this->reference = BracketReader::readSingle(filePath, setup->year);
     this->singleGenerator = singleGenerator;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format) {
     this->variates = variates;
     this->year = year;
+    this->format = format;
     for (auto i: variates) {
         if (i == VariateMethod::ANTITHETIC) {
             this->antithetic = true;
@@ -84,7 +85,7 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
     }
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, bool flipBits) : SimulatorSetup(variates, year) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits) : SimulatorSetup(variates, year, format) {
     this->flipBits = flipBits;
 }
 

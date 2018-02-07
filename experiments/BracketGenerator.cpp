@@ -16,8 +16,17 @@
 
 #include "BracketGenerator.h"
 
-BracketGenerator::BracketGenerator(int year) {
-    cpt = &ConditionalProbabilityTable::getInstance(BRACKET_METADATA_FOLDER + "/TTT/allBracketsTTT.json", false, year);
+BracketGenerator::BracketGenerator(string format, int year) {
+    map<int, double> overrides;
+//    for (int i = 0; i < VECTOR_SIZE; i++)
+//        if (i < 60 && i % 15 < 4)
+//            overrides[i] = 1.;
+    cpt = &ConditionalProbabilityTable::getInstance(
+            BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets" + format + ".json",
+            false,
+            year,
+            overrides,
+            format);
 
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
     generator = minstd_rand0(seed);
