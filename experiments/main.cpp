@@ -15,7 +15,7 @@ using namespace std;
 
 void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string format) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
-    SimulatorSetup* setup = new SimulatorSetup(variates, year, false);
+    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, false);
 
     string bracketFilePath = "brackets/" + format + "/allBrackets" + format + ".json";
     cout << "Running simulator for " << year << " ..." << endl;
@@ -30,10 +30,10 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
     // uncomment to print the observed probability of a bit being 1 vs the expected one (from history)
     // printBitProbabilities(cout, runs, simulator);
 
-    printStatisticalMeasures(cout, results);
+    // printStatisticalMeasures(cout, results);
 
-    map<int, int> table = results.frequencyTable();
-    printFrequencyTable(cout, table);
+    // map<int, int> table = results.frequencyTable();
+    // printFrequencyTable(cout, table);
 
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
@@ -43,7 +43,7 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
         outputFile = Serializer::serialize(simulator, format, year);
         cout << "Setup saved in " << outputFile << endl;
         cout << "------------------------------------------------------------------" << endl << endl << endl;
-
+/*
         for (auto roundPair: RoundNames) {
             string tmp = outputFile;
             tmp.replace(tmp.end() - 10, tmp.end(), "L1Matrix-" + roundPair.second + ".txt");
@@ -52,7 +52,10 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
             filePath.append("/" + tmp);
             printMatrix(filePath, matrix);
         }
+*/
     }
+
+    cout << "=======================================================================" << endl;
 }
 
 int main() {
