@@ -30,7 +30,7 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
     // uncomment to print the observed probability of a bit being 1 vs the expected one (from history)
     // printBitProbabilities(cout, runs, simulator);
 
-    // printStatisticalMeasures(cout, results);
+    printStatisticalMeasures(cout, results);
 
     // map<int, int> table = results.frequencyTable();
     // printFrequencyTable(cout, table);
