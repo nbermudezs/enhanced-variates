@@ -140,7 +140,7 @@ pair<int, bool> Scorer::evalRegion(BracketData reference, BracketData input, int
 int Scorer::l1(BracketData ref, BracketData input) {
     int count = 0;
     for (unsigned int i = 0; i < VECTOR_SIZE; i++)
-        count += abs(ref[i] - input[i]);
+        count += abs(ref[VECTOR_SIZE - i - 1] - input[VECTOR_SIZE - i - 1]);
     return count;
 }
 

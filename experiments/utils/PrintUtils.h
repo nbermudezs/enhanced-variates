@@ -50,15 +50,15 @@ void printStatisticalMeasures(ostream &os, Statistics results) {
     double variance = results.variance();
 
     os << "Mean: " << results.mean() << endl;
-    os << "Variance: " << variance << endl;
+    // os << "Variance: " << variance << endl;
     os << "Std: " << sqrt(variance) << endl;
     os << "Max score: " << results.max() << endl;
-    os << "Min score: " << results.min() << endl;
-    os << "Mode: " << results.mode() << endl;
+    // os << "Min score: " << results.min() << endl;
+    // os << "Mode: " << results.mode() << endl;
 }
 
 void printBitProbabilities(ostream &os, int runs, Simulator &simulator) {
-    if (!simulator.generator.cpt->probabilities.size())
+    if (!simulator.generator.cpt->getUnconditionalProbabilities().size())
         return;
 
     os << "Generator statistics" << endl;
@@ -73,7 +73,7 @@ void printBitProbabilities(ostream &os, int runs, Simulator &simulator) {
         }
         os << "P(" << setw(5) << "bit" + to_string(VECTOR_SIZE - i - 1) << " = 1) = ";
         os << setw(7) << 1.0 * simulator.generator.bitOnCounts[i] / runs << " vs "
-           << setw(8) << simulator.generator.cpt->probabilities[i]
+           << setw(8) << simulator.generator.cpt->getUnconditionalProbabilities()[i]
            << endl;
 
         as_array = as_array + to_string(simulator.generator.bitOnCounts[i]) + ",";

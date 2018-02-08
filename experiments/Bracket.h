@@ -8,6 +8,11 @@
 #ifndef EXPERIMENTS_BRACKET_H
 #define EXPERIMENTS_BRACKET_H
 
+#include <cereal/types/bitset.hpp>
+#include <cereal/types/map.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/archives/json.hpp>
 
 #include <bitset>
 #include "Constants.h"
@@ -69,6 +74,21 @@ public:
      * @param score ESPN-based score to be set
      */
     void setMetadata(vector<int> l1Norms, int score);
+
+    friend class cereal::access;
+    template <class Archive>
+    void serialize(Archive &ar) {
+        ar(cereal::make_nvp("fullvector", data.to_string()));
+        ar(CEREAL_NVP(score));
+        ar.itsWriter.SetFormatOptions(CEREAL_RAPIDJSON_NAMESPACE::PrettyFormatOptions::kFormatSingleLineArray);
+        ar(CEREAL_NVP(l1Norms));
+        ar.itsWriter.SetFormatOptions(CEREAL_RAPIDJSON_NAMESPACE::PrettyFormatOptions::kFormatDefault);
+        if (children.size()) {
+            vector<Bracket> tmp;
+            for (auto child: children) tmp.push_back(*child);
+            ar(cereal::make_nvp("children", tmp));
+        }
+    }
 };
 
 

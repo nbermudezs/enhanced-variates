@@ -47,9 +47,10 @@ Statistics Simulator::run() {
             for (int i = 0; i < VECTOR_SIZE; i++) {
                 Bracket* flipped = random->flip(i);
                 l1 = Scorer::l1ByRounds(reference, flipped);
-                score = Scorer::evalWithRegionGrouping(reference, flipped);
-                flipped->setMetadata(l1, score);
+                int flippedScore = Scorer::evalWithRegionGrouping(reference, flipped);
+                flipped->setMetadata(l1, flippedScore);
                 random->addChild(flipped);
+                this->stats.recordFlippedBracket(flippedScore, l1, flipped);
             }
         }
     }
@@ -66,15 +67,16 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     } else {
         this->runs = runs;
     }
-    this->generator = BracketGenerator(setup->year);
+    this->generator = BracketGenerator(setup->generationDirection, setup->format, setup->year);
     this->bracketFilePath = filePath;
     this->reference = BracketReader::readSingle(filePath, setup->year);
     this->singleGenerator = singleGenerator;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format) {
     this->variates = variates;
     this->year = year;
+    this->format = format;
     for (auto i: variates) {
         if (i == VariateMethod::ANTITHETIC) {
             this->antithetic = true;
@@ -83,8 +85,16 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year) {
     }
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, bool flipBits) : SimulatorSetup(variates, year) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits) :
+        SimulatorSetup(variates, year, format) {
     this->flipBits = flipBits;
+    this->generationDirection = GenerationDirection::BACKWARD;
+}
+
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits,
+                               GenerationDirection generationDirection):
+        SimulatorSetup(variates, year, format, flipBits) {
+    this->generationDirection = generationDirection;
 }
 
 Bracket *SimulatorSetup::smoothen(Bracket *ref, Bracket *other) {

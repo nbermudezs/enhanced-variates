@@ -16,7 +16,8 @@
 #include <map>
 #include <random>
 #include "Bracket.h"
-#include "ConditionalProbabilityTable.h"
+#include "cpt/BackwardCPT.h"
+#include "cpt/ForwardCPT.h"
 #include "GeneratorConfig.h"
 
 using namespace std;
@@ -24,10 +25,11 @@ using namespace std;
 
 class BracketGenerator {
 public:
-    BracketGenerator(int year);
+    BracketGenerator() {};
+    BracketGenerator(GenerationDirection generationDirection, string format, int year);
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
-    ConditionalProbabilityTable* cpt;
+    BaseCPT* cpt;
     map<int, int> bitOnCounts;
 private:
     minstd_rand0 generator;
@@ -39,7 +41,7 @@ private:
     template <class Archive>
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(bitOnCounts));
-        ar(cereal::make_nvp("cpt", cpt->probabilities));
+        ar(cereal::make_nvp("cpt", cpt->getUnconditionalProbabilities()));
     }
 };
 
