@@ -31,12 +31,6 @@ int getParentBit(int bit) {
     return parent;
 }
 
-BackwardCPT::BackwardCPT() {
-    for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
-        this->probabilities.push_back(0.5);
-    }
-}
-
 BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year) {
     this->isMetadataFile = isMetadataFile;
 
