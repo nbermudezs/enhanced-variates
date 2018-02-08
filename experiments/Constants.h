@@ -27,6 +27,15 @@ const string VERSION = "1.2";
 
 
 // ENUMS
+enum class GenerationDirection {
+    BACKWARD = 0,
+    FORWARD
+};
+static map<GenerationDirection, string> GenerationDirectionNames = {
+        pair<GenerationDirection, string>(GenerationDirection::BACKWARD, "BACKWARD"),
+        pair<GenerationDirection, string>(GenerationDirection::FORWARD, "FORWARD")
+};
+
 enum class ROUND {
     ROUND_64 = 0,
     ROUND_32,
