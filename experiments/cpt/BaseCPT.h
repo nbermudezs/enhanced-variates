@@ -8,10 +8,15 @@
 #ifndef EXPERIMENTS_BASECPT_H
 #define EXPERIMENTS_BASECPT_H
 
+#include <cereal/external/rapidjson/document.h>
+#include <cereal/external/rapidjson/istreamwrapper.h>
+#include <fstream>
 #include <map>
 #include <string>
 #include "../Constants.h"
 using namespace std;
+
+const int YEARS = 33;
 
 /**
  * Abstract class that defines the methods that a conditional
@@ -43,6 +48,25 @@ public:
     vector<double> getUnconditionalProbabilities() {
         return this->probabilities;
     }
+
+    /**
+     * Specifies at which bit the generation process should start
+     * @return the start bit (0)
+     */
+    virtual int startBit() = 0;
+
+    /**
+     * Specifies at which bit the generation process should stop
+     * @return the end bit (Constants::VECTOR_SIZE - 1)
+     */
+    virtual int endBit() = 0;
+
+    /**
+     * Determines whether the traversing of the vector happens from left to right or vice-versa.
+     * @return delta (1)
+     */
+    virtual int bitAdvance() = 0;
+
 protected:
     /**
      * Constructs an empty instance of this class.

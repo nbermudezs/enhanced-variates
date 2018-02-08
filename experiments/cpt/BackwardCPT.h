@@ -9,17 +9,12 @@
 #define EXPERIMENTS_CONDITIONALPROBABILITYTABLE_H
 
 #include <cmath>
-#include <cereal/external/rapidjson/document.h>
-#include <cereal/external/rapidjson/istreamwrapper.h>
-#include <fstream>
 #include <map>
 #include <string>
 #include <vector>
 #include "BaseCPT.h"
 #include "../Constants.h"
 using namespace std;
-
-const int YEARS = 33;
 
 
 class BackwardCPT: public BaseCPT {
@@ -28,7 +23,20 @@ public:
      * Overrides
      */
 
+    /**
+     * Returns the unconditional probability of the @param{bitId} being 1
+     * @param bitId index of the bit. @see Constants::VECTOR_SIZE
+     * @return the probability of the @param{bitId} = 1.
+     */
     double P(int bitId);
+
+    /**
+     * Returns the conditional probability of the @param{bitId} being 1
+     * @param bitId index of the bit. @see Constants::VECTOR_SIZE
+     * @param bracket bracket generated so far, the conditional information
+     * to find P(bit = 1) will be taken from this.
+     * @return the conditional probability of the given bit being 1.
+     */
     double P(int bitId, BracketData data);
 
     static BackwardCPT& getInstance(string, bool, int);
@@ -63,7 +71,7 @@ public:
     /**
      * Constructs an empty instance of this class.
      */
-    BackwardCPT();
+    BackwardCPT() = default;
 
     /**
      * Creates an instance of this class
@@ -91,6 +99,24 @@ public:
      * the provided file.
      */
     BackwardCPT(string filePath, bool isMetadataFile, int year, map<int, double> overrides);
+
+    /**
+     * Specifies at which bit the generation process should start
+     * @return the start bit (0)
+     */
+    int startBit() { return VECTOR_SIZE - 1; }
+
+    /**
+     * Specifies at which bit the generation process should stop
+     * @return the end bit (Constants::VECTOR_SIZE - 1)
+     */
+    int endBit() { return 0; }
+
+    /**
+     * Determines whether the traversing of the vector happens from left to right or vice-versa.
+     * @return delta (1)
+     */
+    int bitAdvance() { return -1; }
 
 private:
     static map<string, BackwardCPT*> instances;
