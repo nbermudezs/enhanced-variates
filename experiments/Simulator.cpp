@@ -67,7 +67,7 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     } else {
         this->runs = runs;
     }
-    this->generator = BracketGenerator(setup->format, setup->year);
+    this->generator = BracketGenerator(setup->generationDirection, setup->format, setup->year);
     this->bracketFilePath = filePath;
     this->reference = BracketReader::readSingle(filePath, setup->year);
     this->singleGenerator = singleGenerator;
@@ -85,8 +85,16 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string 
     }
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits) : SimulatorSetup(variates, year, format) {
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits) :
+        SimulatorSetup(variates, year, format) {
     this->flipBits = flipBits;
+    this->generationDirection = GenerationDirection::BACKWARD;
+}
+
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits,
+                               GenerationDirection generationDirection):
+        SimulatorSetup(variates, year, format, flipBits) {
+    this->generationDirection = generationDirection;
 }
 
 Bracket *SimulatorSetup::smoothen(Bracket *ref, Bracket *other) {
