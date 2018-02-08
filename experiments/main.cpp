@@ -15,7 +15,7 @@ using namespace std;
 
 void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string format) {
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
-    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, false);
+    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, false, GenerationDirection::BACKWARD);
 
     string bracketFilePath = "brackets/" + format + "/allBrackets" + format + ".json";
     cout << "Running simulator for " << year << " ..." << endl;
