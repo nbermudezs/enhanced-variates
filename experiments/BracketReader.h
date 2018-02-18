@@ -39,6 +39,14 @@ public:
         @return The Bracket object
     */
     static Bracket* readSingle(string filePath, int year);
+
+    /**
+     * Reads the given file and creates corresponding bracket objects for each of the
+     * brackets found in the file
+     * @param filePath  The path of the file to load the brackets from
+     * @return A map of Brackets indexed by year
+     */
+    static map<int, Bracket*> readAll(string filePath);
 };
 
 

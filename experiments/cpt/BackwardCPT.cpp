@@ -32,6 +32,7 @@ int getParentBit(int bit) {
 }
 
 BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year) {
+    this->probabilities.clear();
     this->isMetadataFile = isMetadataFile;
 
     ifstream file(filePath);
