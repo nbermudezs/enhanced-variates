@@ -19,7 +19,7 @@
 BracketGenerator::BracketGenerator(GenerationDirection generationDirection, string format, int year) {
     map<int, double> overrides;
 //    for (int i = 0; i < VECTOR_SIZE; i++)
-//        if (i < 60 && i % 15 < 4)
+//        if (i < 60 && (i % 15 == 0 || i % 15 == 7 || i % 15 == 5 || i % 15 == 3))
 //            overrides[i] = 1.;
     if (generationDirection == GenerationDirection::FORWARD) {
         cpt = &ForwardCPT::getInstance(

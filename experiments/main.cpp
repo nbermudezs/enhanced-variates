@@ -62,7 +62,7 @@ int main() {
     vector<string> formats = {"TTT", "FFF"};
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
     vector<bool> singleGeneratorFlag = {true};
-    int runs = (int) 1e5;
+    int runs = (int) 1e4;
     bool saveFile = false;
 
     for (auto format: formats) {

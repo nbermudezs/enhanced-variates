@@ -35,3 +35,24 @@ Bracket *BracketReader::readSingle(string filePath, int year) {
 
     return nullptr;
 }
+
+map<int, Bracket *> BracketReader::readAll(string filePath) {
+    map<int, Bracket *> result;
+
+    ifstream file(BASE_PATH + filePath);
+    CEREAL_RAPIDJSON_NAMESPACE::IStreamWrapper isw(file);
+    CEREAL_RAPIDJSON_NAMESPACE::Document d;
+    d.ParseStream(isw);
+
+    const CEREAL_RAPIDJSON_NAMESPACE::Value& root = d["brackets"];
+    assert(root.IsArray());
+
+    for (unsigned int i = 0; i < root.Size(); i++) {
+        const CEREAL_RAPIDJSON_NAMESPACE::Value& bracket = root[i]["bracket"];
+        int bracketYear = stoi(bracket["year"].GetString());
+        Bracket* instance = new Bracket(BracketData(bracket["fullvector"].GetString()));
+        result[bracketYear] = instance;
+    }
+
+    return result;
+}

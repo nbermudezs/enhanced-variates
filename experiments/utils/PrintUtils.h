@@ -8,9 +8,11 @@
 #ifndef EXPERIMENTS_PRINTUTILS_H
 #define EXPERIMENTS_PRINTUTILS_H
 
+#include <iomanip>
 #include <map>
 #include <vector>
 #include "../Constants.h"
+#include "../Simulator.h"
 #include "../analysis/Statistics.h"
 
 ostream &operator<<(ostream &os, vector<int> &v) {
