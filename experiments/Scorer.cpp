@@ -77,7 +77,7 @@ int Scorer::evalWithRegionGrouping(BracketData ref, BracketData input) {
 
     // check semifinals
     if (ref[2] == input[2]) {
-        if (ref[2] == 1 && south.second || ref[2] == 0 && west.second) {
+        if ((ref[2] == 1 && south.second) || (ref[2] == 0 && west.second)) {
             score += 160;
 
             // check championship
@@ -88,7 +88,7 @@ int Scorer::evalWithRegionGrouping(BracketData ref, BracketData input) {
     }
 
     if (ref[1] == input[1]) {
-        if (ref[1] == 1 && east.second || ref[1] == 0 && midwest.second) {
+        if ((ref[1] == 1 && east.second) || (ref[1] == 0 && midwest.second)) {
             score += 160;
 
             // check championship
