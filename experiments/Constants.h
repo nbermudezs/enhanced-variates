@@ -70,6 +70,12 @@ static map<SmoothingFunction, string> SmoothingFunctionNames = {
         pair<SmoothingFunction, string>(SmoothingFunction::AVG, "AVG")
 };
 
+enum class BitFlip { SINGLE = 0, TWO_BITS };
+static map<BitFlip, string> BitFlipNames = {
+        pair<BitFlip, string>(BitFlip::SINGLE, "SINGLE"),
+        pair<BitFlip, string>(BitFlip::TWO_BITS, "TWO_BITS")
+};
+
 static string ENUM_NAME(SmoothingFunction f) {
     return SmoothingFunctionNames[f];
 }
@@ -81,6 +87,13 @@ static string ENUM_NAME(VariateMethod f) {
 
 // TYPEDEFS
 typedef bitset<VECTOR_SIZE> BracketData;
+
+struct SimulationSummary {
+    int maxScore;
+    int year;
+    string resultsPath;
+    string setupPath;
+};
 
 //typedef struct BracketData {
 //    BracketData() {

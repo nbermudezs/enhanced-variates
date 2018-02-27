@@ -84,7 +84,7 @@ double BackwardCPT::P(int matchId) {
 }
 
 double BackwardCPT::P(int matchId, BracketData data) {
-    if (this->overrides.count(matchId))
+    if (this->overrides.find(matchId) != end(this->overrides))
         return this->overrides[matchId];
 
     if (this->isMetadataFile) {
