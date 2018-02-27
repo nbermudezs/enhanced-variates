@@ -10,6 +10,7 @@
 
 #include <array>
 #include <cstdio>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <memory>
@@ -71,6 +72,15 @@ public:
         mkdir(newDir, false);
 
         return newDir;
+    }
+
+    static bool isFileEmpty(string filePath) {
+        ifstream file(filePath);
+        if (!file.is_open()) return true;
+        string line;
+        getline(file, line);
+        file.close();
+        return line.empty();
     }
 };
 
