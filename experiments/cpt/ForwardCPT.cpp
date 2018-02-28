@@ -49,11 +49,12 @@ ForwardCPT::ForwardCPT(string filePath, bool isMetadataFile, int year) {
                     thisPairValues = make_pair(vector[bit] - '0', vector[sibling] - '0');
                 else
                     thisPairValues = make_pair(vector[sibling] - '0', vector[bit] - '0');
-                if (bit < 60 && bit % 15 < 8)
+                if (bit < 60 && bit % 15 < 8) {
                     if (vector[bit] - '0' == 1)
                         this->parentCounts[bit][make_pair(-1, -1)] += 1;
-                else
+                } else {
                     this->parentCounts[bit][thisPairValues] += 1;
+                }
 
                 pair<int, int> parents = this->getParentBits(bit);
                 pair<int, int> parentValues = make_pair(vector[parents.first] - '0', vector[parents.second] - '0');

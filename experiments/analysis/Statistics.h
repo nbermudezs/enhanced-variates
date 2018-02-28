@@ -114,8 +114,9 @@ private:
         ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
         for (auto roundPair: RoundNames)
             ar(cereal::make_nvp("l1ScoreMatrix-" + roundPair.second, l1DistributionMatrix(roundPair.first)));
-        for (int i = 0; i < VECTOR_SIZE; i++)
-            ar(cereal::make_nvp("scoresDeltaBit" + to_string(i), *scoreDeltas[i]));
+        if (scoreDeltas.size() > 0)
+            for (int i = 0; i < VECTOR_SIZE; i++)
+                ar(cereal::make_nvp("scoresDeltaBit" + to_string(i), *scoreDeltas[i]));
 
         vector<Bracket> tmp;
         for (int i = 0; i < subGraphs.size(); i++)
