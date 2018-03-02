@@ -14,8 +14,11 @@ Statistics Simulator::run() {
             random = generator.get();
         } else {
             GeneratorConfig config;
-            random = generator.get(false, config, this->setup->variates);
+            random = generator.get(config);
+            // TODO: find a way to support both.
+            // random = generator.get(false, config, this->setup->variates);
 
+            // TODO: make this configurable...
             if (setup->antithetic) {
                 config.renew(this->setup->variates);
                 Bracket* anti = generator.get(true, config, this->setup->variates);
@@ -43,7 +46,7 @@ Statistics Simulator::run() {
         random->setMetadata(l1, score);
         this->stats.accountFor(score, l1, random);
 
-        if (this->setup->flipBits) {
+        if (this->setup->flipMode != BitFlip::NO_FLIP) {
             for (int i = 0; i < VECTOR_SIZE; i++) {
                 Bracket* flipped = random->flip(i);
                 l1 = Scorer::l1ByRounds(reference, flipped);
@@ -51,6 +54,20 @@ Statistics Simulator::run() {
                 flipped->setMetadata(l1, flippedScore);
                 random->addChild(flipped);
                 this->stats.recordFlippedBracket(flippedScore, l1, flipped);
+            }
+
+            if (this->setup->flipMode == BitFlip::TWO_BITS) {
+                for (int i = 0; i < VECTOR_SIZE; i++)
+                    for (int j = i; j < VECTOR_SIZE; j++) {
+                        vector<int> pos = {i, j};
+
+                        Bracket* flipped = random->flip(pos);
+                        l1 = Scorer::l1ByRounds(reference, flipped);
+                        int flippedScore = Scorer::evalWithRegionGrouping(reference, flipped);
+                        flipped->setMetadata(l1, flippedScore);
+                        random->addChild(flipped);
+                        this->stats.recordFlippedBracket(flippedScore, l1, flipped);
+                    }
             }
         }
     }
@@ -70,6 +87,8 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     this->generator = BracketGenerator(setup->generationDirection, setup->format, setup->year);
     this->bracketFilePath = filePath;
     this->reference = BracketReader::readSingle(filePath, setup->year);
+    // TODO: replace hardcoded strings
+    this->scoreRanks = BracketReader::readESPNScores("brackets/" + setup->format + "/ESPN_scores.json", setup->year);
     this->singleGenerator = singleGenerator;
 }
 
@@ -85,15 +104,15 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string 
     }
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits) :
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode) :
         SimulatorSetup(variates, year, format) {
-    this->flipBits = flipBits;
+    this->flipMode = flipMode;
     this->generationDirection = GenerationDirection::BACKWARD;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits,
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                                GenerationDirection generationDirection):
-        SimulatorSetup(variates, year, format, flipBits) {
+        SimulatorSetup(variates, year, format, flipMode) {
     this->generationDirection = generationDirection;
 }
 

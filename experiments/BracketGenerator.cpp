@@ -21,17 +21,28 @@ BracketGenerator::BracketGenerator(GenerationDirection generationDirection, stri
 //    for (int i = 0; i < VECTOR_SIZE; i++)
 //        if (i < 60 && (i % 15 == 0 || i % 15 == 7 || i % 15 == 5 || i % 15 == 3))
 //            overrides[i] = 1.;
+    bool isMetadataFile = true;
+    string file = isMetadataFile ?
+                  BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets_metadata.json" :
+                  BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets" + format + ".json";
     if (generationDirection == GenerationDirection::FORWARD) {
         cpt = &ForwardCPT::getInstance(
-                BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets" + format + ".json",
-                false,
+                file,
+                isMetadataFile,
                 year,
                 overrides,
                 format);
-    } else {
+    } else if (generationDirection == GenerationDirection::BACKWARD){
         cpt = &BackwardCPT::getInstance(
-                BRACKET_METADATA_FOLDER + "/" + format + "/allBrackets" + format + ".json",
-                false,
+                file,
+                isMetadataFile,
+                year,
+                overrides,
+                format);
+    } else if (generationDirection == GenerationDirection::BASELINE_4) {
+        cpt = &MixedCPT::getInstance(
+                file,
+                isMetadataFile,
                 year,
                 overrides,
                 format);
@@ -70,7 +81,34 @@ Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, v
         if (value) {
             bitOnCounts[matchId]++;
         }
-        data[matchId] = value;
+        data[VECTOR_SIZE - matchId - 1] = value;
+    }
+    return new Bracket(data);
+}
+
+Bracket *BracketGenerator::get(GeneratorConfig config) {
+    BracketData data;
+    for (IntraVariateGroup group: config.intraVariates) {
+        for (auto bit: group[VariateMethod::IID]) {
+            int seed = config.seeds[bit];
+            generator = minstd_rand0(seed);
+            double rn = distribution(generator);
+            data[VECTOR_SIZE - bit - 1] = rn < cpt->P(bit, data);
+            if (data[VECTOR_SIZE - bit - 1])
+                bitOnCounts[bit]++;
+
+            for (auto avBit: group[VariateMethod::ANTITHETIC]) {
+                data[VECTOR_SIZE - avBit - 1] = 1 - rn < cpt->P(avBit, data);
+                if (data[VECTOR_SIZE - avBit - 1])
+                    bitOnCounts[avBit]++;
+            }
+
+            for (auto crnBit: group[VariateMethod::COMMON]) {
+                data[VECTOR_SIZE - crnBit - 1] = rn < cpt->P(crnBit, data);
+                if (data[VECTOR_SIZE - crnBit - 1])
+                    bitOnCounts[crnBit]++;
+            }
+        }
     }
     return new Bracket(data);
 }

@@ -21,14 +21,14 @@
 class SimulatorSetup {
 public:
     SimulatorSetup(vector<VariateMethod> variates, int year, string format);
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits);
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format, bool flipBits,
+    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode);
+    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                    GenerationDirection generationDirection);
     Bracket* smoothen(Bracket* ref, Bracket* other);
 
     // attributes
     bool antithetic = false;
-    bool flipBits = false;
+    BitFlip flipMode = BitFlip::NO_FLIP;
     GenerationDirection generationDirection;
     string format;
     SmoothingFunction smoothingFunction = SmoothingFunction::AND;
@@ -39,7 +39,7 @@ public:
 
 class Simulator {
 public:
-    Simulator(SimulatorSetup*, int, string, bool);
+    Simulator(SimulatorSetup* setup, int runs, string filePath, bool singleGenerator);
     Statistics run();
     Bracket* reference;
     BracketGenerator generator = BracketGenerator();
@@ -49,13 +49,14 @@ private:
     string bracketFilePath;
     SimulatorSetup* setup;
     Statistics stats;
+    ScoreRanks scoreRanks;
 
     friend class cereal::access;
     template <class Archive>
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(runs));
         ar(CEREAL_NVP(bracketFilePath));
-        ar(cereal::make_nvp("flipBits", setup->flipBits));
+        ar(cereal::make_nvp("flipBits", BitFlipNames[setup->flipMode]));
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
 
         auto transformVariate = [](VariateMethod x) { return ENUM_NAME(x); };
