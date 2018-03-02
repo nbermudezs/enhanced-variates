@@ -82,6 +82,10 @@ protected:
      */
     bool isMetadataFile = false;
     map<int, double> overrides;
+    /**
+     * Holds the prior (unconditional) probabilities of each
+     * bit being 1.
+     */
     vector<double> probabilities;
 };
 

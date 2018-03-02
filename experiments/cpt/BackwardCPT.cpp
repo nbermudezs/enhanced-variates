@@ -9,7 +9,7 @@
 
 map<string, BackwardCPT*> BackwardCPT::instances;
 
-int getParentBit(int bit) {
+int BackwardCPT::getParentBit(int bit) {
     int parent;
     if (bit == 14 || bit == 29)
         parent = 60;
@@ -63,7 +63,7 @@ BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year) {
                 if (bit == VECTOR_SIZE - 1) {
                     conditionalCounts[bit][-1] += 1;
                 } else {
-                    int parent = getParentBit(bit);
+                    int parent = this->getParentBit(bit);
                     conditionalCounts[bit][vector[parent] - '0'] += 1;
                 }
             }
