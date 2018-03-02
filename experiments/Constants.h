@@ -29,11 +29,13 @@ const string VERSION = "1.2";
 // ENUMS
 enum class GenerationDirection {
     BACKWARD = 0,
-    FORWARD
+    FORWARD,
+    BASELINE_4 // round of 64 using unconditional probabilities, others using backwards
 };
 static map<GenerationDirection, string> GenerationDirectionNames = {
         pair<GenerationDirection, string>(GenerationDirection::BACKWARD, "BACKWARD"),
-        pair<GenerationDirection, string>(GenerationDirection::FORWARD, "FORWARD")
+        pair<GenerationDirection, string>(GenerationDirection::FORWARD, "FORWARD"),
+        pair<GenerationDirection, string>(GenerationDirection::BASELINE_4, "BASELINE_4"),
 };
 
 enum class ROUND {
@@ -70,8 +72,9 @@ static map<SmoothingFunction, string> SmoothingFunctionNames = {
         pair<SmoothingFunction, string>(SmoothingFunction::AVG, "AVG")
 };
 
-enum class BitFlip { SINGLE = 0, TWO_BITS };
+enum class BitFlip { NO_FLIP = 0, SINGLE, TWO_BITS };
 static map<BitFlip, string> BitFlipNames = {
+        pair<BitFlip, string>(BitFlip::NO_FLIP, "NO_FLIP"),
         pair<BitFlip, string>(BitFlip::SINGLE, "SINGLE"),
         pair<BitFlip, string>(BitFlip::TWO_BITS, "TWO_BITS")
 };
