@@ -16,6 +16,8 @@
 #include "Bracket.h"
 using namespace std;
 
+typedef map<int, int> ScoreRanks;
+
 
 class BracketReader {
 public:
@@ -55,14 +57,14 @@ public:
      * @param year The particular to get rank for
      * @return A map containing the rank of the score and the actual score.
      */
-    static map<int, int> readESPNScores(string filePath, int year);
+    static ScoreRanks readESPNScores(string filePath, int year);
 
     /**
      * Reads the given file that contains some score rankings from 2013 to present.
      * @param filePath The path of the file to read
      * @return A map containing the rank of the score and the actual score.
      */
-    static map<int, map<int, int>> readESPNScores(string filePath);
+    static map<int, ScoreRanks> readESPNScores(string filePath);
 };
 
 
