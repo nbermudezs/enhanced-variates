@@ -120,6 +120,7 @@ public:
 
 private:
     static map<string, BackwardCPT*> instances;
+    int getParentBit(int bit);
 };
 
 
