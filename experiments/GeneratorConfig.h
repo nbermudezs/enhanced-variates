@@ -15,6 +15,7 @@
 #include <random>
 #include <vector>
 #include "Constants.h"
+#include "variates/IntraVariates.h"
 using namespace std;
 
 
@@ -24,6 +25,9 @@ public:
     GeneratorConfig(vector<unsigned int>);
     vector<unsigned int> seeds;
     void renew(vector<VariateMethod> variates);
+    IntraVariates intraVariates;
+private:
+    static IntraVariates getIntraVariates();
 };
 
 
