@@ -9,13 +9,15 @@
 #include <iostream>
 #include "analysis/Misc.h"
 #include "output/Serializer.h"
+#include "utils/FileSystem.h"
 #include "utils/PrintUtils.h"
 
 using namespace std;
 
-void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string format) {
+SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFiles, string format) {
+    BitFlip flipMode = BitFlip::NO_FLIP;
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
-    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, false, GenerationDirection::BACKWARD);
+    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, flipMode, GenerationDirection::BACKWARD);
 
     string bracketFilePath = "brackets/" + format + "/allBrackets" + format + ".json";
     cout << "Running simulator for " << year << " ..." << endl;
@@ -32,16 +34,17 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
 
     printStatisticalMeasures(cout, results);
 
-    // map<int, int> table = results.frequencyTable();
+    map<int, int> table = results.frequencyTable();
     // printFrequencyTable(cout, table);
 
     cout << "Took " << chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << endl;
 
+    string resultsPath, setupPath;
     if (saveFiles) {
-        string outputFile = Serializer::serialize(results, format, year);
-        cout << "Results saved in " << outputFile << endl;
-        outputFile = Serializer::serialize(simulator, format, year);
-        cout << "Setup saved in " << outputFile << endl;
+        resultsPath = Serializer::serialize(results, format, year);
+        cout << "Results saved in " << resultsPath << endl;
+        setupPath = Serializer::serialize(simulator, format, year);
+        cout << "Setup saved in " << setupPath << endl;
         cout << "------------------------------------------------------------------" << endl << endl << endl;
 /*
         for (auto roundPair: RoundNames) {
@@ -56,13 +59,35 @@ void simulate(int year, bool singleGenerator, int runs, bool saveFiles, string f
     }
 
     cout << "=======================================================================" << endl;
+
+    return {
+            results.max(),
+            year,
+            resultsPath,
+            setupPath
+    };
 }
 
-int main() {
-    vector<string> formats = {"TTT", "FFF"};
+int main(int argc, char *argv[]) {
+    string dependencyFile;
+    string outputFile;
+    string summaryFilePath = RESULTS_PATH + "/summary.csv";
+    ofstream::openmode summaryFileFlags = ofstream::out;
+    for (int i = 1; i < argc; i++) {
+        if (strcmp("--dependecy_file", argv[i]) == 0)
+            dependencyFile = argv[i + 1];
+        else if (strcmp("--output_file", argv[i]) == 0)
+            outputFile = argv[i + 1];
+        else if (strcmp("--summary_file", argv[i]) == 0)
+            summaryFilePath = RESULTS_PATH + "/" + argv[i + 1];
+        else if (strcmp("--append", argv[i]) == 0)
+            summaryFileFlags |= ofstream::app;
+    }
+
+    vector<string> formats = {"TTT"};
     vector<int> years = {2012, 2013, 2014, 2015, 2016, 2017};
-    vector<bool> singleGeneratorFlag = {true};
-    int runs = (int) 1e4;
+    vector<bool> singleGeneratorFlag = {false};
+    int runs = (int) 1e2;
     bool saveFile = false;
 
     for (auto format: formats) {
@@ -81,10 +106,17 @@ int main() {
         }
     }
 
+    ofstream summaryFile(summaryFilePath, summaryFileFlags);
+    if (FileSystem::isFileEmpty(summaryFilePath))
+        summaryFile << "Format,SingleGenerator,Year,MaxScore,ResultsFile,SetupFile" << endl;
+
     for (auto year: years) {
         for (auto singleGenerator: singleGeneratorFlag) {
             for (auto format: formats) {
-                simulate(year, singleGenerator, runs, saveFile, format);
+                SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format);
+                summaryFile << format << "," << singleGenerator << "," << year << ","
+                            << summary.maxScore << "," << summary.resultsPath << ","
+                            << summary.setupPath << endl;
             }
         }
     }
