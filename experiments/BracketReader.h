@@ -47,6 +47,22 @@ public:
      * @return A map of Brackets indexed by year
      */
     static map<int, Bracket*> readAll(string filePath);
+
+    /**
+     * Reads the given file that contains some score rankings from 2013 to present.
+     * It selects only the ranks corresponding to the given year.
+     * @param filePath The path of the file to read
+     * @param year The particular to get rank for
+     * @return A map containing the rank of the score and the actual score.
+     */
+    static map<int, int> readESPNScores(string filePath, int year);
+
+    /**
+     * Reads the given file that contains some score rankings from 2013 to present.
+     * @param filePath The path of the file to read
+     * @return A map containing the rank of the score and the actual score.
+     */
+    static map<int, map<int, int>> readESPNScores(string filePath);
 };
 
 
