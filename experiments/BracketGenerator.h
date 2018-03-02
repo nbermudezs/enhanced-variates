@@ -18,6 +18,7 @@
 #include "Bracket.h"
 #include "cpt/BackwardCPT.h"
 #include "cpt/ForwardCPT.h"
+#include "cpt/MixedCPT.h"
 #include "GeneratorConfig.h"
 
 using namespace std;
@@ -29,6 +30,7 @@ public:
     BracketGenerator(GenerationDirection generationDirection, string format, int year);
     Bracket* get();
     Bracket* get(bool, GeneratorConfig, vector<VariateMethod>);
+    Bracket* get(GeneratorConfig config);
     BaseCPT* cpt;
     map<int, int> bitOnCounts;
 private:
