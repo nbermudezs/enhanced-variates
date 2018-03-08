@@ -8,14 +8,16 @@
 #include "Simulator.h"
 
 Statistics Simulator::run() {
+    GeneratorConfig config(setup->groupSelector, setup->retentionP);
     for (int i = 0; i < this->runs; i++) {
         Bracket* random;
         if (singleGenerator) {
             random = generator.get();
         } else {
-            GeneratorConfig config;
+
             random = generator.get(config);
             // TODO: find a way to support both.
+            // GeneratorConfig config;
             // random = generator.get(false, config, this->setup->variates);
 
             // TODO: make this configurable...
@@ -102,6 +104,8 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string 
             break;
         }
     }
+    this->masterSeed = RandomUtils::generateMasterSeed();
+    RandomUtils::setMasterSeed(this->masterSeed);
 }
 
 SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode) :
@@ -111,9 +115,16 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string 
 }
 
 SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
-                               GenerationDirection generationDirection):
+                               GenerationDirection generationDirection, GroupSelector groupSelector):
         SimulatorSetup(variates, year, format, flipMode) {
     this->generationDirection = generationDirection;
+    this->groupSelector = groupSelector;
+}
+
+SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+                               GenerationDirection generationDirection, GroupSelector groupSelector, unsigned int masterSeed):
+        SimulatorSetup(variates, year, format, flipMode, generationDirection, groupSelector) {
+    this->masterSeed = masterSeed;
 }
 
 Bracket *SimulatorSetup::smoothen(Bracket *ref, Bracket *other) {

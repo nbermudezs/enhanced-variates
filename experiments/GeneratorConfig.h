@@ -21,13 +21,14 @@ using namespace std;
 
 class GeneratorConfig {
 public:
-    GeneratorConfig();
-    GeneratorConfig(vector<unsigned int>);
+    GeneratorConfig(GroupSelector groupSelector, double retentionP);
+    GeneratorConfig(GroupSelector groupSelector, double retentionP, vector<unsigned int>);
     vector<unsigned int> seeds;
     void renew(vector<VariateMethod> variates);
     IntraVariates intraVariates;
+    double retentionP;
 private:
-    static IntraVariates getIntraVariates();
+    static IntraVariates getIntraVariates(GroupSelector groupSelector);
 };
 
 

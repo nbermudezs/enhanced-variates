@@ -20,6 +20,7 @@
 #include "cpt/ForwardCPT.h"
 #include "cpt/MixedCPT.h"
 #include "GeneratorConfig.h"
+#include "utils/RandomUtils.h"
 
 using namespace std;
 
@@ -37,6 +38,12 @@ private:
     minstd_rand0 generator;
     uniform_real_distribution<float> distribution;
     int getMatchResult(BracketData, bool, int, GeneratorConfig, vector<VariateMethod>);
+
+    /**
+     * Creates a VECTOR_SIZE-vector of U(0, 1) random numbers.
+     * @return the resulting vector.
+     */
+    vector<double> getRNVector();
 
     friend class cereal::access;
 
