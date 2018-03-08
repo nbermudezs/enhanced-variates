@@ -54,6 +54,7 @@ BracketGenerator::BracketGenerator(GenerationDirection generationDirection, stri
 }
 
 Bracket* BracketGenerator::get() {
+    // TODO: change this to use getRNVector()
     BracketData data;
     int startBit = cpt->startBit();
     int delta = cpt->bitAdvance();
@@ -71,6 +72,7 @@ Bracket* BracketGenerator::get() {
 }
 
 Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, vector<VariateMethod> variates) {
+    // TODO: change this to use getRNVector()
     BracketData data;
     int startBit = cpt->startBit();
     int delta = cpt->bitAdvance();
@@ -87,24 +89,26 @@ Bracket *BracketGenerator::get(bool antitheticEnabled, GeneratorConfig config, v
 }
 
 Bracket *BracketGenerator::get(GeneratorConfig config) {
+    double retentionP = config.retentionP;
     BracketData data;
+    vector<double> rnVector = this->getRNVector();
     for (IntraVariateGroup group: config.intraVariates) {
         for (auto bit: group[VariateMethod::IID]) {
-            int seed = config.seeds[bit];
-            generator = minstd_rand0(seed);
-            double rn = distribution(generator);
+            double rn = rnVector[bit];
             data[VECTOR_SIZE - bit - 1] = rn < cpt->P(bit, data);
             if (data[VECTOR_SIZE - bit - 1])
                 bitOnCounts[bit]++;
 
             for (auto avBit: group[VariateMethod::ANTITHETIC]) {
-                data[VECTOR_SIZE - avBit - 1] = 1 - rn < cpt->P(avBit, data);
+                double bitRn = RandomUtils::U() < retentionP ? rn : RandomUtils::U();
+                data[VECTOR_SIZE - avBit - 1] = 1 - bitRn < cpt->P(avBit, data);
                 if (data[VECTOR_SIZE - avBit - 1])
                     bitOnCounts[avBit]++;
             }
 
             for (auto crnBit: group[VariateMethod::COMMON]) {
-                data[VECTOR_SIZE - crnBit - 1] = rn < cpt->P(crnBit, data);
+                double bitRn = RandomUtils::U() < retentionP ? rn : RandomUtils::U();
+                data[VECTOR_SIZE - crnBit - 1] = bitRn < cpt->P(crnBit, data);
                 if (data[VECTOR_SIZE - crnBit - 1])
                     bitOnCounts[crnBit]++;
             }
@@ -114,13 +118,23 @@ Bracket *BracketGenerator::get(GeneratorConfig config) {
 }
 
 int BracketGenerator::getMatchResult(BracketData data, bool antitheticEnabled, int matchId, GeneratorConfig config, vector<VariateMethod> variates) {
+    // TODO: change this to use getRNVector()
     int seed = config.seeds[matchId];
     VariateMethod type = variates[matchId];
     generator = minstd_rand0(seed);
 
-    float p = cpt->P(matchId, data);
+    double p = cpt->P(matchId, data);
     const float rn = type == VariateMethod::ANTITHETIC && antitheticEnabled ?
                      (1 - distribution(generator)) :
                      distribution(generator);
     return rn < p ? 1 : 0;
+}
+
+vector<double> BracketGenerator::getRNVector() {
+    vector<double> result;
+
+    for (short i = 0; i < VECTOR_SIZE; i++)
+        result.push_back(RandomUtils::U());
+
+    return result;
 }
