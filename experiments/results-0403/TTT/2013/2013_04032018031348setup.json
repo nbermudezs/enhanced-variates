@@ -1,0 +1,15 @@
+{
+    "VERSION": "1.2",
+    "format": "TTT",
+    "setup": {
+        "runs": 100000,
+        "bracketFilePath": "brackets/TTT/allBracketsTTT.json",
+        "masterSeed": 3300825523,
+        "flipBits": 0,
+        "flipBitsName": "NO_FLIP",
+        "bracket": "110111111100101100010010010101111101101000011100111111000011111",
+        "rnGroupSelector": "0010000",
+        "variates": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "singleGenerator": false
+    }
+}
