@@ -23,7 +23,9 @@ public:
     SimulatorSetup(vector<VariateMethod> variates, int year, string format);
     SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode);
     SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
-                   GenerationDirection generationDirection);
+                   GenerationDirection generationDirection, GroupSelector groupSelector);
+    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+                   GenerationDirection generationDirection, GroupSelector groupSelector, unsigned int masterSeed);
     Bracket* smoothen(Bracket* ref, Bracket* other);
 
     // attributes
@@ -34,6 +36,9 @@ public:
     SmoothingFunction smoothingFunction = SmoothingFunction::AND;
     vector<VariateMethod> variates;
     int year;
+    unsigned int masterSeed;
+    GroupSelector groupSelector;
+    double retentionP;
 };
 
 
@@ -43,6 +48,7 @@ public:
     Statistics run();
     Bracket* reference;
     BracketGenerator generator = BracketGenerator();
+    ScoreRanks getScoreRanks() { return this->scoreRanks; }
 private:
     bool singleGenerator;
     int runs;
@@ -56,18 +62,22 @@ private:
     void serialize(Archive &ar) {
         ar(CEREAL_NVP(runs));
         ar(CEREAL_NVP(bracketFilePath));
-        ar(cereal::make_nvp("flipBits", BitFlipNames[setup->flipMode]));
+        ar(cereal::make_nvp("masterSeed", setup->masterSeed));
+        ar(cereal::make_nvp("flipBits", setup->flipMode));
+        ar(cereal::make_nvp("flipBitsName", BitFlipNames[setup->flipMode]));
         ar(cereal::make_nvp("bracket", reference->data.to_string()));
+        string groupSelector = setup->groupSelector.to_string();
+        reverse(begin(groupSelector), end(groupSelector));
+        ar(cereal::make_nvp("rnGroupSelector", groupSelector));
 
-        auto transformVariate = [](VariateMethod x) { return ENUM_NAME(x); };
-        vector<string> variates(VECTOR_SIZE);
-        transform(begin(setup->variates), end(setup->variates), begin(variates), transformVariate);
+        ar.itsWriter.SetFormatOptions(CEREAL_RAPIDJSON_NAMESPACE::PrettyFormatOptions::kFormatSingleLineArray);
+        ar(cereal::make_nvp("variates", setup->variates));
+        ar.itsWriter.SetFormatOptions(CEREAL_RAPIDJSON_NAMESPACE::PrettyFormatOptions::kFormatDefault);
 
-        ar(cereal::make_nvp("variates", variates));
+        // TODO: once everything uses RandomUtils remove this.
         ar(CEREAL_NVP(singleGenerator));
-        ar(CEREAL_NVP(generator));
-        ar(CEREAL_NVP(RAND_MAX));
-        // ar(cereal::make_nvp("smoothingFunction", ENUM_NAME(setup->smoothingFunction)));
+        // ar(CEREAL_NVP(generator));
+        // ar(CEREAL_NVP(RAND_MAX));
     }
 };
 

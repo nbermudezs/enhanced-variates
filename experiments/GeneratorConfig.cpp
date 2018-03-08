@@ -7,7 +7,7 @@
 
 #include "GeneratorConfig.h"
 
-GeneratorConfig::GeneratorConfig() {
+GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP) {
     random_device rdev;
     this->seeds = vector<unsigned int>(VECTOR_SIZE);
     for (int i = 0; i < VECTOR_SIZE; i++) {
@@ -21,20 +21,17 @@ GeneratorConfig::GeneratorConfig() {
 //        allIID[VariateMethod::IID].push_back(i);
 //    }
 //    this->intraVariates = { allIID };
-    this->intraVariates = GeneratorConfig::getIntraVariates();
+    this->intraVariates = GeneratorConfig::getIntraVariates(groupSelector);
+    this->retentionP = retentionP;
 }
 
-GeneratorConfig::GeneratorConfig(vector<unsigned int> seeds) : GeneratorConfig() {
+GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP, vector<unsigned int> seeds) :
+        GeneratorConfig(groupSelector, retentionP) {
     this->seeds = seeds;
 }
 
-IntraVariates GeneratorConfig::getIntraVariates() {
-    static IntraVariates intraVariates;
-    if (intraVariates.size() == 0) {
-        // TODO: change this hardcoded path
-        intraVariates = IntraVariatesUtils::fromFile("../dependency/allDeps.txt");
-    }
-    return intraVariates;
+IntraVariates GeneratorConfig::getIntraVariates(GroupSelector groupSelector) {
+    return IntraVariatesUtils::fromFile("../dependency/initial7.txt", groupSelector);
 }
 
 void GeneratorConfig::renew(vector<VariateMethod> variates) {

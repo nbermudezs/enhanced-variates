@@ -96,6 +96,8 @@ struct SimulationSummary {
     int year;
     string resultsPath;
     string setupPath;
+    bool madeItToTop100;
+    unsigned int masterSeed;
 };
 
 //typedef struct BracketData {
