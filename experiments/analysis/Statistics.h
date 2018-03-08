@@ -106,22 +106,28 @@ private:
     template <class Archive>
     void serialize(Archive &ar) {
         // ar(CEREAL_NVP(scores));
-        ar(cereal::make_nvp("mean", mean()));
-        ar(cereal::make_nvp("variance", variance()));
+        // ar(cereal::make_nvp("mean", mean()));
+        // ar(cereal::make_nvp("variance", variance()));
         ar(cereal::make_nvp("max", max()));
-        ar(cereal::make_nvp("min", min()));
+        // ar(cereal::make_nvp("min", min()));
         ar(cereal::make_nvp("frequencyTable", frequencyTable()));
         ar(cereal::make_nvp("bestBracket", bestBracket->data.to_string()));
+
+#ifdef CREATE_L1_MATRICES
         for (auto roundPair: RoundNames)
             ar(cereal::make_nvp("l1ScoreMatrix-" + roundPair.second, l1DistributionMatrix(roundPair.first)));
+#endif
+        // this is only true when we are doing bit flipping.
         if (scoreDeltas.size() > 0)
             for (int i = 0; i < VECTOR_SIZE; i++)
                 ar(cereal::make_nvp("scoresDeltaBit" + to_string(i), *scoreDeltas[i]));
 
+#ifdef INCLUDE_BRACKETS_IN_RESULTS
         vector<Bracket> tmp;
         for (int i = 0; i < subGraphs.size(); i++)
             tmp.push_back(*subGraphs[i]);
         ar(cereal::make_nvp("brackets", tmp));
+#endif
     }
 };
 
