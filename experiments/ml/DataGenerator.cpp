@@ -25,3 +25,24 @@ void DataGenerator::generate(int count, map<int, Bracket *> references, string o
         out << endl;
     }
 }
+
+void DataGenerator::generateBracketOnly(int count, string outputFilePath) {
+    ofstream out(BASE_PATH + "/" + outputFilePath);
+
+    auto generator = new BracketGenerator(GenerationDirection::BACKWARD, "TTT", 0);
+    for (int i = 0; i < count; i++) {
+        Bracket* bracket = generator->get();
+        out << bracket->data.to_string() << endl;
+    }
+}
+
+void DataGenerator::generateBracketOnlyWithConfig(int count, string outputFilePath, GeneratorConfig config) {
+    ofstream out(BASE_PATH + "/" + outputFilePath);
+
+    auto generator = new BracketGenerator(GenerationDirection::BACKWARD, "TTT", 0);
+    for (int i = 0; i < count; i++) {
+        Bracket* bracket = generator->get(config);
+        out << bracket->data.to_string() << endl;
+    }
+}
+
