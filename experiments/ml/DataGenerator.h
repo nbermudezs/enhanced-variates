@@ -25,6 +25,22 @@ public:
      * @param outputFilePath Path of the file where the brackets will be saved
      */
     static void generate(int count, map<int, Bracket*> references, string outputFilePath);
+
+    /**
+     * Generates a given number of brackets and dumps them into a file
+     * @param count Number of brackets to be generated
+     * @param outputFilePath Path of the file where the brackets will be saved
+     */
+    static void generateBracketOnly(int count, string outputFilePath);
+
+    /**
+     * Generates a given number of brackets and dumps them into a file using the given
+     * configuration for the bracket generator
+     * @param count Number of brackets to be generated
+     * @param outputFilePath Path of the file where the brackets will be saved
+     * @param config The configuration for the BracketGenerator
+     */
+    static void generateBracketOnlyWithConfig(int count, string outputFilePath, GeneratorConfig config);
 };
 
 
