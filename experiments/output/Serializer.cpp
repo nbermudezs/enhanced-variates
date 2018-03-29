@@ -41,6 +41,7 @@ void Serializer::serialize(Simulator simulator, Statistics statistics, string ou
     archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("setup", simulator));
     archive(cereal::make_nvp("statistics", statistics));
+    file.close();
 }
 
 void Serializer::serialize(Simulator simulator, string format, string outputFile) {
@@ -49,6 +50,7 @@ void Serializer::serialize(Simulator simulator, string format, string outputFile
     archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("format", format));
     archive(cereal::make_nvp("setup", simulator));
+    file.close();
 }
 
 void Serializer::serialize(Statistics statistics, string format, string outputFile) {
@@ -57,4 +59,5 @@ void Serializer::serialize(Statistics statistics, string format, string outputFi
     archive(cereal::make_nvp("VERSION", VERSION));
     archive(cereal::make_nvp("format", format));
     archive(cereal::make_nvp("statistics", statistics));
+    file.close();
 }
