@@ -77,6 +77,14 @@ public:
      * @return 2D matrix containig the counts
      */
     map<int, map<int, int>> l1DistributionMatrix(ROUND round);
+
+    /**
+     * Counts how many of the tracked scores are greater or equal than the threshold provided.
+     * @param min Threshold (min score) to compare against
+     * @return Count of scores that met the threshold
+     */
+    long countGreaterThan(int min);
+
     Bracket* bestBracket;
 private:
     int bestScore = 0;
