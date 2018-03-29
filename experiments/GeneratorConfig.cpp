@@ -31,6 +31,7 @@ GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP,
 }
 
 IntraVariates GeneratorConfig::getIntraVariates(GroupSelector groupSelector) {
+    // TODO: get this from a parameter instead of hard-coding the name of the dependency file
     return IntraVariatesUtils::fromFile("../dependency/initial7.txt", groupSelector);
 }
 
