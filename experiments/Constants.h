@@ -38,6 +38,19 @@ static map<GenerationDirection, string> GenerationDirectionNames = {
         pair<GenerationDirection, string>(GenerationDirection::BASELINE_4, "BASELINE_4"),
 };
 
+/**
+ * This enumeration determines how to decide whether a year should be excluded
+ * when calculating the conditional probability tables.
+ * NONE means that all years should be included.
+ * EXACT means that if a year matches the reference year its data must not be used.
+ * AFTER means that ALL years AFTER the given year must not be used.
+ */
+enum class CptYearExclusion {
+    NONE = 0,
+    EXACT,
+    AFTER
+};
+
 enum class ROUND {
     ROUND_64 = 0,
     ROUND_32,
@@ -96,7 +109,7 @@ struct SimulationSummary {
     int year;
     string resultsPath;
     string setupPath;
-    bool madeItToTop100;
+    long madeItToTop100;
     unsigned int masterSeed;
 };
 
