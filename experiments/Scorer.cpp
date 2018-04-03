@@ -186,3 +186,97 @@ vector<int> Scorer::l1ByRounds(BracketData ref, BracketData input) {
 vector<int> Scorer::l1ByRounds(Bracket *ref, Bracket *input) {
     return Scorer::l1ByRounds(ref->data, input->data);
 }
+
+vector<int> Scorer::byRound(BracketData ref, BracketData input) {
+    vector<int> scoresByRound = {0, 0, 0, 0, 0, 0, 0, 0};
+
+    pair<vector<int>, bool> south = Scorer::scoreRegion(ref, input, 48);
+    pair<vector<int>, bool> west = Scorer::scoreRegion(ref, input, 33);
+    pair<vector<int>, bool> east = Scorer::scoreRegion(ref, input, 18);
+    pair<vector<int>, bool> midwest = Scorer::scoreRegion(ref, input, 3);
+
+    int score = 0;
+    for (int i = 0; i < south.first.size(); i++) {
+        scoresByRound[i] += south.first[i];
+        scoresByRound[i] += west.first[i];
+        scoresByRound[i] += east.first[i];
+        scoresByRound[i] += midwest.first[i];
+
+        score += south.first[i];
+        score += west.first[i];
+        score += east.first[i];
+        score += midwest.first[i];
+    }
+
+    // check semifinals
+    if (ref[2] == input[2]) {
+        if ((ref[2] == 1 && south.second) || (ref[2] == 0 && west.second)) {
+            score += 160;
+            scoresByRound[4] += 160;
+
+            // check championship
+            if (ref[0] == input[0] && ref[0] == 1) {
+                scoresByRound[5] = 320;
+                score += 320;
+            }
+        }
+    }
+
+    if (ref[1] == input[1]) {
+        if ((ref[1] == 1 && east.second) || (ref[1] == 0 && midwest.second)) {
+            score += 160;
+            scoresByRound[4] += 160;
+
+            // check championship
+            if (ref[0] == input[0] && ref[0] == 0) {
+                scoresByRound[5] = 320;
+                score += 320;
+            }
+        }
+    }
+    scoresByRound[6] = score;
+
+    return scoresByRound;
+}
+
+vector<int> Scorer::byRound(Bracket *ref, Bracket *input) {
+    return Scorer::byRound(ref->data, input->data);
+}
+
+pair<vector<int>, bool> Scorer::scoreRegion(BracketData reference, BracketData input, int offset) {
+    vector<int> scores = {0, 0, 0, 0};
+    int matchValue = 80;
+    bool finalsMatch = false;
+
+    int round = 3;
+    for (unsigned int i = 0; i < REGION_VECTOR_SIZE; i++) {
+        if (i == 1 || i == 3 || i == 7 || i == 15) {
+            matchValue /= 2;
+            round -= 1;
+        }
+        // check previous rounds
+        int j = i;
+        bool mismatch = false;
+        while (j < REGION_VECTOR_SIZE) {
+            if (reference[j + offset] != input[j + offset]) {
+                mismatch = true;
+                break;
+            }
+            int bracketId = (int) floor(log2(j + 1));
+            int withinBracketPos = j - pow(2, bracketId) + 1;
+            int withinNextBracketPos = withinBracketPos * 2 + 1;
+            if (input[j + offset] == 1) {
+                j = pow(2, bracketId + 1) + withinNextBracketPos - 1;
+            } else {
+                j = pow(2, bracketId + 1) + withinNextBracketPos - 2;
+            }
+        }
+        if (!mismatch) {
+            scores[round] += matchValue;
+            if (i == 0) {
+                finalsMatch = true;
+            }
+        }
+    }
+    return pair<vector<int>, bool>(scores, finalsMatch);
+}
