@@ -143,3 +143,7 @@ void Statistics::recordFlippedBracket(int scoreDelta, vector<int> l1s, Bracket *
     map<int, int> *bitScores = scoreDeltas[bit];
     bitScores->operator[](scoreDelta) += 1;
 }
+
+long Statistics::countGreaterThan(int min) {
+    return count_if(begin(scores), end(scores), [min](int el) { return el >= min; });
+}

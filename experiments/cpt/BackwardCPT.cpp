@@ -52,7 +52,8 @@ BackwardCPT::BackwardCPT(string filePath, bool isMetadataFile, int year) {
         for (unsigned int i = 0; i < root.Size(); i++) {
             const CEREAL_RAPIDJSON_NAMESPACE::Value& bracket = root[i]["bracket"];
             int bracketYear = stoi(bracket["year"].GetString());
-            if (bracketYear == year)
+            // TODO: Use the new CptYearExclusion enum to decide the relation
+            if (bracketYear >= year)
                 continue;
             historyCount += 1;
             string vector = bracket["fullvector"].GetString();

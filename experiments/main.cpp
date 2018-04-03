@@ -34,8 +34,8 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
     Statistics results = simulator.run();
     chrono::steady_clock::time_point stop = chrono::steady_clock::now();
     cout << "Best bracket:   " << results.bestBracket << endl;
-    bool madeItToTop100 = results.max() >= simulator.getScoreRanks()[100];
-    cout << "In top-100? " << (madeItToTop100 ? "Yes" : "No") << endl;
+    long madeItToTop100 = results.countGreaterThan(simulator.getScoreRanks()[100]);
+    cout << "In top-100: " << madeItToTop100 << endl;
 
     // uncomment to print the observed probability of a bit being 1 vs the expected one (from history)
     // printBitProbabilities(cout, runs, simulator);
@@ -81,6 +81,7 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
 int main(int argc, char *argv[]) {
     string dependencyFile;
     string outputFile;
+    // TODO: get this name from command line
     string summaryFilePath = RESULTS_PATH + "/summary.csv";
     string setupFilePath;
     ofstream::openmode summaryFileFlags = ofstream::out;
@@ -124,11 +125,22 @@ int main(int argc, char *argv[]) {
 
     ofstream summaryFile(summaryFilePath, summaryFileFlags);
     if (FileSystem::isFileEmpty(summaryFilePath))
-        summaryFile << "Format,Groups,ReP,SingleGenerator,Year,MaxScore,Top100,ResultsFile,SetupFile,MasterSeed" << endl;
+        summaryFile << "Format,Groups,ReP,SingleGenerator,Year,MaxScore,Top100,ResultsFile,SetupFile,MasterSeed,Run" << endl;
 
-    for (int p = 10; p >= 0; p--)
-        for (int i = 0; i < 128; i++) {
-            GroupSelector groupSelector(i);
+    // use this to run an specific set of groups instead of going through all possible
+    // combinations. See the loop that controls the group a few lines below.
+    vector<string> groups = {
+            "0100100"
+    };
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
+    int k = 0;
+    // uncomment this to run the experiment multiple times
+    // for (int k = 0; k < 10; k++)
+    for (int p: {10, 7, 5, 3 })
+        for (int group = 1; group < 128; group++) {
+        // for (auto group: groups) {
+            GroupSelector groupSelector(group);
             for (auto year: years) {
                 for (auto singleGenerator: singleGeneratorFlag) {
                     for (auto format: formats) {
@@ -142,11 +154,15 @@ int main(int argc, char *argv[]) {
                                     << summary.madeItToTop100 << ","
                                     << summary.resultsPath << ","
                                     << summary.setupPath << ","
-                                    << summary.masterSeed << endl;
+                                    << summary.masterSeed << ","
+                                    << k << endl;
                     }
                 }
             }
         }
+
+    chrono::steady_clock::time_point stop = chrono::steady_clock::now();
+    cout << "TOTAL TIME " << chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " ms" << endl;
 
 
     return 0;
