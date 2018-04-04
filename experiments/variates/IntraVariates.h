@@ -11,6 +11,8 @@
 #include "../Constants/Errors.h"
 #include "../Constants.h"
 #include "../utils/StringUtils.h"
+#include <algorithm>
+#include <cstring>
 #include <fstream>
 #include <map>
 #include <vector>

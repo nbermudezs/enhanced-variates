@@ -16,6 +16,7 @@
 
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics_int.h>
+#include <algorithm>
 #include <map>
 #include <set>
 #include <vector>
