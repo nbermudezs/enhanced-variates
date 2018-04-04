@@ -24,6 +24,7 @@ const string SETUP_NAME = "setup";
 const string RESULT_NAME = "result";
 const string RUN_NAME = "run";
 const string VERSION = "1.2";
+const float LAPLACE_SMOOTHING = 0.01;
 
 
 // ENUMS
