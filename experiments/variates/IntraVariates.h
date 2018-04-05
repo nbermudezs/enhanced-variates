@@ -68,6 +68,9 @@ public:
         IntraVariates result;
 
         ifstream file(filepath);
+        if (!file.is_open()) {
+            throw "Dependency file not found";
+        }
 
         string line;
         getline(file, line);

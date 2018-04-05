@@ -7,7 +7,7 @@
 
 #include "GeneratorConfig.h"
 
-GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP) {
+GeneratorConfig::GeneratorConfig(string dependencyFile, GroupSelector groupSelector, double retentionP) {
     random_device rdev;
     this->seeds = vector<unsigned int>(VECTOR_SIZE);
     for (int i = 0; i < VECTOR_SIZE; i++) {
@@ -21,18 +21,17 @@ GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP)
 //        allIID[VariateMethod::IID].push_back(i);
 //    }
 //    this->intraVariates = { allIID };
-    this->intraVariates = GeneratorConfig::getIntraVariates(groupSelector);
+    this->intraVariates = GeneratorConfig::getIntraVariates(dependencyFile, groupSelector);
     this->retentionP = retentionP;
 }
 
-GeneratorConfig::GeneratorConfig(GroupSelector groupSelector, double retentionP, vector<unsigned int> seeds) :
-        GeneratorConfig(groupSelector, retentionP) {
+GeneratorConfig::GeneratorConfig(string dependencyFile, GroupSelector groupSelector, double retentionP, vector<unsigned int> seeds) :
+        GeneratorConfig(dependencyFile, groupSelector, retentionP) {
     this->seeds = seeds;
 }
 
-IntraVariates GeneratorConfig::getIntraVariates(GroupSelector groupSelector) {
-    // TODO: get this from a parameter instead of hard-coding the name of the dependency file
-    return IntraVariatesUtils::fromFile("../dependency/initial7.txt", groupSelector);
+IntraVariates GeneratorConfig::getIntraVariates(string dependencyFile, GroupSelector groupSelector) {
+    return IntraVariatesUtils::fromFile(dependencyFile , groupSelector);
 }
 
 void GeneratorConfig::renew(vector<VariateMethod> variates) {
