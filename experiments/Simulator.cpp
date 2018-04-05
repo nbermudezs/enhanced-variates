@@ -8,7 +8,7 @@
 #include "Simulator.h"
 
 Statistics Simulator::run() {
-    GeneratorConfig config(setup->groupSelector, setup->retentionP);
+    GeneratorConfig config(setup->dependencyFile, setup->groupSelector, setup->retentionP);
     for (int i = 0; i < this->runs; i++) {
         Bracket* random;
         if (singleGenerator) {
@@ -94,7 +94,7 @@ Simulator::Simulator(SimulatorSetup* setup, int runs, string filePath, bool sing
     this->singleGenerator = singleGenerator;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format) {
+SimulatorSetup::SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format) {
     this->variates = variates;
     this->year = year;
     this->format = format;
@@ -104,26 +104,27 @@ SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string 
             break;
         }
     }
+    this->dependencyFile = dependencyFile;
     this->masterSeed = RandomUtils::generateMasterSeed();
     RandomUtils::setMasterSeed(this->masterSeed);
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode) :
-        SimulatorSetup(variates, year, format) {
+SimulatorSetup::SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode) :
+        SimulatorSetup(dependencyFile, variates, year, format) {
     this->flipMode = flipMode;
     this->generationDirection = GenerationDirection::BACKWARD;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+SimulatorSetup::SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                                GenerationDirection generationDirection, GroupSelector groupSelector):
-        SimulatorSetup(variates, year, format, flipMode) {
+        SimulatorSetup(dependencyFile, variates, year, format, flipMode) {
     this->generationDirection = generationDirection;
     this->groupSelector = groupSelector;
 }
 
-SimulatorSetup::SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+SimulatorSetup::SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                                GenerationDirection generationDirection, GroupSelector groupSelector, unsigned int masterSeed):
-        SimulatorSetup(variates, year, format, flipMode, generationDirection, groupSelector) {
+        SimulatorSetup(dependencyFile, variates, year, format, flipMode, generationDirection, groupSelector) {
     this->masterSeed = masterSeed;
 }
 

@@ -15,11 +15,11 @@
 using namespace std;
 
 SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFiles, string format,
-                           GroupSelector groupSelector, double retentionP) {
+                           GroupSelector groupSelector, double retentionP, string dependencyFile) {
     BitFlip flipMode = BitFlip::NO_FLIP;
     vector<VariateMethod> variates(VECTOR_SIZE, VariateMethod::IID);
     // TODO: change constructor to pass the seed if in --reproduce mode.
-    SimulatorSetup* setup = new SimulatorSetup(variates, year, format, flipMode,
+    SimulatorSetup* setup = new SimulatorSetup(dependencyFile, variates, year, format, flipMode,
                                                GenerationDirection::BACKWARD, groupSelector);
     setup->retentionP = retentionP;
 
@@ -79,9 +79,8 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
 }
 
 int main(int argc, char *argv[]) {
-    string dependencyFile;
+    string dependencyFile = "../dependency/initial7.txt";
     string outputFile;
-    // TODO: get this name from command line
     string summaryFilePath = RESULTS_PATH + "/summary.csv";
     string setupFilePath;
     ofstream::openmode summaryFileFlags = ofstream::out;
@@ -91,7 +90,7 @@ int main(int argc, char *argv[]) {
         else if (strcmp("--output_file", argv[i]) == 0)
             outputFile = argv[i + 1];
         else if (strcmp("--summary_file", argv[i]) == 0)
-            summaryFilePath = RESULTS_PATH + "/" + argv[i + 1];
+            summaryFilePath = argv[i + 1];
         else if (strcmp("--append", argv[i]) == 0)
             summaryFileFlags |= ofstream::app;
         else if (strcmp("--reproduce", argv[i]) == 0)
@@ -144,7 +143,7 @@ int main(int argc, char *argv[]) {
             for (auto year: years) {
                 for (auto singleGenerator: singleGeneratorFlag) {
                     for (auto format: formats) {
-                        SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format, groupSelector, p / 10.);
+                        SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format, groupSelector, p / 10., dependencyFile);
                         summaryFile << format << ","
                                     << groupSelector.to_string() << ","
                                     << p / 10. << "," // same value in BracketGenerator::get

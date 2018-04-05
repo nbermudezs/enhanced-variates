@@ -20,11 +20,11 @@
 
 class SimulatorSetup {
 public:
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format);
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode);
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+    SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format);
+    SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode);
+    SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                    GenerationDirection generationDirection, GroupSelector groupSelector);
-    SimulatorSetup(vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
+    SimulatorSetup(string dependencyFile, vector<VariateMethod> variates, int year, string format, BitFlip flipMode,
                    GenerationDirection generationDirection, GroupSelector groupSelector, unsigned int masterSeed);
     Bracket* smoothen(Bracket* ref, Bracket* other);
 
@@ -39,6 +39,7 @@ public:
     unsigned int masterSeed;
     GroupSelector groupSelector;
     double retentionP;
+    string dependencyFile;
 };
 
 
