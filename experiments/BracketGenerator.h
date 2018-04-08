@@ -18,6 +18,7 @@
 #include "Bracket.h"
 #include "cpt/BackwardCPT.h"
 #include "cpt/ForwardCPT.h"
+#include "cpt/TripletCPT.h"
 #include "cpt/MixedCPT.h"
 #include "GeneratorConfig.h"
 #include "utils/RandomUtils.h"
@@ -52,6 +53,8 @@ private:
         ar(CEREAL_NVP(bitOnCounts));
         ar(cereal::make_nvp("cpt", cpt->getUnconditionalProbabilities()));
     }
+
+    TripletCPT *tripletCPT;
 };
 
 

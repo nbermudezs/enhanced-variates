@@ -16,6 +16,7 @@ using namespace std;
 
 const unsigned int VECTOR_SIZE = 63;
 const unsigned int REGION_VECTOR_SIZE = 15;
+const unsigned int N_REGIONS = 4;
 const string BRACKET_METADATA_FOLDER = "../brackets";
 const string RESULTS_PATH = "../results";
 const string BASE_PATH = "../";

@@ -115,8 +115,16 @@ public:
      */
     int bitAdvance() { return -1; }
 
-private:
-    static map<string, TripletCPT*> instances;
+    bitset<3> getTriplet(int bit, double randomNumber) {
+        double acc = 0;
+        for (int x = 0; x < 8; x++) {
+            acc += dist[bit][x];
+            if (randomNumber < acc)
+                return bitset<3>(x);
+        }
+        return bitset<3>(0);
+    }
+
     /**
      * Finds the index of the two parents (previous round) associated to the given @param{bitId}
      * @param bitId index of the bit whose parents we are looking for.
@@ -124,6 +132,12 @@ private:
      * less than the second one.
      */
     pair<int, int> getParentBits(int bitId);
+
+private:
+    static map<string, TripletCPT*> instances;
+
+
+    map<int, map<int, float>> dist;
 };
 
 

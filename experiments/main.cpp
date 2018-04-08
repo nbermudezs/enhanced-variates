@@ -79,9 +79,10 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
 }
 
 int main(int argc, char *argv[]) {
+    int k = 0;
     string dependencyFile = "../dependency/initial7.txt";
     string outputFile;
-    string summaryFilePath = RESULTS_PATH + "/summary.csv";
+    string summaryFilePath = RESULTS_PATH + "/summary-all-triplets.csv";
     string setupFilePath;
     ofstream::openmode summaryFileFlags = ofstream::out;
     for (int i = 1; i < argc; i++) {
@@ -95,11 +96,13 @@ int main(int argc, char *argv[]) {
             summaryFileFlags |= ofstream::app;
         else if (strcmp("--reproduce", argv[i]) == 0)
             setupFilePath = argv[i + 1];
+        else if (strcmp("--k", argv[i]) == 0)
+            k = stoi(argv[i + 1]);
     }
     // TODO: read setupFilePath and re-run the experiment with the given setup
 
     vector<string> formats = {"TTT"};
-    vector<int> years = {2013, 2014, 2015, 2016, 2017};
+    vector<int> years = {2013, 2014, 2015, 2016, 2017, 2018};
     vector<bool> singleGeneratorFlag = {false};
     int runs = (int) 1e4;
     bool saveFile = false;
@@ -133,10 +136,9 @@ int main(int argc, char *argv[]) {
     };
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-    int k = 0;
     // uncomment this to run the experiment multiple times
     // for (int k = 0; k < 10; k++)
-    for (int p: {10, 7, 5, 3 })
+    for (int p: {10})
         for (int group = 1; group < 128; group++) {
         // for (auto group: groups) {
             GroupSelector groupSelector(group);
