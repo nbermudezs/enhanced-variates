@@ -9,6 +9,10 @@
 
 map<string, TripletCPT*> TripletCPT::instances;
 
+float smoothing(int bit) {
+    return 1/(6.f * bit);
+}
+
 TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year,
                          map<int, double> overrides):
         TripletCPT(filePath, isMetadataFile, year) {
@@ -38,7 +42,7 @@ TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year) {
         auto metrics = map<int, map<int, float>>();
         for (int triplet = 0; triplet < 8; triplet++)
             for (int bit = 0; bit < VECTOR_SIZE; bit++)
-                metrics[bit][triplet] = LAPLACE_SMOOTHING;
+                metrics[bit][triplet] = smoothing(bit);
 
         for (unsigned int i = 0; i < root.Size(); i++) {
             const CEREAL_RAPIDJSON_NAMESPACE::Value& bracket = root[i]["bracket"];
