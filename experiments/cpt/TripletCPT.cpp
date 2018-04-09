@@ -10,7 +10,8 @@
 map<string, TripletCPT*> TripletCPT::instances;
 
 float smoothing(int bit) {
-    return 1/(6.f * bit);
+    if (bit > 60) return 1;
+    return (1 + (bit % 15)) / 15.f;
 }
 
 TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year,
