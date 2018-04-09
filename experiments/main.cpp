@@ -68,6 +68,8 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
 
     cout << "=======================================================================" << endl;
 
+    results.dispose();
+
     return {
             results.max(),
             year,
