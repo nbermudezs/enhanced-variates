@@ -102,7 +102,7 @@ pair<int, int> ForwardCPT::getParentBits(int bitId) {
     int factor = bitId / 15;
     int base;
     if (mod < 12) base = (mod % 8) * 2 + 15 * factor;
-    else if (mod < 14) base = 8 + (mod % 12) * 2 + 14 * factor;
+    else if (mod < 14) base = 8 + (mod % 12) * 2 + 15 * factor;
     return make_pair(base, base + 1);
 }
 
