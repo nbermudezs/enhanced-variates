@@ -30,7 +30,7 @@ public:
      * @param bitId index of the bit. @see Constants::VECTOR_SIZE
      * @return the probability of the @param{bitId} = 1.
      */
-    double P(int bitId);
+    double P(int bitId) override;
 
     /**
      * Returns the conditional probability of the @param{bitId} being 1
@@ -39,7 +39,7 @@ public:
      * to find P(bit = 1) will be taken from this.
      * @return the conditional probability of the given bit being 1.
      */
-    double P(int bitId, BracketData data);
+    double P(int bitId, BracketData data) override;
 
     /**
      * Returns an instance of this class based on the provided attributes.
@@ -102,19 +102,19 @@ public:
      * Specifies at which bit the generation process should start
      * @return the start bit (0)
      */
-    int startBit() { return VECTOR_SIZE - 1; }
+    int startBit() override { return VECTOR_SIZE - 1; }
 
     /**
      * Specifies at which bit the generation process should stop
      * @return the end bit (Constants::VECTOR_SIZE - 1)
      */
-    int endBit() { return 0; }
+    int endBit() override { return 0; }
 
     /**
      * Determines whether the traversing of the vector happens from left to right or vice-versa.
      * @return delta (1)
      */
-    int bitAdvance() { return -1; }
+    int bitAdvance() override { return -1; }
 
     bitset<3> getTriplet(int bit, double randomNumber) {
         double acc = 0;
@@ -139,6 +139,12 @@ private:
 
 
     map<int, map<int, float>> dist;
+
+    /**
+     * Control variable to decide whether to pool or not the probabilities by region.
+     * @TODO: add a flag in main.cpp to control this
+     */
+    bool pooled = true;
 };
 
 

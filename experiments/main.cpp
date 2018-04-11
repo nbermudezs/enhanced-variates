@@ -82,10 +82,13 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
 
 int main(int argc, char *argv[]) {
     int k = 0;
+    string format = "TTT";
     string dependencyFile = "../dependency/initial7.txt";
     string outputFile;
     string summaryFilePath = RESULTS_PATH + "/summary-all-triplets.csv";
     string setupFilePath;
+    int runs = (int) 1e4;
+    ModelType modelType = ModelType::SINGLE_BIT;
     ofstream::openmode summaryFileFlags = ofstream::out;
     for (int i = 1; i < argc; i++) {
         if (strcmp("--dependency_file", argv[i]) == 0)
@@ -100,13 +103,17 @@ int main(int argc, char *argv[]) {
             setupFilePath = argv[i + 1];
         else if (strcmp("--k", argv[i]) == 0)
             k = stoi(argv[i + 1]);
+        else if (strcmp("--format", argv[i]) == 0)
+            format = argv[i + 1];
+        else if (strcmp("--model-type", argv[i]) == 0 && strcmp("triplets", argv[i + 1]) == 0)
+            modelType = ModelType::TRIPLETS;
+        else if (strcmp("--runs", argv[i]) == 0)
+            runs = stoi(argv[i + 1]);
     }
     // TODO: read setupFilePath and re-run the experiment with the given setup
 
-    vector<string> formats = {"TTT"};
     vector<int> years = {2013, 2014, 2015, 2016, 2017, 2018};
     vector<bool> singleGeneratorFlag = {false};
-    int runs = (int) 1e4;
     bool saveFile = false;
 
 #ifdef CREATE_L1_MATRICES
@@ -146,20 +153,18 @@ int main(int argc, char *argv[]) {
             GroupSelector groupSelector(group);
             for (auto year: years) {
                 for (auto singleGenerator: singleGeneratorFlag) {
-                    for (auto format: formats) {
-                        SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format, groupSelector, p / 10., dependencyFile);
-                        summaryFile << format << ","
-                                    << groupSelector.to_string() << ","
-                                    << p / 10. << "," // same value in BracketGenerator::get
-                                    << singleGenerator << ","
-                                    << year << ","
-                                    << summary.maxScore << ","
-                                    << summary.madeItToTop100 << ","
-                                    << summary.resultsPath << ","
-                                    << summary.setupPath << ","
-                                    << summary.masterSeed << ","
-                                    << k << endl;
-                    }
+                    SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format, groupSelector, p / 10., dependencyFile);
+                    summaryFile << format << ","
+                                << groupSelector.to_string() << ","
+                                << p / 10. << "," // same value in BracketGenerator::get
+                                << singleGenerator << ","
+                                << year << ","
+                                << summary.maxScore << ","
+                                << summary.madeItToTop100 << ","
+                                << summary.resultsPath << ","
+                                << summary.setupPath << ","
+                                << summary.masterSeed << ","
+                                << k << endl;
                 }
             }
         }

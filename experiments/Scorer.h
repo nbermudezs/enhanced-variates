@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include "Bracket.h"
+#include "utils/BracketUtils.h"
 using namespace std;
 
 class Scorer {
@@ -22,6 +23,7 @@ public:
     static int eval (Bracket *, Bracket *);
     static int evalWithRegionGrouping(BracketData, BracketData);
     static int evalWithRegionGrouping(Bracket *, Bracket *);
+    static int evalFFF(Bracket *ref, Bracket *input);
 
     /**
      * Calculates the score of a bracket given a reference bracket

@@ -68,22 +68,25 @@ TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year) {
         }
 
         // TODO: add some kind of parameter to decide whether to do pooling or not
-        auto metricsTmp = map<int, map<int, float>>();
-        metricsTmp[61] = metrics[61];
-        metricsTmp[62] = metrics[62];
-        metricsTmp[63] = metrics[63];
-        for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-            for (int regionCtrl = 0; regionCtrl < N_REGIONS; regionCtrl++) {
-                for (int region = 0; region < N_REGIONS; region++) {
-                    int pos = 15 * region + i;
-                    for (int triplet = 0; triplet < 8; triplet++) {
-                        metricsTmp[15 * regionCtrl + i][triplet] += metrics[pos][triplet];
+        if (this->pooled) {
+            auto metricsTmp = map<int, map<int, float>>();
+            metricsTmp[61] = metrics[61];
+            metricsTmp[62] = metrics[62];
+            metricsTmp[63] = metrics[63];
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                for (int regionCtrl = 0; regionCtrl < N_REGIONS; regionCtrl++) {
+                    for (int region = 0; region < N_REGIONS; region++) {
+                        int pos = 15 * region + i;
+                        for (int triplet = 0; triplet < 8; triplet++) {
+                            metricsTmp[15 * regionCtrl + i][triplet] += metrics[pos][triplet];
+                        }
                     }
                 }
             }
+
+            metrics = metricsTmp;
         }
 
-        metrics = metricsTmp;
         for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
             // normalize
             float sum = 0;
