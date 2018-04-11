@@ -139,6 +139,12 @@ private:
 
 
     map<int, map<int, float>> dist;
+
+    /**
+     * Control variable to decide whether to pool or not the probabilities by region.
+     * @TODO: add a flag in main.cpp to control this
+     */
+    bool pooled = true;
 };
 
 
