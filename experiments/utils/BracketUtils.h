@@ -149,10 +149,10 @@ public:
                 }
             }
         }
-        // last 3 bits are positional only
-        result[60] = bitRep[VECTOR_SIZE - 1 - 60] ? regionWinners[0] : regionWinners[1];
-        result[61] = bitRep[VECTOR_SIZE - 1 - 61] ? regionWinners[2] : regionWinners[3];
-        result[62] = bitRep[VECTOR_SIZE - 1 - 62] ? result[60] : result[61];
+        // last 3 bits are 0/1 positional. NOT seeds
+        result[60] = bitRep[VECTOR_SIZE - 1 - 60];
+        result[61] = bitRep[VECTOR_SIZE - 1 - 61];
+        result[62] = bitRep[VECTOR_SIZE - 1 - 62];
         return result;
     }
 
@@ -196,9 +196,9 @@ public:
             }
         }
 
-        result[VECTOR_SIZE - 1 - 60] = seeds[60] == seeds[prevRoundParentBitIds(60).first];
-        result[VECTOR_SIZE - 1 - 61] = seeds[61] == seeds[prevRoundParentBitIds(61).first];
-        result[VECTOR_SIZE - 1 - 62] = seeds[62] == seeds[60];
+        result[VECTOR_SIZE - 1 - 60] = seeds[60];
+        result[VECTOR_SIZE - 1 - 61] = seeds[61];
+        result[VECTOR_SIZE - 1 - 62] = seeds[62];
 
         return result;
     }
@@ -228,21 +228,26 @@ public:
                 }
             }
         }
+
+        bool firstSemiRight = false;
         if (seeds[60] == ref[60]) {
             if ((ref[60] == 1 && seeds[14] == ref[14]) || (ref[60] == 0 && seeds[29] == ref[29])) {
+                firstSemiRight = true;
                 scores[6] += 160;
                 scores[4] += 160;
             }
         }
 
+        bool secondSemiRight = false;
         if (seeds[61] == ref[61]) {
             if ((ref[61] == 1 && seeds[44] == ref[44]) || (ref[61] == 0 && seeds[59] == ref[59])) {
+                secondSemiRight = true;
                 scores[6] += 160;
                 scores[4] += 160;
             }
         }
 
-        if (seeds[62] == ref[62]) {
+        if (seeds[62] == ref[62] && ((seeds[62] == 1 && firstSemiRight) || (seeds[62 == 0] && secondSemiRight))) {
             scores[5] += 320;
             scores[6] += 320;
         }
