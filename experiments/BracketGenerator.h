@@ -55,6 +55,21 @@ private:
     }
 
     TripletCPT *tripletCPT;
+
+    /**
+     * Generates a Bracket using the single bit model using the given configuration.
+     * @param config Configuration for the generator.
+     * @return A bracket
+     */
+    Bracket* generateWithSingleBits(GeneratorConfig config);
+
+    /**
+     * Generates a Bracket using the triplets model using the given configuration.
+     * A triplet is formed by a bit, its sibling and the resulting bit in the next round
+     * @param config Configuration for the generator.
+     * @return A bracket
+     */
+    Bracket* generateWithTriplets(GeneratorConfig config);
 };
 
 
