@@ -16,6 +16,7 @@ using namespace std;
 
 const unsigned int VECTOR_SIZE = 63;
 const unsigned int REGION_VECTOR_SIZE = 15;
+const unsigned int N_REGIONS = 4;
 const string BRACKET_METADATA_FOLDER = "../brackets";
 const string RESULTS_PATH = "../results";
 const string BASE_PATH = "../";
@@ -50,6 +51,19 @@ enum class CptYearExclusion {
     NONE = 0,
     EXACT,
     AFTER
+};
+
+/**
+ * Enumeration to keep track of the supported models.
+ * @TODO: a flag in main.cpp should control which one should be used.
+ */
+enum class ModelType {
+    SINGLE_BIT = 0,
+    TRIPLETS
+};
+static map<ModelType, string> ModelTypeNames = {
+        pair<ModelType, string>(ModelType::SINGLE_BIT, "SINGLE_BIT"),
+        pair<ModelType, string>(ModelType::TRIPLETS, "TRIPLETS")
 };
 
 enum class ROUND {
@@ -113,38 +127,6 @@ struct SimulationSummary {
     long madeItToTop100;
     unsigned int masterSeed;
 };
-
-//typedef struct BracketData {
-//    BracketData() {
-//        for (int i = 0; i < VECTOR_SIZE; i++) {
-//            x[i] = 0;
-//        }
-//    }
-//
-//    explicit BracketData(string data) {
-//        for (int i = 0; i < VECTOR_SIZE; i++) {
-//            x[VECTOR_SIZE - i - 1] = data[i] - '0';
-//        }
-//    }
-//
-//    string to_string() {
-//        string result;
-//        for (int i = 0; i < VECTOR_SIZE; i++) {
-//            float val = x[VECTOR_SIZE - i - 1];
-//            if (val == 1) {
-//                result.append("1");
-//            } else if (val == 0) {
-//                result.append("0");
-//            } else {
-//                result.append("½");
-//            }
-//        }
-//        return result;
-//    }
-//
-//    float x[VECTOR_SIZE];
-//    float& operator[](int i) { return x[i]; }
-//} BracketData;
 
 // HELPERS
 #define ENUM_NAME_HELPER(name) #name

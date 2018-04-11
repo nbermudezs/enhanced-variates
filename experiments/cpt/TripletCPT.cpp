@@ -9,6 +9,11 @@
 
 map<string, TripletCPT*> TripletCPT::instances;
 
+float smoothing(int bit) {
+    if (bit > 60) return 1;
+    return (1 + (bit % 15)) / 15.f;
+}
+
 TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year,
                          map<int, double> overrides):
         TripletCPT(filePath, isMetadataFile, year) {
@@ -36,9 +41,9 @@ TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year) {
 
         // key1 = bit, key2 = triplet from bit, value = count of triplet occurrences
         auto metrics = map<int, map<int, float>>();
-        for (int i = 0; i < 8; i++)
+        for (int triplet = 0; triplet < 8; triplet++)
             for (int bit = 0; bit < VECTOR_SIZE; bit++)
-                metrics[bit][i] = LAPLACE_SMOOTHING;
+                metrics[bit][triplet] = smoothing(bit);
 
         for (unsigned int i = 0; i < root.Size(); i++) {
             const CEREAL_RAPIDJSON_NAMESPACE::Value& bracket = root[i]["bracket"];
@@ -49,14 +54,11 @@ TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year) {
             historyCount += 1;
             string vector = bracket["fullvector"].GetString();
             for(unsigned int bit = 0; bit < VECTOR_SIZE; bit++) {
-                if (vector[bit] == '0')
-                    continue;
                 totalCounts[bit] += 1;
                 auto parents = this->getParentBits(bit);
                 if (parents.first == -1)
                     continue;
 
-                // TODO: pool!!!
                 string triplet;
                 triplet.append(1, vector[bit]);
                 triplet.append(1, vector[parents.first]);
@@ -64,17 +66,39 @@ TripletCPT::TripletCPT(string filePath, bool isMetadataFile, int year) {
                 metrics[bit][stoi(triplet, nullptr, 2)] += 1;
             }
         }
+
+        // TODO: add some kind of parameter to decide whether to do pooling or not
+        if (this->pooled) {
+            auto metricsTmp = map<int, map<int, float>>();
+            metricsTmp[61] = metrics[61];
+            metricsTmp[62] = metrics[62];
+            metricsTmp[63] = metrics[63];
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                for (int regionCtrl = 0; regionCtrl < N_REGIONS; regionCtrl++) {
+                    for (int region = 0; region < N_REGIONS; region++) {
+                        int pos = 15 * region + i;
+                        for (int triplet = 0; triplet < 8; triplet++) {
+                            metricsTmp[15 * regionCtrl + i][triplet] += metrics[pos][triplet];
+                        }
+                    }
+                }
+            }
+
+            metrics = metricsTmp;
+        }
+
         for (unsigned int i = 0; i < VECTOR_SIZE; i++) {
             // normalize
             float sum = 0;
-            for (int triplet = 0; triplet < 8; triplet++)
+            for (int triplet = 0; triplet < metrics[i].size(); triplet++)
                 sum += metrics[i][triplet];
-            for (int triplet = 0; triplet < 8; triplet++)
+            for (int triplet = 0; triplet < metrics[i].size(); triplet++)
                 metrics[i][triplet] /= sum;
 
             // for compatibility with other CPT classes
             this->probabilities.push_back(1.0 * totalCounts[i] / historyCount);
         }
+        this->dist = metrics;
     }
 }
 

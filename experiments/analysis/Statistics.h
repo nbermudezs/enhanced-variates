@@ -87,6 +87,12 @@ public:
     long countGreaterThan(int min);
 
     Bracket* bestBracket;
+
+    void dispose() {
+        for (auto bracket: subGraphs) {
+            delete bracket;
+        }
+    }
 private:
     int bestScore = 0;
     double _mean = -1;

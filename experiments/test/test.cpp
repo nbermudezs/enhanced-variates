@@ -6,12 +6,14 @@
  */
 
 #include "BitsetTest.h"
+#include "BracketUtilsTest.h"
 #include "ConditionalProbabilityTableTest.h"
 #include "ScorerTest.h"
 #include "SmoothingTest.h"
 
 int main() {
     BitsetTest::run();
+    BracketUtilsTest::run();
     ConditionalProbabilityTableTest::run();
     ScorerTest::run();
     SmoothingTest::run();
