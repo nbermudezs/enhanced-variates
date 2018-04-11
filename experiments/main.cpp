@@ -87,6 +87,8 @@ int main(int argc, char *argv[]) {
     string outputFile;
     string summaryFilePath = RESULTS_PATH + "/summary-all-triplets.csv";
     string setupFilePath;
+    int runs = (int) 1e4;
+    ModelType modelType = ModelType::SINGLE_BIT;
     ofstream::openmode summaryFileFlags = ofstream::out;
     for (int i = 1; i < argc; i++) {
         if (strcmp("--dependency_file", argv[i]) == 0)
@@ -103,12 +105,15 @@ int main(int argc, char *argv[]) {
             k = stoi(argv[i + 1]);
         else if (strcmp("--format", argv[i]) == 0)
             format = argv[i + 1];
+        else if (strcmp("--model-type", argv[i]) == 0 && strcmp("triplets", argv[i + 1]) == 0)
+            modelType = ModelType::TRIPLETS;
+        else if (strcmp("--runs", argv[i]) == 0)
+            runs = stoi(argv[i + 1]);
     }
     // TODO: read setupFilePath and re-run the experiment with the given setup
 
     vector<int> years = {2013, 2014, 2015, 2016, 2017, 2018};
     vector<bool> singleGeneratorFlag = {false};
-    int runs = (int) 1e4;
     bool saveFile = false;
 
 #ifdef CREATE_L1_MATRICES
