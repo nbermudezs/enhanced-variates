@@ -27,6 +27,7 @@ public:
     void renew(vector<VariateMethod> variates);
     IntraVariates intraVariates;
     double retentionP;
+    ModelType modelType = ModelType::TRIPLETS;
 private:
     static IntraVariates getIntraVariates(string dependencyFile, GroupSelector groupSelector);
 };
