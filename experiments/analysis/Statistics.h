@@ -86,6 +86,12 @@ public:
      */
     long countGreaterThan(int min);
 
+    /**
+     * The key of the map is the lower bound of the score range being binned
+     * E.g. { 1900: 1, 1800: 3 } means that there are 3 scores higher than or equal to 1800 and less than 1900
+     */
+    map<pair<int, int>, int> binnedScores();
+
     Bracket* bestBracket;
 
     void dispose() {
