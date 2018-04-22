@@ -104,49 +104,41 @@ public:
         SeedVector result = SeedVector(VECTOR_SIZE);
         SeedVector regionWinners = {0, 0, 0, 0};
 
-        if (format.compare("FFF") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-                    int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
+        map<int, int> bitIdToRoundFormat;
+        bitIdToRoundFormat[8] = 0;
+        bitIdToRoundFormat[9] = 0;
+        bitIdToRoundFormat[10] = 0;
+        bitIdToRoundFormat[11] = 0;
+        bitIdToRoundFormat[12] = 1;
+        bitIdToRoundFormat[13] = 1;
+        bitIdToRoundFormat[14] = 2;
 
-                    int seed = 0;
+        for (int region = 0; region < 4; region++) {
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                int bitId = region * REGION_VECTOR_SIZE + i;
+                int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
 
-                    if (i < 8) {
-                        seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
-                    } else {
+                int seed = 0;
+
+                if (i < 8) {
+                    seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
+                } else {
+                    if (format[bitIdToRoundFormat[i]] == 'F') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         auto maxParent = result[prevRoundBitIds.first] >= result[prevRoundBitIds.second] ?
                                          result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                         auto minParent = result[prevRoundBitIds.first] < result[prevRoundBitIds.second] ?
                                          result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                         seed = bitVal ? minParent : maxParent;
-                    }
-                    result[bitId] = seed;
-
-                    if (i == REGION_VECTOR_SIZE - 1)
-                        regionWinners[region] = seed;
-                }
-            }
-        } else if (format.compare("TTT") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-                    int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
-
-                    int seed = 0;
-
-                    if (i < 8) {
-                        seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
-                    } else {
+                    } else if (format[bitIdToRoundFormat[i]] == 'T') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         seed = bitVal ? result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                     }
-                    result[bitId] = seed;
-
-                    if (i == REGION_VECTOR_SIZE - 1)
-                        regionWinners[region] = seed;
                 }
+                result[bitId] = seed;
+
+                if (i == REGION_VECTOR_SIZE - 1)
+                    regionWinners[region] = seed;
             }
         }
         // last 3 bits are 0/1 positional. NOT seeds
@@ -166,31 +158,29 @@ public:
     static BracketData seedsToBits(SeedVector seeds, string format) {
         BracketData result;
 
-        if (format.compare("TTT") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
+        map<int, int> bitIdToRoundFormat;
+        bitIdToRoundFormat[8] = 0;
+        bitIdToRoundFormat[9] = 0;
+        bitIdToRoundFormat[10] = 0;
+        bitIdToRoundFormat[11] = 0;
+        bitIdToRoundFormat[12] = 1;
+        bitIdToRoundFormat[13] = 1;
+        bitIdToRoundFormat[14] = 2;
 
-                    if (i < 8) {
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
-                    } else {
-                        auto prevRoundBitIds = prevRoundParentBitIds(bitId);
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == seeds[prevRoundBitIds.first];
-                    }
-                }
-            }
-        } else if (format.compare("FFF") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-
-                    if (i < 8) {
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
-                    } else {
+        for (int region = 0; region < 4; region++) {
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                int bitId = region * REGION_VECTOR_SIZE + i;
+                if (i < 8) {
+                    result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
+                } else {
+                    if (format[bitIdToRoundFormat[i]] == 'F') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         auto favorite = seeds[prevRoundBitIds.first] < seeds[prevRoundBitIds.second] ?
                                         seeds[prevRoundBitIds.first]: seeds[prevRoundBitIds.second];
                         result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == favorite;
+                    } else if (format[bitIdToRoundFormat[i]] == 'T') {
+                        auto prevRoundBitIds = prevRoundParentBitIds(bitId);
+                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == seeds[prevRoundBitIds.first];
                     }
                 }
             }
@@ -252,6 +242,18 @@ public:
             scores[6] += 320;
         }
         return scores;
+    }
+
+    /**
+     * Converts a given bracket data from the current format to a new format
+     * @param data original bit vector representation of the bracket
+     * @param currentFormat format of the data.
+     * @param newFormat target format
+     * @return a bracket (bit representation) using the new format
+     */
+    static BracketData convertBracket(BracketData data, string currentFormat, string newFormat) {
+        auto intermediate = bitsToSeeds(data, currentFormat);
+        return seedsToBits(intermediate, newFormat);
     }
 };
 
