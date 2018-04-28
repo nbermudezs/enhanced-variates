@@ -8,6 +8,7 @@
 #ifndef EXPERIMENTS_BRACKETUTILS_H
 #define EXPERIMENTS_BRACKETUTILS_H
 
+#include <fstream>
 #include <vector>
 #include "../Bracket.h"
 using namespace std;
@@ -254,6 +255,46 @@ public:
     static BracketData convertBracket(BracketData data, string currentFormat, string newFormat) {
         auto intermediate = bitsToSeeds(data, currentFormat);
         return seedsToBits(intermediate, newFormat);
+    }
+
+    /**
+     * Converts a brackets file in a given format into a new file with
+     * each of the brackets and corresponding region brackets converted to the specified new format.
+     * @param filePath path of the source brackets file
+     * @param currentFormat format of the source brackets
+     * @param newFormat target format
+     * @param outputFilePath target location for the new file
+     */
+    static void transformFile(string filePath, string currentFormat, string newFormat, string outputFilePath) {
+        ifstream file(filePath);
+        CEREAL_RAPIDJSON_NAMESPACE::IStreamWrapper isw(file);
+        CEREAL_RAPIDJSON_NAMESPACE::Document doc;
+        doc.ParseStream(isw);
+
+        CEREAL_RAPIDJSON_NAMESPACE::Value& root = doc["brackets"];
+
+        for (unsigned int i = 0; i < root.Size(); i++) {
+            CEREAL_RAPIDJSON_NAMESPACE::Value &bracket = root[i]["bracket"];
+            auto newVector = BracketUtils::convertBracket(
+                    BracketData(bracket["fullvector"].GetString()),
+                    currentFormat,
+                    newFormat);
+            auto str = new string(newVector.to_string());
+            bracket["fullvector"] = CEREAL_RAPIDJSON_NAMESPACE::StringRef(str->c_str());
+
+            auto regions = bracket["regions"].GetArray();
+            int ctrl = 0;
+            for (CEREAL_RAPIDJSON_NAMESPACE::Value& region: regions) {
+                auto ref = new string(newVector.to_string().substr(ctrl * REGION_VECTOR_SIZE, 15));
+                bracket["regions"][ctrl]["vector"] = CEREAL_RAPIDJSON_NAMESPACE::StringRef(ref->c_str());
+                ctrl += 1;
+            }
+        }
+
+        ofstream ofs(outputFilePath);
+        CEREAL_RAPIDJSON_NAMESPACE::OStreamWrapper osw(ofs);
+        CEREAL_RAPIDJSON_NAMESPACE::PrettyWriter<CEREAL_RAPIDJSON_NAMESPACE::OStreamWrapper> writer(osw);
+        doc.Accept(writer);
     }
 };
 
