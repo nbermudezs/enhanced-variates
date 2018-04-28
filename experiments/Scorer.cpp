@@ -280,3 +280,19 @@ pair<vector<int>, bool> Scorer::scoreRegion(BracketData reference, BracketData i
     }
     return pair<vector<int>, bool>(scores, finalsMatch);
 }
+
+int Scorer::evalFFF(Bracket *ref, Bracket *input) {
+    auto refSeeds = BracketUtils::bitsToSeeds(ref->data, "FFF");
+    auto inputSeeds = BracketUtils::bitsToSeeds(input->data, "FFF");
+    return BracketUtils::scoreFromSeeds(refSeeds, inputSeeds)[6];
+}
+
+int Scorer::eval(Bracket *ref, Bracket *input, string format) {
+    if (format == "TTT") {
+        return evalWithRegionGrouping(ref, input);
+    } else {
+        auto refSeeds = BracketUtils::bitsToSeeds(ref->data, format);
+        auto inputSeeds = BracketUtils::bitsToSeeds(input->data, format);
+        return BracketUtils::scoreFromSeeds(refSeeds, inputSeeds)[6];
+    }
+}

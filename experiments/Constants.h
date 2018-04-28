@@ -126,6 +126,7 @@ struct SimulationSummary {
     string setupPath;
     long madeItToTop100;
     unsigned int masterSeed;
+    map<pair<int, int>, int> binnedScores;
 };
 
 // HELPERS

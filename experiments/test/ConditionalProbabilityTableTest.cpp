@@ -8,7 +8,7 @@
 #include "ConditionalProbabilityTableTest.h"
 
 void ConditionalProbabilityTableTest::run() {
-    BackwardCPT table(TEST_PATH + "/mocks/bracketsMock.json", false, 0);
+    BackwardCPT table(TEST_PATH + "/mocks/bracketsMock.json", false, 2018);
     BracketData refOnes ("111111111111111111111111111111111111111111111111111111111111111");
     BracketData refZeros("000000000000000000000000000000000000000000000000000000000000000");
     double p;

@@ -147,3 +147,28 @@ void Statistics::recordFlippedBracket(int scoreDelta, vector<int> l1s, Bracket *
 long Statistics::countGreaterThan(int min) {
     return count_if(begin(scores), end(scores), [min](int el) { return el >= min; });
 }
+
+map<pair<int, int>, int> Statistics::binnedScores() {
+    pair<int, int> bins[8] = {
+            pair<int, int>(1200, 1300),
+            pair<int, int>(1300, 1400),
+            pair<int, int>(1400, 1500),
+            pair<int, int>(1500, 1600),
+            pair<int, int>(1600, 1700),
+            pair<int, int>(1700, 1800),
+            pair<int, int>(1800, 1900),
+            pair<int, int>(1900, 2000)
+    };
+    map<pair<int, int>, int> result;
+
+    for (auto score: scores) {
+        for (auto bin: bins) {
+            if (score >= bin.first && score < bin.second) {
+                result[bin] += 1;
+                break;
+            }
+        }
+    }
+
+    return result;
+}
