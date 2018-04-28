@@ -8,6 +8,7 @@
 #ifndef EXPERIMENTS_BRACKETUTILS_H
 #define EXPERIMENTS_BRACKETUTILS_H
 
+#include <fstream>
 #include <vector>
 #include "../Bracket.h"
 using namespace std;
@@ -104,49 +105,41 @@ public:
         SeedVector result = SeedVector(VECTOR_SIZE);
         SeedVector regionWinners = {0, 0, 0, 0};
 
-        if (format.compare("FFF") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-                    int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
+        map<int, int> bitIdToRoundFormat;
+        bitIdToRoundFormat[8] = 0;
+        bitIdToRoundFormat[9] = 0;
+        bitIdToRoundFormat[10] = 0;
+        bitIdToRoundFormat[11] = 0;
+        bitIdToRoundFormat[12] = 1;
+        bitIdToRoundFormat[13] = 1;
+        bitIdToRoundFormat[14] = 2;
 
-                    int seed = 0;
+        for (int region = 0; region < 4; region++) {
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                int bitId = region * REGION_VECTOR_SIZE + i;
+                int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
 
-                    if (i < 8) {
-                        seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
-                    } else {
+                int seed = 0;
+
+                if (i < 8) {
+                    seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
+                } else {
+                    if (format[bitIdToRoundFormat[i]] == 'F') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         auto maxParent = result[prevRoundBitIds.first] >= result[prevRoundBitIds.second] ?
                                          result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                         auto minParent = result[prevRoundBitIds.first] < result[prevRoundBitIds.second] ?
                                          result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                         seed = bitVal ? minParent : maxParent;
-                    }
-                    result[bitId] = seed;
-
-                    if (i == REGION_VECTOR_SIZE - 1)
-                        regionWinners[region] = seed;
-                }
-            }
-        } else if (format.compare("TTT") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-                    int bitVal = bitRep[VECTOR_SIZE - bitId - 1];
-
-                    int seed = 0;
-
-                    if (i < 8) {
-                        seed = bitVal ? GROUP_SEEDS[i].first : GROUP_SEEDS[i].second;
-                    } else {
+                    } else if (format[bitIdToRoundFormat[i]] == 'T') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         seed = bitVal ? result[prevRoundBitIds.first] : result[prevRoundBitIds.second];
                     }
-                    result[bitId] = seed;
-
-                    if (i == REGION_VECTOR_SIZE - 1)
-                        regionWinners[region] = seed;
                 }
+                result[bitId] = seed;
+
+                if (i == REGION_VECTOR_SIZE - 1)
+                    regionWinners[region] = seed;
             }
         }
         // last 3 bits are 0/1 positional. NOT seeds
@@ -166,31 +159,29 @@ public:
     static BracketData seedsToBits(SeedVector seeds, string format) {
         BracketData result;
 
-        if (format.compare("TTT") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
+        map<int, int> bitIdToRoundFormat;
+        bitIdToRoundFormat[8] = 0;
+        bitIdToRoundFormat[9] = 0;
+        bitIdToRoundFormat[10] = 0;
+        bitIdToRoundFormat[11] = 0;
+        bitIdToRoundFormat[12] = 1;
+        bitIdToRoundFormat[13] = 1;
+        bitIdToRoundFormat[14] = 2;
 
-                    if (i < 8) {
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
-                    } else {
-                        auto prevRoundBitIds = prevRoundParentBitIds(bitId);
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == seeds[prevRoundBitIds.first];
-                    }
-                }
-            }
-        } else if (format.compare("FFF") == 0) {
-            for (int region = 0; region < 4; region++) {
-                for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
-                    int bitId = region * REGION_VECTOR_SIZE + i;
-
-                    if (i < 8) {
-                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
-                    } else {
+        for (int region = 0; region < 4; region++) {
+            for (int i = 0; i < REGION_VECTOR_SIZE; i++) {
+                int bitId = region * REGION_VECTOR_SIZE + i;
+                if (i < 8) {
+                    result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == GROUP_SEEDS[i].first;
+                } else {
+                    if (format[bitIdToRoundFormat[i]] == 'F') {
                         auto prevRoundBitIds = prevRoundParentBitIds(bitId);
                         auto favorite = seeds[prevRoundBitIds.first] < seeds[prevRoundBitIds.second] ?
                                         seeds[prevRoundBitIds.first]: seeds[prevRoundBitIds.second];
                         result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == favorite;
+                    } else if (format[bitIdToRoundFormat[i]] == 'T') {
+                        auto prevRoundBitIds = prevRoundParentBitIds(bitId);
+                        result[VECTOR_SIZE - 1 - bitId] = seeds[bitId] == seeds[prevRoundBitIds.first];
                     }
                 }
             }
@@ -252,6 +243,58 @@ public:
             scores[6] += 320;
         }
         return scores;
+    }
+
+    /**
+     * Converts a given bracket data from the current format to a new format
+     * @param data original bit vector representation of the bracket
+     * @param currentFormat format of the data.
+     * @param newFormat target format
+     * @return a bracket (bit representation) using the new format
+     */
+    static BracketData convertBracket(BracketData data, string currentFormat, string newFormat) {
+        auto intermediate = bitsToSeeds(data, currentFormat);
+        return seedsToBits(intermediate, newFormat);
+    }
+
+    /**
+     * Converts a brackets file in a given format into a new file with
+     * each of the brackets and corresponding region brackets converted to the specified new format.
+     * @param filePath path of the source brackets file
+     * @param currentFormat format of the source brackets
+     * @param newFormat target format
+     * @param outputFilePath target location for the new file
+     */
+    static void transformFile(string filePath, string currentFormat, string newFormat, string outputFilePath) {
+        ifstream file(filePath);
+        CEREAL_RAPIDJSON_NAMESPACE::IStreamWrapper isw(file);
+        CEREAL_RAPIDJSON_NAMESPACE::Document doc;
+        doc.ParseStream(isw);
+
+        CEREAL_RAPIDJSON_NAMESPACE::Value& root = doc["brackets"];
+
+        for (unsigned int i = 0; i < root.Size(); i++) {
+            CEREAL_RAPIDJSON_NAMESPACE::Value &bracket = root[i]["bracket"];
+            auto newVector = BracketUtils::convertBracket(
+                    BracketData(bracket["fullvector"].GetString()),
+                    currentFormat,
+                    newFormat);
+            auto str = new string(newVector.to_string());
+            bracket["fullvector"] = CEREAL_RAPIDJSON_NAMESPACE::StringRef(str->c_str());
+
+            auto regions = bracket["regions"].GetArray();
+            int ctrl = 0;
+            for (CEREAL_RAPIDJSON_NAMESPACE::Value& region: regions) {
+                auto ref = new string(newVector.to_string().substr(ctrl * REGION_VECTOR_SIZE, 15));
+                bracket["regions"][ctrl]["vector"] = CEREAL_RAPIDJSON_NAMESPACE::StringRef(ref->c_str());
+                ctrl += 1;
+            }
+        }
+
+        ofstream ofs(outputFilePath);
+        CEREAL_RAPIDJSON_NAMESPACE::OStreamWrapper osw(ofs);
+        CEREAL_RAPIDJSON_NAMESPACE::PrettyWriter<CEREAL_RAPIDJSON_NAMESPACE::OStreamWrapper> writer(osw);
+        doc.Accept(writer);
     }
 };
 

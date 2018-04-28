@@ -43,7 +43,7 @@ Statistics Simulator::run() {
             }
         }
         // TODO: figure out how to do antithetic with a single generator
-        int score = Scorer::evalWithRegionGrouping(reference, random);
+        int score = Scorer::eval(reference, random, setup->format);
         vector<int> l1 = Scorer::l1ByRounds(reference, random);
         random->setMetadata(l1, score);
         this->stats.accountFor(score, l1, random);

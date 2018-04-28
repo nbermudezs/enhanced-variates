@@ -17,6 +17,10 @@ public:
         runTTTe2e();
         TTTtoFFF();
         testSeedBasedScoring();
+        testTFTToSeeds();
+        testTFFToSeeds();
+        testTTFToSeeds();
+        testConversion();
     }
 
 private:
@@ -44,6 +48,59 @@ private:
         assert(scores[3] == 240); // E8
         assert(scores[4] == 160); // F4
         assert(scores[5] == 0);
+    }
+
+    static void testTFTToSeeds() {
+        SeedVector refSeeds = {
+                1, 9, 12, 4, 6, 3, 7, 2, 1, 4, 3, 2, 1, 2, 1,
+                1, 8, 5, 4, 11, 3, 7, 2, 1, 4, 11, 2, 4, 11, 4,
+                1, 9, 5, 4, 6, 3, 10, 2, 1, 5, 3, 2, 1, 3, 3,
+                1, 9, 5, 4, 6, 3, 7, 2, 1, 4, 6, 2, 1, 6, 1,
+                1, 1, 0
+        };
+        BracketData test("100111111000111111101111010001101111011100100101111111010101110");
+        auto seeds = BracketUtils::bitsToSeeds(test, "TFT");
+        for (int i = 0; i < test.size(); i++) {
+            assert(seeds[i] == refSeeds[i]);
+        }
+    }
+
+    static void testTFFToSeeds() {
+        SeedVector refSeeds = {
+                1, 9, 12, 4, 6, 3, 7, 2, 1, 4, 3, 2, 1, 2, 1,
+                1, 8, 5, 4, 11, 3, 7, 2, 1, 4, 11, 2, 4, 11, 4,
+                1, 9, 5, 4, 6, 3, 10, 2, 1, 5, 3, 2, 1, 3, 3,
+                1, 9, 5, 4, 6, 3, 7, 2, 1, 4, 6, 2, 1, 6, 1,
+                1, 1, 0
+        };
+        BracketData test("100111111000111111101111010001101111011100100101111111010101110");
+        auto seeds = BracketUtils::bitsToSeeds(test, "TFF");
+        for (int i = 0; i < test.size(); i++) {
+            assert(seeds[i] == refSeeds[i]);
+        }
+    }
+
+    static void testTTFToSeeds() {
+        SeedVector refSeeds = {
+                1, 9, 12, 4, 6, 3, 7, 2, 1, 4, 3, 2, 1, 3, 1,
+                1, 8, 5, 4, 11, 3, 7, 2, 1, 4, 11, 2, 4, 2, 2,
+                1, 9, 5, 4, 6, 3, 10, 2, 1, 5, 3, 2, 1, 2, 2,
+                1, 9, 5, 4, 6, 3, 7, 2, 1, 4, 6, 2, 1, 2, 1,
+                1, 1, 0
+        };
+        BracketData test("100111111000111111101111010001101111011100100101111111010101110");
+        auto seeds = BracketUtils::bitsToSeeds(test, "TTF");
+        for (int i = 0; i < test.size(); i++) {
+            assert(seeds[i] == refSeeds[i]);
+        }
+    }
+
+    static void testConversion() {
+        BracketData test("101001111100000101111111010011101011011111101111101111001111010");
+        auto step1 = BracketUtils::convertBracket(test, "TTT", "FTT");
+        auto step2 = BracketUtils::convertBracket(step1, "FTT", "TFT");
+        auto step3 = BracketUtils::convertBracket(step2, "TFT", "TTT");
+        assert(test == step3);
     }
 };
 

@@ -24,6 +24,7 @@ public:
     static int evalWithRegionGrouping(BracketData, BracketData);
     static int evalWithRegionGrouping(Bracket *, Bracket *);
     static int evalFFF(Bracket *ref, Bracket *input);
+    static int eval(Bracket *ref, Bracket *input, string format);
 
     /**
      * Calculates the score of a bracket given a reference bracket
