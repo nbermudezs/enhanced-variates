@@ -76,7 +76,8 @@ SimulationSummary simulate(int year, bool singleGenerator, int runs, bool saveFi
             resultsPath,
             setupPath,
             madeItToTop100,
-            setup->masterSeed
+            setup->masterSeed,
+            results.binnedScores()
     };
 }
 
@@ -105,8 +106,20 @@ int main(int argc, char *argv[]) {
             k = stoi(argv[i + 1]);
         else if (strcmp("--format", argv[i]) == 0)
             format = argv[i + 1];
-        else if (strcmp("--model-type", argv[i]) == 0 && strcmp("triplets", argv[i + 1]) == 0)
-            modelType = ModelType::TRIPLETS;
+        else if (strcmp("--model-type", argv[i]) == 0){
+            if (strcmp("triplets", argv[i + 1]) == 0)
+                modelType = ModelType::TRIPLETS;
+        } else if (strcmp("--transform-brackets", argv[i]) == 0) {
+            string bracketsPath = argv[i + 1];
+            string currentFormat = argv[i + 2];
+            string newFormat = argv[i + 3];
+
+            set<string> formats = { "FFT", "FTF", "FTT", "TFF", "TFT", "TTF" };
+            for (auto format : formats)
+                BracketUtils::transformFile(
+                        "../brackets/TTT/allBracketsTTT.json", "TTT", format,
+                        "../brackets/" + format + "/allBrackets" + format + ".json");
+        }
         else if (strcmp("--runs", argv[i]) == 0)
             runs = stoi(argv[i + 1]);
     }
@@ -136,7 +149,7 @@ int main(int argc, char *argv[]) {
 
     ofstream summaryFile(summaryFilePath, summaryFileFlags);
     if (FileSystem::isFileEmpty(summaryFilePath))
-        summaryFile << "Format,Groups,ReP,SingleGenerator,Year,MaxScore,Top100,ResultsFile,SetupFile,MasterSeed,Run" << endl;
+        summaryFile << "Format,Groups,ReP,SingleGenerator,Year,MaxScore,Top100,ResultsFile,SetupFile,MasterSeed,Run,Replications,Bin12_13,Bin13_14,Bin14_15,Bin15_16,Bin16_17,Bin17_18,Bin18_19,Bin19_20," << endl;
 
     // use this to run an specific set of groups instead of going through all possible
     // combinations. See the loop that controls the group a few lines below.
@@ -147,6 +160,7 @@ int main(int argc, char *argv[]) {
 
     // uncomment this to run the experiment multiple times
     // for (int k = 0; k < 10; k++)
+    long totalTop100 = 0;
     for (int p: {10})
         for (int group = 1; group < 128; group++) {
         // for (auto group: groups) {
@@ -154,6 +168,7 @@ int main(int argc, char *argv[]) {
             for (auto year: years) {
                 for (auto singleGenerator: singleGeneratorFlag) {
                     SimulationSummary summary = simulate(year, singleGenerator, runs, saveFile, format, groupSelector, p / 10., dependencyFile);
+                    totalTop100 += summary.madeItToTop100;
                     summaryFile << format << ","
                                 << groupSelector.to_string() << ","
                                 << p / 10. << "," // same value in BracketGenerator::get
@@ -164,14 +179,18 @@ int main(int argc, char *argv[]) {
                                 << summary.resultsPath << ","
                                 << summary.setupPath << ","
                                 << summary.masterSeed << ","
-                                << k << endl;
+                                << k << ","
+                                << runs << ",";
+                    for (auto bin: summary.binnedScores)
+                        summaryFile << bin.second << ",";
+                    summaryFile << endl;
                 }
             }
         }
 
     chrono::steady_clock::time_point stop = chrono::steady_clock::now();
     cout << "TOTAL TIME " << chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << " ms" << endl;
-
+    cout << "Made it " << totalTop100 << endl;
 
     return 0;
 }
